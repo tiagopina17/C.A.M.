@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel</title>
+
+</head>
+<style>
+  .carousel-container {
+    position: relative;
+  }
+
+  .carousel {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .carousel-inner {
+    display: flex;
+  }
+
+  .carousel-page {
+    flex: 0 0 100%;
+    display: flex;
+    transition: transform 0.5s ease;
+  }
+
+  .item {
+    flex: 0 0 25%; /* Each item occupies 25% of the carousel width */
+    padding: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .carousel-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin: 0 5px; /* Add some horizontal margin between buttons */
+  }
+
+  button.prev {
+    left: 0;
+  }
+
+  button.next {
+    right: 0;
+  }
+</style>
+<body>
+<div class="carousel-container">
+  <div class="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-page">
+        <div class="item">Item 1</div>
+        <div class="item">Item 2</div>
+        <div class="item">Item 3</div>
+        <div class="item">Item 4</div>
+      </div>
+      <div class="carousel-page">
+        <div class="item">Item 5</div>
+        <div class="item">Item 6</div>
+        <div class="item">Item 7</div>
+        <div class="item">Item 8</div>
+      </div>
+      <!-- Add more pages here if needed -->
+    </div>
+  </div>
+  <button class="prev">Previous</button>
+  <button class="next">Next</button>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const carouselInner = document.querySelector('.carousel-inner');
+    const pages = document.querySelectorAll('.carousel-page');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+    let currentPageIndex = 0;
+    const totalPages = pages.length;
+
+    function updateCarousel() {
+      const offset = -currentPageIndex * carouselInner.clientWidth;
+      carouselInner.style.transform = `translateX(${offset}px)`;
+    }
+
+    function showPage(index) {
+      currentPageIndex = Math.max(0, Math.min(index, totalPages - 1));
+      updateCarousel();
+    }
+
+    function showNextPage() {
+      if (currentPageIndex < totalPages - 1) {
+        showPage(currentPageIndex + 1);
+      }
+    }
+
+    function showPrevPage() {
+      if (currentPageIndex > 0) {
+        showPage(currentPageIndex - 1);
+      }
+    }
+
+    prevBtn.addEventListener('click', showPrevPage);
+    nextBtn.addEventListener('click', showNextPage);
+  });
+</script>
+
+</body>

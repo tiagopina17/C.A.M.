@@ -1,0 +1,222 @@
+.textonav{
+    color: white !important;
+    margin-bottom: 0 !important; /* Override, nao remover */
+}
+
+body {
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.8;
+    font-weight: normal;
+    color: gray;
+    background: #F7F7F7;
+    overflow-x: hidden;
+}
+
+nav   {
+    background-color: #3B3B3B !important;
+}
+
+
+
+
+.carousel-control-prev,
+.carousel-control-next {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+        transform: translateY(-50%);
+    background-color: black;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 50%;
+}
+
+.carousel-control-prev-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E") !important;
+}
+
+.carousel-control-next-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E") !important;
+}
+
+
+.sam{
+    font-family: 'Orbitron', sans-serif; font-weight: 700; background: linear-gradient(to right, #00798F, #0E810E); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin: 0 !important;
+}
+
+.owl-nav.disabled{
+    display: flex !important;
+}
+    /* Adjust the position of the dropdown */
+#dropdown-menu {
+    position: absolute;
+    top: calc(100% - 15px); /* Adjust as needed */
+    left: 1%;
+    width: 98%; /* Set the width to match the input */
+    z-index: 1000; /* Ensure it's above other elements */
+}
+
+/* Adjust the position of dropdown items */
+.dropdown-item {
+    width: 100%; /* Set the width to match the dropdown menu */
+}
+
+.btn.btn-owl {
+    color: white;
+    background: #00798F;
+    border-color: #00798F;}
+
+.ver-mais-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.ver-mais-link {
+    display: inline-block;
+        color: #343a40;
+    text-decoration: underline;
+}
+
+.ver-mais-link:hover {
+    text-decoration: underline;
+}
+
+.btn-outline-verde{
+    color: white !important;
+    background-color: #0E810E !important;
+    border-radius: 0.5rem !important;
+}
+
+.btn-outline-verde:hover{
+    background-color: #0ea40e !important;
+}
+
+.btn-outline-azul{
+    color: white !important;
+    background-color: #00798F !important;
+    border-radius: 0.5rem !important;
+}
+
+.btn-outline-azul:hover{
+    background-color: #0493ad !important;
+}
+
+.btn-nav{
+    border-radius: 0.5rem !important;
+}
+
+footer{
+    background-color: #3B3B3B !important;
+
+}
+
+.navbar-toggler-icon{
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='%23ffffff' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+}
+
+.navbar-toggler{
+    border-color: white !important;
+}
+
+@media (max-width: 992px) {
+    .navbar-nav .nav-item {
+        border-bottom: 1px solid white; /* Add a white bottom border to each navigation item on mobile */
+    }
+}
+
+.text-decoration-underline:hover{
+    text-decoration: underline !important;
+}
+
+footer, .footer{
+    bottom: 0 !important;
+}
+.hero-section {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 100px;
+    margin-right: 75px;
+    margin-bottom: 25px;
+
+}
+
+.hero-text {
+    max-width: 50%;
+}
+
+.hero-text h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.hero-text p {
+    font-size: 1.25rem;
+    margin: 20px 0;
+}
+
+.hero-image {
+    max-width: 30%;
+}
+
+.hero-image img {
+    width: 100%;
+}
+
+.hero-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+
+
+}
+
+
+
+.hero-row-text {
+    flex: 0 0 50%; /* Adjusted text width */
+    max-width: 50%;
+    padding-left: 20px;
+}
+
+.hero-row-text h2 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.hero-row-text p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+
+
+#buttonaction{
+
+
+}
