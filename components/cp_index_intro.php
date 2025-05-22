@@ -30,6 +30,7 @@ while (mysqli_stmt_fetch($stmt)) {
     }
 }
 
+
 // Display logout message if it exists
 if (isset($_SESSION['logout_message'])) {
     echo '<div class="container mt-3">';
@@ -39,6 +40,9 @@ if (isset($_SESSION['logout_message'])) {
     echo '</div>';
     echo '</div>';
     unset($_SESSION['logout_message']);
+} else {
+    // Debug: Show that we didn't find the message
+    echo '<!-- DEBUG: No logout message found in session -->';
 }
 
 // Display other success messages (like registration success)

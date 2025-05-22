@@ -20,19 +20,23 @@
 
             <form action="./scripts/sc_registo.php" method="post" class="needs-validation" novalidate>
                 <div class="mb-3">
-                    <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" id="nome" placeholder="Insira o seu nome" name="nome" required>
+                    <label for="nome" class="form-label">O seu nome:</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Insira o seu nome" name="nomedono" required>
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
-
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Nome da loja:</label>
+                    <input type="text" class="form-control" id="nome" placeholder="Insira o nome da loja" name="nomeloja" required>
+                    <div class="valid-feedback">Tudo certo!</div>
+                    <div class="invalid-feedback">Este campo é obrigatório.</div>
+                </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Insira o seu email" name="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Insira o seu email" name="emaildono" required>
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
-
                 <div class="mb-4">
                     <label for="password" class="form-label">Password:</label>
                     <input type="password" class="form-control" id="password" placeholder="Insira a sua password" name="password" required>
@@ -46,7 +50,7 @@
             </form>
 
             <div class="text-center mt-4">
-                <a href="./registo_lojas.php" class="ver-mais-link">Representa uma loja? Registe-se aqui</a>
+                <a href="./registo.php" class="ver-mais-link">Não representa uma loja? Registe-se aqui</a>
             </div>
         </div>
     </div>

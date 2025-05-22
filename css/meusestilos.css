@@ -60,7 +60,7 @@ nav   {
 
 
 .sam{
-    font-family: 'Orbitron', sans-serif; font-weight: 700; background: linear-gradient(to right, #00798F, #0E810E); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    font-family: 'Orbitron', sans-serif; font-weight: 700; background: linear-gradient(to right, #00798F, #0E810E); background-clip: text; -webkit-text-fill-color: transparent;
     margin: 0 !important;
 }
 
@@ -216,7 +216,3 @@ footer, .footer{
 
 
 
-#buttonaction{
-
-
-}
