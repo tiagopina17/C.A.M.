@@ -31,6 +31,10 @@
                     <button type="submit" class="btn btn-outline-azul">Entrar</button>
                 </div>
             </form>
+            
+            <div class="text-center mt-3">
+                <a href="./registo_lojas.php" class="fw-semibold fs-6 ver-mais-link">É funcionário ou dono de uma loja? Clique aqui para entrar</a>
+            </div>
         </div>
     </div>
 </div>

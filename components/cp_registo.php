@@ -45,9 +45,6 @@
                 </div>
             </form>
 
-            <div class="text-center mt-4">
-                <a href="./registo_lojas.php" class="ver-mais-link">Representa uma loja? Registe-se aqui</a>
-            </div>
         </div>
     </div>
 </div>
