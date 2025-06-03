@@ -29,18 +29,13 @@
 
     <!-- jQuery and Owl Carousel -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src='js/owl.carousel.min.js'></script>
-    <script src='js/owl.js'></script>
 
-    <!-- Owl Carousel CSS -->
-    <link rel='stylesheet' href='css/owl.carousel.min.css'>
-    <link rel='stylesheet' href='css/owl.theme.default.min.css'>
+
+
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/ionicons/4.5.6/css/ionicons.min.css'>
-    <link rel='stylesheet' href='css/owlstyle.css'>
+
 </head>
 <body>
-<!-- Your HTML body content goes here -->
-
 <!-- Bootstrap JS (placed at the end of the body for better performance) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 

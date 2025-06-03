@@ -20,6 +20,7 @@ nav   {
 
 
 
+
 .carousel-control-prev,
 .carousel-control-next {
     display: flex;
@@ -127,9 +128,25 @@ nav   {
     border-radius: 0.5rem !important;
 }
 
-footer{
-    background-color: #3B3B3B !important;
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 100% !important;
+}
 
+body {
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.main-content {
+    flex: 1 !important; /* Takes up remaining space */
+}
+
+footer {
+    background-color: #3B3B3B !important;
+    height: 100px !important;
+    width: 100% !important;
 }
 
 .navbar-toggler-icon{

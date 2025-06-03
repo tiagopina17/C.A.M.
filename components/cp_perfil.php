@@ -1,7 +1,7 @@
 <?php
 
 // Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type'])) {
     header('Location: login.php');
     exit();
 }
@@ -20,31 +20,59 @@ try {
 }
 
 $user_id = $_SESSION['user_id'];
+$user_type = $_SESSION['user_type']; // Should be 'user' or 'funcionario'
 
-// Fetch user data
-$stmt = $pdo->prepare("
-    SELECT u.*, t.nome as tipo_nome 
-    FROM utilizadores u 
-    JOIN tipos t ON u.ref_id_Tipos = t.id_Tipos 
-    WHERE u.id_Utilizadores = ?
-");
-$stmt->execute([$user_id]);
-$user = $stmt->fetch(PDO::FETCH_ASSOC);
+// Validate user type
+if (!in_array($user_type, ['user', 'funcionario'])) {
+    session_destroy();
+    header('Location: login.php');
+    exit();
+}
 
+// Fetch user data based on user type
+if ($user_type === 'funcionario') {
+    $stmt = $pdo->prepare("
+        SELECT f.*, ft.nome as tipo_nome, l.nome_loja
+        FROM funcionarios f 
+        JOIN funcionarios_tipos ft ON f.ref_id_Funcionarios_Tipos = ft.id_Funcionarios_Tipos 
+        LEFT JOIN lojas l ON f.ref_id_Loja = l.id_Loja
+        WHERE f.id_Funcionarios = ?
+    ");
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+} else {
+    $stmt = $pdo->prepare("
+        SELECT u.*, t.nome as tipo_nome 
+        FROM utilizadores u 
+        JOIN tipos t ON u.ref_id_Tipos = t.id_Tipos 
+        WHERE u.id_Utilizadores = ?
+    ");
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Check if user exists
 if (!$user) {
     session_destroy();
     header('Location: login.php');
     exit();
 }
 
-// Fetch user statistics
-$stmt = $pdo->prepare("SELECT COUNT(*) as total_servicos FROM utilizadores_servicos WHERE ref_id_Utilizador = ?");
-$stmt->execute([$user_id]);
-$stats_servicos = $stmt->fetch(PDO::FETCH_ASSOC)['total_servicos'];
+// Fetch user statistics based on type
+if ($user_type === 'funcionario') {
+    // For funcionarios, we might want different statistics
+    $stats_servicos = 0; // Funcionarios don't have direct service associations in your schema
+    $stats_lojas = 1; // Each funcionario is associated with one loja
+} else {
+    // For regular users
+    $stmt = $pdo->prepare("SELECT COUNT(*) as total_servicos FROM utilizadores_servicos WHERE ref_id_Utilizador = ?");
+    $stmt->execute([$user_id]);
+    $stats_servicos = $stmt->fetch(PDO::FETCH_ASSOC)['total_servicos'];
 
-$stmt = $pdo->prepare("SELECT COUNT(*) as total_lojas FROM utilizadores_lojas WHERE ref_id_Utilizador = ?");
-$stmt->execute([$user_id]);
-$stats_lojas = $stmt->fetch(PDO::FETCH_ASSOC)['total_lojas'];
+    $stmt = $pdo->prepare("SELECT COUNT(*) as total_lojas FROM utilizadores_lojas WHERE ref_id_Utilizador = ?");
+    $stmt->execute([$user_id]);
+    $stats_lojas = $stmt->fetch(PDO::FETCH_ASSOC)['total_lojas'];
+}
 
 // Fetch recent activity (simulated - you can customize this based on your needs)
 $recent_activities = [
@@ -68,14 +96,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Check if email already exists for another user
-        $stmt = $pdo->prepare("SELECT id_Utilizadores FROM utilizadores WHERE email = ? AND id_Utilizadores != ?");
-        $stmt->execute([$email, $user_id]);
-        if ($stmt->fetch()) {
-            $errors[] = "Este email já está a ser utilizado por outro utilizador.";
+        if ($user_type === 'funcionario') {
+            $stmt = $pdo->prepare("SELECT id_Funcionarios FROM funcionarios WHERE email = ? AND id_Funcionarios != ?");
+            $stmt->execute([$email, $user_id]);
+            if ($stmt->fetch()) {
+                $errors[] = "Este email já está a ser utilizado por outro funcionário.";
+            }
+            
+            // Also check if email exists in utilizadores table
+            $stmt = $pdo->prepare("SELECT id_Utilizadores FROM utilizadores WHERE email = ?");
+            $stmt->execute([$email]);
+            if ($stmt->fetch()) {
+                $errors[] = "Este email já está a ser utilizado por outro utilizador.";
+            }
+        } else {
+            $stmt = $pdo->prepare("SELECT id_Utilizadores FROM utilizadores WHERE email = ? AND id_Utilizadores != ?");
+            $stmt->execute([$email, $user_id]);
+            if ($stmt->fetch()) {
+                $errors[] = "Este email já está a ser utilizado por outro utilizador.";
+            }
+            
+            // Also check if email exists in funcionarios table
+            $stmt = $pdo->prepare("SELECT id_Funcionarios FROM funcionarios WHERE email = ?");
+            $stmt->execute([$email]);
+            if ($stmt->fetch()) {
+                $errors[] = "Este email já está a ser utilizado por um funcionário.";
+            }
         }
         
         if (empty($errors)) {
-            $stmt = $pdo->prepare("UPDATE utilizadores SET nome = ?, email = ? WHERE id_Utilizadores = ?");
+            if ($user_type === 'funcionario') {
+                $stmt = $pdo->prepare("UPDATE funcionarios SET nome = ?, email = ? WHERE id_Funcionarios = ?");
+            } else {
+                $stmt = $pdo->prepare("UPDATE utilizadores SET nome = ?, email = ? WHERE id_Utilizadores = ?");
+            }
+            
             if ($stmt->execute([$nome, $email, $user_id])) {
                 $_SESSION['success_message'] = "Perfil atualizado com sucesso!";
                 $user['nome'] = $nome;
@@ -113,7 +168,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (empty($errors)) {
             $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-            $stmt = $pdo->prepare("UPDATE utilizadores SET password = ? WHERE id_Utilizadores = ?");
+            
+            if ($user_type === 'funcionario') {
+                $stmt = $pdo->prepare("UPDATE funcionarios SET password = ? WHERE id_Funcionarios = ?");
+            } else {
+                $stmt = $pdo->prepare("UPDATE utilizadores SET password = ? WHERE id_Utilizadores = ?");
+            }
+            
             if ($stmt->execute([$hashed_password, $user_id])) {
                 $_SESSION['success_message'] = "Password alterada com sucesso!";
             } else {
@@ -145,6 +206,24 @@ function timeAgo($date) {
     if ($diff->i > 0) return $diff->i . ' minuto' . ($diff->i > 1 ? 's' : '') . ' atrás';
     return 'Agora mesmo';
 }
+
+// Helper function to get user display info
+function getUserDisplayInfo($user, $user_type) {
+    $info = [
+        'nome' => $user['nome'],
+        'email' => $user['email'],
+        'tipo' => $user['tipo_nome'],
+        'inicio' => $user['inicio']
+    ];
+    
+    if ($user_type === 'funcionario' && isset($user['nome_loja'])) {
+        $info['loja'] = $user['nome_loja'];
+    }
+    
+    return $info;
+}
+
+$user_display_info = getUserDisplayInfo($user, $user_type);
 ?>
 
 <!DOCTYPE html>

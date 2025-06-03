@@ -38,12 +38,13 @@ try {
         // If no validation errors, proceed with login
         if (empty($errors)) {
             
-            // Get user data from database including user type
+            // CORRECTED: Query the funcionarios table (not utilizadores) with proper JOIN
             $stmt = $conn->prepare("
-                SELECT u.id_Utilizadores, u.nome, u.email, u.password, u.imgperfil, u.ref_id_Tipos, t.nome as tipo_nome
-                FROM utilizadores u
-                INNER JOIN tipos t ON u.ref_id_Tipos = t.id_Tipos
-                WHERE u.email = :email
+                SELECT f.id_Funcionarios, f.nome, f.email, f.password, f.imgperfil, 
+                       f.ref_id_Funcionarios_Tipos, f.ref_id_Loja, ft.nome as tipo_nome
+                FROM funcionarios f
+                INNER JOIN funcionarios_tipos ft ON f.ref_id_Funcionarios_Tipos = ft.id_Funcionarios_Tipos
+                WHERE f.email = :email
             ");
             
             $stmt->bindParam(':email', $email);
@@ -56,30 +57,29 @@ try {
                 if (password_verify($password, $user['password'])) {
                     
                     // Password is correct, create session
-                    $_SESSION['user_id'] = $user['id_Utilizadores'];
+                    $_SESSION['user_id'] = $user['id_Funcionarios'];
                     $_SESSION['user_nome'] = $user['nome'];
                     $_SESSION['user_email'] = $user['email'];
                     $_SESSION['user_imgperfil'] = $user['imgperfil'];
-                    $_SESSION['user_tipo_id'] = $user['ref_id_Tipos'];
+                    $_SESSION['user_tipo_id'] = $user['ref_id_Funcionarios_Tipos'];
                     $_SESSION['user_tipo_nome'] = $user['tipo_nome'];
+                    $_SESSION['user_loja_id'] = $user['ref_id_Loja'];
                     $_SESSION['logged_in'] = true;
-                    $_SESSION['user_type'] = 'user'; // To distinguish from regular users
-
+                    $_SESSION['user_type'] = 'funcionario'; // To distinguish from regular users
                     
                     // Set success message
                     $_SESSION['success_message'] = "Login efetuado com sucesso! Bem-vindo, " . $user['nome'] . "!";
                     
-                    // Redirect based on user type
-                    switch($user['ref_id_Tipos']) {
-                        case 4: // administrador
-                            header("Location: ../administracao");
+                    // Redirect based on employee type
+                    switch($user['ref_id_Funcionarios_Tipos']) {
+                        case 1: // dono (owner)
+                            header("Location: ../");
                             break;
-                        case 3: // moderador
-                            header("Location: ../administracao");
+                        case 2: // funcionario (employee)
+                            header("Location: ../"); // or wherever employees should go
                             break;
-                        case 1: // utilizador
                         default:
-                            header("Location: ../"); // or main page
+                            header("Location: ../");
                             break;
                     }
                     exit();
@@ -99,7 +99,7 @@ try {
             $_SESSION['login_email'] = $email; // Keep email for user convenience
             
             // Redirect back to login form
-            header("Location: ../login.php"); // Adjust path as needed
+            header("Location: ../login_funcionario.php");
             exit();
         }
     }
@@ -109,7 +109,7 @@ try {
     error_log("Login error: " . $e->getMessage());
     
     $_SESSION['login_errors'] = ["Erro interno do servidor. Tente novamente mais tarde."];
-    header("Location: ../login.php"); // Adjust path as needed
+    header("Location: ../login_funcionario.php");
     exit();
 }
 
@@ -117,6 +117,6 @@ try {
 $conn = null;
 
 // If accessed directly without POST, redirect to login page
-header("Location: ../login.php");
+header("Location: ../login_funcionario.php");
 exit();
 ?>

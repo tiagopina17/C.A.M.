@@ -1,5 +1,5 @@
 
-<div class="container mt-5 mb-5">
+<div class="container mt-5 mb-5 main-content">
     <div class="col-md-8 mx-auto">
         <div class="card shadow p-4">
             <h2 class="text-center sam mb-4">Iniciar Sessão</h2>
@@ -33,7 +33,7 @@
             </form>
             
             <div class="text-center mt-3">
-                <a href="./registo_lojas.php" class="fw-semibold fs-6 ver-mais-link">É funcionário ou dono de uma loja? Clique aqui para entrar</a>
+                <a href="./login_funcionario.php" class="fw-semibold fs-6 ver-mais-link">É funcionário ou dono de uma loja? Clique aqui para entrar</a>
             </div>
         </div>
     </div>

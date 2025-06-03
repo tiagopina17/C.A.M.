@@ -1,4 +1,4 @@
-<div class="container-fluid mt-5 mb-5">
+<div class="container-fluid mt-5 mb-5 main-content">
     <div class="row justify-content-center">
         <div class="accordion col-10 mx-auto" id="accordionExample">
             <div class="accordion-item">
