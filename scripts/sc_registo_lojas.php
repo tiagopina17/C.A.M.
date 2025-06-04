@@ -118,44 +118,55 @@ try {
                         
                         if ($userData) {
                             // Insert current user as store owner (funcionario tipo 1 = dono)
-                            $funcStmt = $conn->prepare("INSERT INTO funcionarios (nome, email, password, ref_id_Funcionarios_Tipos, ref_id_Loja, inicio) 
-                                                      SELECT :nome, :email, password, 1, :loja_id, NOW() 
+                            // UPDATED: Removed ref_id_Loja from the INSERT statement
+                            $funcStmt = $conn->prepare("INSERT INTO funcionarios (nome, email, password, ref_id_Funcionarios_Tipos, inicio) 
+                                                      SELECT :nome, :email, password, 1, NOW() 
                                                       FROM utilizadores WHERE id_Utilizadores = :user_id");
                             $funcStmt->bindParam(':nome', $userData['nome']);
                             $funcStmt->bindParam(':email', $userData['email']);
-                            $funcStmt->bindParam(':loja_id', $loja_id);
                             $funcStmt->bindParam(':user_id', $user_id);
                             
                             if ($funcStmt->execute()) {
-                                // Delete user from utilizadores table
-                                $deleteStmt = $conn->prepare("DELETE FROM utilizadores WHERE id_Utilizadores = :user_id");
-                                $deleteStmt->bindParam(':user_id', $user_id);
+                                $funcionario_id = $conn->lastInsertId();
                                 
-                                if ($deleteStmt->execute()) {
-                                    // Commit transaction
-                                    $conn->commit();
+                                // NEW: Insert relationship into funcionarios_lojas junction table
+                                $junctionStmt = $conn->prepare("INSERT INTO funcionarios_lojas (ref_id_Funcionario, ref_id_Loja, inicio) VALUES (:funcionario_id, :loja_id, NOW())");
+                                $junctionStmt->bindParam(':funcionario_id', $funcionario_id);
+                                $junctionStmt->bindParam(':loja_id', $loja_id);
+                                
+                                if ($junctionStmt->execute()) {
+                                    // Delete user from utilizadores table
+                                    $deleteStmt = $conn->prepare("DELETE FROM utilizadores WHERE id_Utilizadores = :user_id");
+                                    $deleteStmt->bindParam(':user_id', $user_id);
                                     
-                                    // Store user name before clearing session
-                                    $user_nome = isset($_SESSION['user_nome']) ? $_SESSION['user_nome'] : '';
+                                    if ($deleteStmt->execute()) {
+                                        // Commit transaction
+                                        $conn->commit();
+                                        
+                                        // Store user name before clearing session
+                                        $user_nome = isset($_SESSION['user_nome']) ? $_SESSION['user_nome'] : '';
 
-                                    // Clear all session variables except what we need for the message
-                                    $_SESSION = array();
+                                        // Clear all session variables except what we need for the message
+                                        $_SESSION = array();
 
-                                    // Set logout message immediately (don't destroy/recreate session)
-                                    if (!empty($user_nome)) {
-                                        $_SESSION['logout_message'] = "Loja registada com sucesso, " . htmlspecialchars($user_nome) . "! Faça login na sua nova conta de funcionário para continuar!";
+                                        // Set logout message immediately (don't destroy/recreate session)
+                                        if (!empty($user_nome)) {
+                                            $_SESSION['logout_message'] = "Loja registada com sucesso, " . htmlspecialchars($user_nome) . "! Faça login na sua nova conta de funcionário para continuar!";
+                                        } else {
+                                            $_SESSION['logout_message'] = "Logout efetuado com sucesso!";
+                                        }
+
+                                        // Redirect to home page
+                                        header("Location: /pessoal/index.php");
+                                        exit();
                                     } else {
-                                        $_SESSION['logout_message'] = "Logout efetuado com sucesso!";
+                                        throw new Exception('Erro ao remover utilizador da tabela original');
                                     }
-
-                                    // Redirect to home page
-                                    header("Location: /pessoal/index.php");
-                                    exit();
                                 } else {
-                                    throw new Exception('Erro ao remover utilizador da tabela original');
+                                    throw new Exception('Erro ao associar funcionário à loja');
                                 }
                             } else {
-                                throw new Exception('Erro ao associar utilizador à loja');
+                                throw new Exception('Erro ao criar funcionário');
                             }
                         } else {
                             throw new Exception('Dados do utilizador não encontrados');
@@ -204,7 +215,8 @@ function getPlaceLocation($placeId) {
     $fields = 'geometry'; // Only get location coordinates
     $url = "https://maps.googleapis.com/maps/api/place/details/json?place_id={$placeId}&fields={$fields}&key={$apiKey}";
     
-    // Make API request
+    // Make API request    
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

@@ -38,12 +38,15 @@ try {
         // If no validation errors, proceed with login
         if (empty($errors)) {
             
-            // CORRECTED: Query the funcionarios table (not utilizadores) with proper JOIN
+            // UPDATED: Query with proper JOIN to funcionarios_lojas table
             $stmt = $conn->prepare("
                 SELECT f.id_Funcionarios, f.nome, f.email, f.password, f.imgperfil, 
-                       f.ref_id_Funcionarios_Tipos, f.ref_id_Loja, ft.nome as tipo_nome
+                       f.ref_id_Funcionarios_Tipos, ft.nome as tipo_nome,
+                       fl.ref_id_Loja, l.nome_loja
                 FROM funcionarios f
                 INNER JOIN funcionarios_tipos ft ON f.ref_id_Funcionarios_Tipos = ft.id_Funcionarios_Tipos
+                LEFT JOIN funcionarios_lojas fl ON f.id_Funcionarios = fl.ref_id_Funcionario
+                LEFT JOIN lojas l ON fl.ref_id_Loja = l.id_Loja
                 WHERE f.email = :email
             ");
             
@@ -63,7 +66,8 @@ try {
                     $_SESSION['user_imgperfil'] = $user['imgperfil'];
                     $_SESSION['user_tipo_id'] = $user['ref_id_Funcionarios_Tipos'];
                     $_SESSION['user_tipo_nome'] = $user['tipo_nome'];
-                    $_SESSION['user_loja_id'] = $user['ref_id_Loja'];
+                    $_SESSION['user_loja_id'] = $user['ref_id_Loja']; // Now comes from funcionarios_lojas
+                    $_SESSION['user_loja_nome'] = $user['nome_loja']; // Store store name as well
                     $_SESSION['logged_in'] = true;
                     $_SESSION['user_type'] = 'funcionario'; // To distinguish from regular users
                     
@@ -105,9 +109,7 @@ try {
     }
     
 } catch(PDOException $e) {
-    // Log error (in production, don't show detailed error messages)
-    error_log("Login error: " . $e->getMessage());
-    
+    // Show actual error message (for debugging only, remove in production)
     $_SESSION['login_errors'] = ["Erro interno do servidor. Tente novamente mais tarde."];
     header("Location: ../login_funcionario.php");
     exit();

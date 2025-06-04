@@ -31,12 +31,17 @@ if (!in_array($user_type, ['user', 'funcionario'])) {
 
 // Fetch user data based on user type
 if ($user_type === 'funcionario') {
+    // UPDATED: Use junction table to get loja information
     $stmt = $pdo->prepare("
-        SELECT f.*, ft.nome as tipo_nome, l.nome_loja
+        SELECT f.*, ft.nome as tipo_nome, 
+               GROUP_CONCAT(l.nome_loja SEPARATOR ', ') as lojas_nomes,
+               COUNT(DISTINCT fl.ref_id_Loja) as total_lojas
         FROM funcionarios f 
         JOIN funcionarios_tipos ft ON f.ref_id_Funcionarios_Tipos = ft.id_Funcionarios_Tipos 
-        LEFT JOIN lojas l ON f.ref_id_Loja = l.id_Loja
+        LEFT JOIN funcionarios_lojas fl ON f.id_Funcionarios = fl.ref_id_Funcionario
+        LEFT JOIN lojas l ON fl.ref_id_Loja = l.id_Loja
         WHERE f.id_Funcionarios = ?
+        GROUP BY f.id_Funcionarios
     ");
     $stmt->execute([$user_id]);
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -60,14 +65,13 @@ if (!$user) {
 
 // Fetch user statistics based on type
 if ($user_type === 'funcionario') {
-    // For funcionarios, we might want different statistics
-    $stats_servicos = 0; // Funcionarios don't have direct service associations in your schema
-    $stats_lojas = 1; // Each funcionario is associated with one loja
-} else {
-    // For regular users
-    $stmt = $pdo->prepare("SELECT COUNT(*) as total_servicos FROM utilizadores_servicos WHERE ref_id_Utilizador = ?");
+    // UPDATED: Get actual count of lojas from junction table
+    $stmt = $pdo->prepare("SELECT COUNT(*) as total_lojas FROM funcionarios_lojas WHERE ref_id_Funcionario = ?");
     $stmt->execute([$user_id]);
-    $stats_servicos = $stmt->fetch(PDO::FETCH_ASSOC)['total_servicos'];
+    $stats_lojas = $stmt->fetch(PDO::FETCH_ASSOC)['total_lojas'];
+    
+} else {
+    
 
     $stmt = $pdo->prepare("SELECT COUNT(*) as total_lojas FROM utilizadores_lojas WHERE ref_id_Utilizador = ?");
     $stmt->execute([$user_id]);
@@ -207,7 +211,7 @@ function timeAgo($date) {
     return 'Agora mesmo';
 }
 
-// Helper function to get user display info
+// UPDATED: Helper function to get user display info
 function getUserDisplayInfo($user, $user_type) {
     $info = [
         'nome' => $user['nome'],
@@ -216,8 +220,15 @@ function getUserDisplayInfo($user, $user_type) {
         'inicio' => $user['inicio']
     ];
     
-    if ($user_type === 'funcionario' && isset($user['nome_loja'])) {
-        $info['loja'] = $user['nome_loja'];
+    if ($user_type === 'funcionario') {
+        // Handle multiple lojas
+        if (isset($user['lojas_nomes']) && !empty($user['lojas_nomes'])) {
+            $info['lojas'] = $user['lojas_nomes']; // This will be a comma-separated string
+            $info['total_lojas'] = $user['total_lojas'];
+        } else {
+            $info['lojas'] = 'Nenhuma loja associada';
+            $info['total_lojas'] = 0;
+        }
     }
     
     return $info;
@@ -234,127 +245,6 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
     <title>Perfil do Utilizador</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .sam {
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        .btn-outline-verde {
-            color: #28a745;
-            border-color: #28a745;
-            font-weight: 500;
-        }
-        
-        .btn-outline-verde:hover {
-            background-color: #28a745;
-            border-color: #28a745;
-            color: white;
-        }
-        
-        .btn-verde {
-            background-color: #28a745;
-            border-color: #28a745;
-            color: white;
-            font-weight: 500;
-        }
-        
-        .btn-verde:hover {
-            background-color: #218838;
-            border-color: #1e7e34;
-            color: white;
-        }
-        
-        .ver-mais-link {
-            color: #28a745;
-            text-decoration: none;
-            font-weight: 500;
-        }
-        
-        .ver-mais-link:hover {
-            color: #218838;
-            text-decoration: underline;
-        }
-        
-        .profile-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 4px solid #28a745;
-            background-color: #28a745;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.5rem;
-            font-weight: bold;
-        }
-        
-        .info-card {
-            border: none;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        }
-        
-        .info-label {
-            font-weight: 600;
-            color: #495057;
-            margin-bottom: 0.25rem;
-        }
-        
-        .info-value {
-            color: #6c757d;
-            margin-bottom: 1rem;
-        }
-        
-        .edit-mode {
-            display: none;
-        }
-        
-        .nav-tabs .nav-link {
-            color: #495057;
-            border: none;
-            border-bottom: 2px solid transparent;
-            font-weight: 500;
-        }
-        
-        .nav-tabs .nav-link.active {
-            color: #28a745;
-            border-bottom-color: #28a745;
-            background: none;
-        }
-        
-        .nav-tabs .nav-link:hover {
-            color: #28a745;
-            border-bottom-color: #28a745;
-        }
-        
-        .stats-card {
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            border-radius: 10px;
-        }
-        
-        .activity-item {
-            border-left: 3px solid #28a745;
-            padding-left: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        .activity-date {
-            font-size: 0.875rem;
-            color: #6c757d;
-        }
-        
-        .user-type-badge {
-            background-color: #28a745;
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 1rem;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-    </style>
 </head>
 <body class="bg-light">
     <div class="container mt-5 mb-5">
@@ -597,30 +487,45 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
 
             <!-- Sidebar -->
             <div class="col-md-4">
-                <!-- Statistics Card -->
-                <div class="card stats-card shadow p-4 mb-4">
-                    <h5 class="text-white mb-3">
-                        <i class="fas fa-chart-line me-2"></i>Estatísticas
-                    </h5>
-                    <div class="row text-center">
-                        <div class="col-6">
-                            <h3 class="text-white mb-0"><?php echo $stats_servicos; ?></h3>
-                            <small class="text-white-50">Serviços</small>
-                        </div>
-                        <div class="col-6">
-                            <h3 class="text-white mb-0"><?php echo $stats_lojas; ?></h3>
-                            <small class="text-white-50">Lojas</small>
+                <!-- Statistics/Management Card -->
+                <?php if ($_SESSION['user_type'] == 'funcionario'): ?>
+                    <!-- Management Card for Funcionario -->
+                    <div class="card shadow p-4 mb-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none;">
+                        <div class="text-center text-white">
+                            <div class="mb-3">
+                                <i class="fas fa-store-alt" style="font-size: 2rem; opacity: 0.9;"></i>
+                            </div>
+                            <h5 class="mb-3 fw-bold">Gestão de Lojas</h5>
+                            <p class="mb-4 opacity-75">Gerir e administrar as suas lojas:</p>
+                            <a href="gerir_lojas.php" class="btn btn-light btn-lg px-4 py-2 fw-semibold" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                <i class="fas fa-cogs me-2"></i>Gerir Lojas
+                            </a>
                         </div>
                     </div>
-                </div>
+                <?php else: ?>
+                    <!-- Statistics Card for other user types -->
+                    <div class="card stats-card shadow p-4 mb-4">
+                        <h5 class="text-white mb-3">
+                            <i class="fas fa-chart-line me-2"></i>Estatísticas
+                        </h5>
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <h3 class="text-white mb-0"><?php echo $stats_lojas; ?></h3>
+                                <small class="text-white-50">Lojas</small>
+                            </div>
+                        </div>
+                    </div>
+                <?php endif; ?>
 
                 <!-- Quick Actions -->
                 <div class="card shadow p-4 mb-4">
                     <h5 class="sam mb-3">Ações Rápidas</h5>
                     <div class="d-grid gap-2">
+                        <?php if ($_SESSION['user_type'] != 'funcionario'): ?>
                         <a href="registo_lojas.php" class="btn btn-outline-verde">
                             <i class="fas fa-store me-2"></i>Registar uma loja
                         </a>
+                        <?php endif; ?>
                         <a href="help.php" class="btn btn-outline-verde">
                             <i class="fas fa-question-circle me-2"></i>Ajuda
                         </a>
@@ -629,8 +534,6 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                         </a>
                     </div>
                 </div>
-
-           
             </div>
         </div>
     </div>
