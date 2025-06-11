@@ -497,7 +497,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                             </div>
                             <h5 class="mb-3 fw-bold">Gestão de Lojas</h5>
                             <p class="mb-4 opacity-75">Gerir e administrar as suas lojas:</p>
-                            <a href="gerir_lojas.php" class="btn btn-light btn-lg px-4 py-2 fw-semibold" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <a href="info_lojas.php" class="btn btn-light btn-lg px-4 py-2 fw-semibold" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
                                 <i class="fas fa-cogs me-2"></i>Gerir Lojas
                             </a>
                         </div>
