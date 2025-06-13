@@ -19,6 +19,26 @@ function formatDate($date) {
     return date('d/m/Y H:i', strtotime($date));
 }
 
+// Function to generate unique 7-character code
+function generateUniqueCode($pdo) {
+    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    
+    do {
+        $code = '';
+        for ($i = 0; $i < 7; $i++) {
+            $code .= $characters[random_int(0, strlen($characters) - 1)];
+        }
+        
+        // Check if code already exists
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM funcionarios_codigo WHERE codigo = ?");
+        $stmt->execute([$code]);
+        $exists = $stmt->fetchColumn() > 0;
+        
+    } while ($exists);
+    
+    return $code;
+}
+
 // Check if user is logged in and is a funcionario
 if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'funcionario') {
     echo '<pre>';
@@ -65,21 +85,6 @@ $stmt = $pdo->prepare("
 $stmt->execute([$store_id]);
 $funcionarios_loja = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Get all funcionarios not in this store (for adding)
-$stmt = $pdo->prepare("
-    SELECT f.id_Funcionarios, f.nome, f.email, ft.nome as tipo_nome
-    FROM funcionarios f
-    JOIN funcionarios_tipos ft ON f.ref_id_Funcionarios_Tipos = ft.id_Funcionarios_Tipos
-    WHERE f.id_Funcionarios NOT IN (
-        SELECT fl.ref_id_Funcionario 
-        FROM funcionarios_lojas fl 
-        WHERE fl.ref_id_Loja = ?
-    )
-    ORDER BY f.nome
-");
-$stmt->execute([$store_id]);
-$funcionarios_disponiveis = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
@@ -110,6 +115,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             $_SESSION['store_errors'] = $errors;
+        }
+    }
+    
+    // Generate employee code
+    if (isset($_POST['generate_code'])) {
+        try {
+            $unique_code = generateUniqueCode($pdo);
+            
+            // Insert the code into funcionarios_codigo table - FIXED: removed ref_id_Funcionario
+            $stmt = $pdo->prepare("INSERT INTO funcionarios_codigo (codigo) VALUES (?)");
+            $stmt->execute([$unique_code]);
+            
+            $_SESSION['generated_code'] = $unique_code;
+            $_SESSION['success_message'] = 'Código gerado com sucesso!';
+            
+        } catch (PDOException $e) {
+            $_SESSION['error_message'] = 'Erro ao gerar código: ' . $e->getMessage();
         }
     }
     
@@ -219,8 +241,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Store Information Card -->
                 <div class="card store-card mb-4">
                     <div class="card-header">
-                        <h5 class="sam mb-0">
-                            <i class="fas fa-info-circle me-2"></i>Informações da Loja
+                        <h5 class=" mb-0">
+                            <i class="fas fa-info-circle me-2 "></i>Informações da Loja
                         </h5>
                     </div>
                     <div class="card-body">
@@ -266,7 +288,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             
                             <div class="text-end">
-                                <button type="submit" name="update_store" class="btn btn-verde">
+                                <button type="submit" name="update_store" class="btn btn-verde text-white fw-semibold">
                                     <i class="fas fa-save me-2"></i>Guardar Alterações
                                 </button>
                             </div>
@@ -277,7 +299,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Employees Management Card -->
                 <div class="card store-card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="sam mb-0" style="color: white;">
+                        <h5 class=" mb-0" style="color: white;">
                             <i class="fas fa-users me-2"></i>Funcionários da Loja
                         </h5>
                         <button class="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
@@ -350,13 +372,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php echo count($funcionarios_loja); ?>
                         </div>
                     </div>
-                    <div class="mb-3">
-                        <div class="info-label">Funcionários Disponíveis</div>
-                        <div class="info-value">
-                            <i class="fas fa-user-clock text-muted me-2"></i>
-                            <?php echo count($funcionarios_disponiveis); ?>
-                        </div>
-                    </div>
+              
                     <div class="mb-0">
                         <div class="info-label">Status</div>
                         <div class="info-value">
@@ -369,12 +385,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="card shadow p-4">
                     <h5 class="sam mb-3">Ações Rápidas</h5>
                     <div class="d-grid gap-2">
-                        <button class="btn btn-outline-verde" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
-                            <i class="fas fa-user-plus me-2"></i>Adicionar Funcionário
-                        </button>
                         <a href="stores.php" class="btn btn-outline-verde">
                             <i class="fas fa-arrow-left me-2"></i>Voltar às Lojas
                         </a>
+                        <button class="btn btn-outline-verde" data-bs-toggle="modal" data-bs-target="#addEmployeeModal">
+                            <i class="fas fa-user-plus me-2"></i>Adicionar Funcionário
+                        </button>
+                        
                         <a href="perfil.php" class="btn btn-outline-verde">
                             <i class="fas fa-user me-2"></i>Meu Perfil
                         </a>
@@ -388,46 +405,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <!-- Add Employee Modal -->
-    <div class="modal fade" id="addEmployeeModal" tabindex="-1">
+    <div class="modal fade" id="addEmployeeModal" tabindex="-1" aria-labelledby="addEmployeeModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title sam" style="color: white;">Adicionar Funcionário</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title" id="addEmployeeModalLabel">
+                        <i class="fas fa-user-plus me-2"></i>Adicionar Funcionário
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form method="post">
-                    <div class="modal-body">
-                        <?php if (empty($funcionarios_disponiveis)): ?>
-                            <div class="text-center p-3">
-                                <i class="fas fa-users-slash text-muted mb-3" style="font-size: 2rem;"></i>
-                                <h6 class="text-muted">Sem funcionários disponíveis</h6>
-                                <p class="text-muted mb-0">Todos os funcionários já estão atribuídos a esta loja.</p>
-                            </div>
-                        <?php else: ?>
-                            <div class="mb-3">
-                                <label for="funcionario_id" class="form-label">Selecione o Funcionário</label>
-                                <select class="form-select" id="funcionario_id" name="funcionario_id" required>
-                                    <option value="">Escolha um funcionário...</option>
-                                    <?php foreach ($funcionarios_disponiveis as $funcionario): ?>
-                                        <option value="<?php echo $funcionario['id_Funcionarios']; ?>">
-                                            <?php echo htmlspecialchars($funcionario['nome']); ?> 
-                                            (<?php echo htmlspecialchars($funcionario['tipo_nome']); ?>) - 
-                                            <?php echo htmlspecialchars($funcionario['email']); ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <?php if (!empty($funcionarios_disponiveis)): ?>
-                            <button type="submit" name="add_employee" class="btn btn-verde">
-                                <i class="fas fa-user-plus me-2"></i>Adicionar
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <p class="mb-3">Gere um código único para que o funcionário possa associar-se a esta loja.</p>
+                        <form method="post" id="generateCodeForm">
+                            <button type="submit" name="generate_code" class="btn btn-verde text-dark">
+                                <i class="fas fa-magic me-2"></i>Gerar Código
                             </button>
-                        <?php endif; ?>
+                        </form>
                     </div>
-                </form>
+                    
+                    <?php if (isset($_SESSION['generated_code'])): ?>
+                        <div class="alert alert-success text-center">
+                            <h4 class="mb-3">Código Gerado</h4>
+                            <div class="bg-light p-3 rounded mb-3">
+                                <h2 class="text-dark font-monospace mb-0" id="generatedCode">
+                                    <?php echo $_SESSION['generated_code']; ?>
+                                </h2>
+                            </div>
+                            <p class="mb-3">Partilhe este código com o funcionário para que se possa juntar à loja.</p>
+                            <button class="btn btn-outline-primary btn-sm" onclick="copyCode()">
+                                <i class="fas fa-copy me-1"></i>Copiar Código
+                            </button>
+                        </div>
+                        <?php unset($_SESSION['generated_code']); ?>
+                    <?php endif; ?>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
             </div>
         </div>
     </div>
@@ -464,6 +479,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 document.getElementById('removeEmployeeForm').submit();
             }
         }
+
+        // Copy code to clipboard
+        function copyCode() {
+            const codeElement = document.getElementById('generatedCode');
+            if (codeElement) {
+                const code = codeElement.textContent;
+                navigator.clipboard.writeText(code).then(function() {
+                    // Show temporary feedback
+                    const button = event.target.closest('button');
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check me-1"></i>Copiado!';
+                    button.classList.remove('btn-outline-primary');
+                    button.classList.add('btn-success');
+                    
+                    setTimeout(function() {
+                        button.innerHTML = originalText;
+                        button.classList.remove('btn-success');
+                        button.classList.add('btn-outline-primary');
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Erro ao copiar código: ', err);
+                });
+            }
+        }
+
+        // Auto-open modal if code was just generated
+        <?php if (isset($_SESSION['generated_code'])): ?>
+        document.addEventListener('DOMContentLoaded', function() {
+            var modal = new bootstrap.Modal(document.getElementById('addEmployeeModal'));
+            modal.show();
+        });
+        <?php endif; ?>
     </script>
 </body>
 </html>
