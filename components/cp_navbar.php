@@ -33,7 +33,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                     <?php endif; ?>
                                     <?php echo htmlspecialchars($_SESSION['user_nome']); ?>
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" href="perfil.php">Perfil</a></li>
                                     <?php if ($_SESSION['user_tipo_id'] == 4): // Administrator ?>
                                         <li><a class="dropdown-item" href="admin/dashboard.php">Administração</a></li>
@@ -59,3 +59,47 @@ if (session_status() == PHP_SESSION_NONE) {
         </nav>
     </div>
 </section>
+
+
+<script>
+//Para o Tiago do futuro: O JS do Bootstrap não carrega em apenas algumas páginas (?) então fazemos isto manualmente.
+//Se no futuro houver problemas podemos (ou melhor, podes) aplicar isto apenas nessas páginas específicas.
+//Como e aonde aplicar? Quem sabe...
+document.addEventListener('DOMContentLoaded', function() {
+    const toggle = document.querySelector('#navbarDropdown');
+    const menu = document.querySelector('.dropdown-menu');
+    
+    if (toggle && menu) {
+        toggle.removeAttribute('data-bs-toggle');
+        toggle.removeAttribute('data-bs-target');
+        
+        toggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            if (menu.style.display === 'block') {
+                menu.style.display = 'none';
+            } else {
+                const rect = toggle.getBoundingClientRect();
+                menu.style.position = 'fixed';
+                menu.style.top = (rect.bottom + 5) + 'px';
+                menu.style.right = '10px';
+                menu.style.display = 'block';
+                menu.style.zIndex = '9999';
+                menu.style.backgroundColor = 'white';
+                menu.style.border = '1px solid #ccc';
+                menu.style.padding = '8px 0';
+                menu.style.borderRadius = '4px';
+                menu.style.minWidth = '160px';
+                menu.style.boxShadow = '0 2px 10px rgba(0,0,0,0.1)';
+            }
+        });
+        
+        // Close when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.dropdown')) {
+                menu.style.display = 'none';
+            }
+        });
+    }
+});
+</script>
