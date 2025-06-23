@@ -6,16 +6,12 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_type'])) {
     exit();
 }
 
-// Database connection
-$host = 'localhost';
-$dbname = 'sam';
-$username = 'root';
-$password = '';
+// Include the database configuration file
+require_once './connections/connection.php'; // Adjust path as needed
 
 try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
+    $pdo = new_db_connection();
+} catch (Exception $e) {
     die("Erro de conexão: " . $e->getMessage());
 }
 

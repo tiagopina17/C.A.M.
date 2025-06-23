@@ -1,16 +1,14 @@
 <?php
 // Database configuration
-$servername = "127.0.0.1";
-$username = "root";
-$password = "";
-$dbname = "sam";
+require_once '../connections/connection.php';
+
 
 // Start session
 session_start();
 
 try {
     // Create connection
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn = new_db_connection();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Check if form was submitted

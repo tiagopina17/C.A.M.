@@ -1,35 +1,45 @@
 <?php
-// Start session to check for messages
 
-include_once './connections/connection.php';
-$link = new_db_connection();
-$stmt = mysqli_stmt_init($link);
-$query = 'SELECT categorias.nome AS categoria_nome, servicos.nome AS servico_nome, servicos.capa AS servico_capa FROM categorias INNER JOIN servicos ON id_Categorias = ref_id_Categorias';
-mysqli_stmt_prepare($stmt, $query);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $categoria_nome, $servico_nome, $servico_capa);
 
-// Initialize an array to store categories and their services
-$categories = array();
+require_once './connections/connection.php';
+$conn = new_db_connection();
 
-// Initialize an array to store unique services for the datalist
-$unique_services = array();
+try {
+    $query = 'SELECT categorias.nome AS categoria_nome, servicos.nome AS servico_nome, servicos.capa AS servico_capa FROM categorias INNER JOIN servicos ON id_Categorias = ref_id_Categorias';
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    
+    // Initialize an array to store categories and their services
+    $categories = array();
+    
+    // Initialize an array to store unique services for the datalist
+    $unique_services = array();
+    
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $categoria_nome = $row['categoria_nome'];
+        $servico_nome = $row['servico_nome'];
+        $servico_capa = $row['servico_capa'];
+        
+        // Check if the category already exists in the array
+        if (!isset($categories[$categoria_nome])) {
+            // If not, initialize the category with an empty array
+            $categories[$categoria_nome] = array();
+        }
+        // Add the service and its capa to the category's array
+        $categories[$categoria_nome][] = array('nome' => $servico_nome, 'capa' => $servico_capa);
 
-while (mysqli_stmt_fetch($stmt)) {
-    // Check if the category already exists in the array
-    if (!isset($categories[$categoria_nome])) {
-        // If not, initialize the category with an empty array
-        $categories[$categoria_nome] = array();
+        // Add the service to the unique services array if not already added
+        if (!in_array($servico_nome, $unique_services)) {
+            $unique_services[] = $servico_nome;
+        }
     }
-    // Add the service and its capa to the category's array
-    $categories[$categoria_nome][] = array('nome' => $servico_nome, 'capa' => $servico_capa);
-
-    // Add the service to the unique services array if not already added
-    if (!in_array($servico_nome, $unique_services)) {
-        $unique_services[] = $servico_nome;
-    }
+    
+} catch(PDOException $e) {
+    // Log error and set empty arrays to prevent errors in the rest of the code
+    error_log("Database error: " . $e->getMessage());
+    $categories = array();
+    $unique_services = array();
 }
-
 
 // Display logout message if it exists
 if (isset($_SESSION['logout_message'])) {
@@ -124,4 +134,7 @@ echo '        </div>
     </div>
 </div>
 ';
+
+// Close connection
+$conn = null;
 ?>

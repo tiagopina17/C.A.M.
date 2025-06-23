@@ -1,33 +1,42 @@
 <?php
+require_once './connections/connection.php';
 
+try {
+    $conn = new_db_connection();
+    $query = 'SELECT categorias.nome AS categoria_nome, servicos.nome AS servico_nome, servicos.capa AS servico_capa FROM categorias INNER JOIN servicos ON id_Categorias = ref_id_Categorias';
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+    
+    // Initialize an array to store categories and their services
+    $categories = array();
+    
+    // Initialize an array to store unique services for the datalist
+    $unique_services = array();
+    
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $categoria_nome = $row['categoria_nome'];
+        $servico_nome = $row['servico_nome'];
+        $servico_capa = $row['servico_capa'];
+        
+        // Check if the category already exists in the array
+        if (!isset($categories[$categoria_nome])) {
+            // If not, initialize the category with an empty array
+            $categories[$categoria_nome] = array();
+        }
+        // Add the service and its capa to the category's array
+        $categories[$categoria_nome][] = array('nome' => $servico_nome, 'capa' => $servico_capa);
 
-include_once './connections/connection.php';
-$link = new_db_connection();
-$stmt = mysqli_stmt_init($link);
-$query = 'SELECT categorias.nome AS categoria_nome, servicos.nome AS servico_nome, servicos.capa AS servico_capa FROM categorias INNER JOIN servicos ON id_Categorias = ref_id_Categorias';
-mysqli_stmt_prepare($stmt, $query);
-mysqli_stmt_execute($stmt);
-mysqli_stmt_bind_result($stmt, $categoria_nome, $servico_nome, $servico_capa);
-
-// Initialize an array to store categories and their services
-$categories = array();
-
-// Initialize an array to store unique services for the datalist
-$unique_services = array();
-
-while (mysqli_stmt_fetch($stmt)) {
-    // Check if the category already exists in the array
-    if (!isset($categories[$categoria_nome])) {
-        // If not, initialize the category with an empty array
-        $categories[$categoria_nome] = array();
+        // Add the service to the unique services array if not already added
+        if (!in_array($servico_nome, $unique_services)) {
+            $unique_services[] = $servico_nome;
+        }
     }
-    // Add the service and its capa to the category's array
-    $categories[$categoria_nome][] = array('nome' => $servico_nome, 'capa' => $servico_capa);
-
-    // Add the service to the unique services array if not already added
-    if (!in_array($servico_nome, $unique_services)) {
-        $unique_services[] = $servico_nome;
-    }
+    
+} catch(PDOException $e) {
+    // Log error and set empty arrays to prevent errors in the rest of the code
+    error_log("Database error: " . $e->getMessage());
+    $categories = array();
+    $unique_services = array();
 }
 
 echo '
@@ -50,7 +59,7 @@ echo '
 
 // Loop through unique services and generate dropdown items
 foreach ($unique_services as $service) {
-    echo '<li><a class="dropdown-item" href="#">' . $service . '</a></li>';
+    echo '<li><a class="dropdown-item" href="#">' . htmlspecialchars($service) . '</a></li>';
 }
 
 echo '
@@ -104,7 +113,7 @@ foreach ($categories as $categoria => $servicos) {
     <div class="container">
         <div class="row d- justify-content-between align-items-end">
             <div class="col-md-6 col-10 mt-5">
-                <h2 class="text-dark">' . $categoria . '</h2>
+                <h2 class="text-dark">' . htmlspecialchars($categoria) . '</h2>
             </div>
             <div class="col-md-6 col-2 mt-3 text-right">
                 <div class="ver-mais-wrapper">
@@ -118,8 +127,8 @@ foreach ($categories as $categoria => $servicos) {
 
     // Loop through services for this category
     foreach ($servicos as $servico) {
-        $nome = $servico['nome'];
-        $capa = $servico['capa'];
+        $nome = htmlspecialchars($servico['nome']);
+        $capa = htmlspecialchars($servico['capa']);
         echo '
                     <div class="item">
                         <div class="blog-entry">
@@ -143,8 +152,8 @@ foreach ($categories as $categoria => $servicos) {
 </section>';
 }
 
-mysqli_stmt_close($stmt);
-mysqli_close($link);
+// Close connection
+$conn = null;
 ?>
 
 <script src='js/jquery.min.js'></script>

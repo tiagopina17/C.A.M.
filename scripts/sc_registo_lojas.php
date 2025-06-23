@@ -1,9 +1,7 @@
 <?php
 // Database configuration
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "sam";
+require_once '../connections/connection.php';
+
 
 function loadEnv($path)
 {
@@ -40,7 +38,7 @@ ini_set('display_errors', 1);
 
 try {
     // Create connection
-    $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
+    $conn = new_db_connection();
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Check if form was submitted
