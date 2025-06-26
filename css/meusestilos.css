@@ -48,13 +48,12 @@
 }
 
 /* Debug styles - remove after fixing */
-.dropdown-menu {
-    border: 2px solid red !important; /* Remove this line after testing */
-    background: white !important;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.175) !important;
-}
+
 
 /* Your existing styles continue below... */
+/* FOOTER FIX - Ensures footer stays at bottom of page */
+
+/* Make sure html and body take full height */
 html, body {
     margin: 0 !important;
     padding: 0 !important;
@@ -69,15 +68,26 @@ html, body {
     overflow-y: auto;
 }
 
+/* Apply flexbox directly to body */
+body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+}
+
+
+/* Page wrapper should be flex container with full height */
 .page-wrapper {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    min-height: 100vh; /* Full viewport height */
 }
 
 .main-content {
-    flex: 1;
+    flex: 1 !important; /* This makes main content grow to fill space */
+    /* Remove display: flex since this is applied to container */
 }
+
 
 .textonav{
     color: white !important;
@@ -92,7 +102,8 @@ footer {
     background-color: #3B3B3B !important;
     height: 100px !important;
     width: 100% !important;
-    margin-top: auto;
+    margin-top: auto; /* This pushes footer to bottom */
+    /* Remove bottom: 0 as it conflicts with flexbox */
 }
 
 /* Rest of your styles... */
