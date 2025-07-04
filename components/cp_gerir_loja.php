@@ -11,9 +11,7 @@ try {
 
 
 if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] != 'funcionario') {
-    echo '<pre>';
-    print_r($_SESSION);
-    echo '</pre>';
+    header('Location: 403.php');
     exit();
 }
 
@@ -38,7 +36,7 @@ $loja = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (!$loja) {
     $_SESSION['error_message'] = 'Não tem permissão para aceder a esta loja.';
-    header('Location: info_lojas.php');
+    header('Location: 403.php');
     exit();
 }
 

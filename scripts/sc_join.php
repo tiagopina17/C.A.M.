@@ -67,25 +67,33 @@ try {
                     $deleteStmt->bindParam(':user_id', $user_id);
                     
                     if ($deleteStmt->execute()) {
-                        // Commit transaction
-                        $conn->commit();
+                        // Delete the used code from funcionarios_codigo table
+                        $deleteCodeStmt = $conn->prepare("DELETE FROM funcionarios_codigo WHERE codigo = :code");
+                        $deleteCodeStmt->bindParam(':code', $code);
                         
-                        // Store user name before clearing session
-                        $user_nome = isset($_SESSION['user_nome']) ? $_SESSION['user_nome'] : '';
+                        if ($deleteCodeStmt->execute()) {
+                            // Commit transaction
+                            $conn->commit();
+                            
+                            // Store user name before clearing session
+                            $user_nome = isset($_SESSION['user_nome']) ? $_SESSION['user_nome'] : '';
 
-                        // Clear all session variables
-                        $_SESSION = array();
+                            // Clear all session variables
+                            $_SESSION = array();
 
-                        // Set success message
-                        if (!empty($user_nome)) {
-                            $_SESSION['success_message'] = "Associação à loja realizada com sucesso, " . htmlspecialchars($user_nome) . "! Faça login na sua nova conta de funcionário para continuar!";
+                            // Set success message
+                            if (!empty($user_nome)) {
+                                $_SESSION['success_message'] = "Associação à loja realizada com sucesso, " . htmlspecialchars($user_nome) . "! Faça login na sua nova conta de funcionário para continuar!";
+                            } else {
+                                $_SESSION['success_message'] = "Associação à loja realizada com sucesso! Faça login na sua nova conta de funcionário para continuar!";
+                            }
+
+                            // Redirect to home page
+                            header("Location: /pessoal/index.php");
+                            exit();
                         } else {
-                            $_SESSION['success_message'] = "Associação à loja realizada com sucesso! Faça login na sua nova conta de funcionário para continuar!";
+                            throw new Exception('Erro ao remover código usado da base de dados');
                         }
-
-                        // Redirect to home page
-                        header("Location: /pessoal/index.php");
-                        exit();
                     } else {
                         throw new Exception('Erro ao remover utilizador da tabela original');
                     }
@@ -111,4 +119,4 @@ try {
     die("Erro ao processar associação à loja: " . $e->getMessage());
 }
 
-?>  
+?>

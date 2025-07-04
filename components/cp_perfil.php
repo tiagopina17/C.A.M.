@@ -521,6 +521,12 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                         <a href="registo_lojas.php" class="btn btn-outline-verde">
                             <i class="fas fa-store me-2"></i>Registar uma loja
                         </a>
+                        <!-- Button to trigger modal -->
+                        <button type="button" class="btn btn-outline-verde" data-bs-toggle="modal" data-bs-target="#joinLojaModal">
+                            <i class="fas fa-door-closed me-2"></i>Juntar-se a uma loja
+                        </button>
+
+                        
                         <?php endif; ?>
                         <a href="help.php" class="btn btn-outline-verde">
                             <i class="fas fa-question-circle me-2"></i>Ajuda
@@ -533,7 +539,35 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
             </div>
         </div>
     </div>
-
+<!-- Bootstrap Modal -->
+                        <div class="modal fade" id="joinLojaModal" tabindex="-1" aria-labelledby="joinLojaModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="joinLojaModalLabel"><i class="fas fa-door-closed me-2"></i>Juntar-se a uma loja</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <!-- Modal content here -->
+                                        <form onsubmit="event.preventDefault(); joinLojaRedirect();">
+                                            <div class="mb-3">
+                                                <label for="codigoLoja" class="form-label">Código</label>
+                                                <input type="text" class="form-control" id="codigoLoja" placeholder="Insira o código de acesso">
+                                            </div>
+                                            <button type="submit" class="btn btn-outline-verde">Juntar-se</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                        function joinLojaRedirect() {
+                                const code = document.getElementById('codigoLoja').value.trim();
+                                if (code) {
+                                        window.location.href = 'scripts/sc_join.php?code=' + encodeURIComponent(code);
+                                }
+                        }
+                        </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
         let isEditMode = false;

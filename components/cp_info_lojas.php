@@ -17,6 +17,7 @@ try {
 
 $funcionario_id = $_SESSION['user_id'];
 
+
 // Get funcionario info
 $stmt = $pdo->prepare("
     SELECT f.*, ft.nome as tipo_nome 
