@@ -37,7 +37,6 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                         <li><a class="dropdown-item" href="perfil.php">Perfil</a></li>
-                                        <li><hr class="dropdown-divider"></li>
 
                                         <?php if ($_SESSION['user_tipo_id'] == 4): // Administrator ?>
                                             <li><a class="dropdown-item" href="administracao">Administração</a></li>
