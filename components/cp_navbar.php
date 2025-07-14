@@ -39,6 +39,7 @@
                                         <li><a class="dropdown-item" href="perfil.php">Perfil</a></li>
 
                                         <?php if ($_SESSION['user_tipo_id'] == 4): // Administrator ?>
+                                            <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" href="administracao">Administração</a></li>
                                         <?php elseif ($_SESSION['user_tipo_id'] == 3): // Moderator ?>
                                             <li>    <a class="dropdown-item" href="moderador/dashboard.php">Moderação</a></li>
