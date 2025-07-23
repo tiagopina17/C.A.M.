@@ -2,7 +2,6 @@
 // Database configuration
 require_once '../connections/connection.php';
 
-
 // Start session
 session_start();
 
@@ -63,6 +62,9 @@ try {
                     $_SESSION['logged_in'] = true;
                     $_SESSION['user_type'] = 'user'; // To distinguish from regular users
 
+                    // Clear any previous login errors
+                    unset($_SESSION['login_errors']);
+                    unset($_SESSION['login_email']);
                     
                     // Set success message
                     $_SESSION['success_message'] = "Login efetuado com sucesso! Bem-vindo, " . $user['nome'] . "!";

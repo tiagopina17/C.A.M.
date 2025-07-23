@@ -319,7 +319,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <!-- Employees Management Card -->
                 <div class="card store-card">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class=" mb-0" style="color: white;">
+                        <h5 class=" mb-0" >
                             <i class="fas fa-users me-2"></i>Funcionários da Loja
                         </h5>
                         <div>

@@ -5,6 +5,17 @@
             <p class="text-center text-muted mb-4">Acede à tua conta inserindo os teus dados abaixo.</p>
 
             <?php
+            // Display login errors if they exist
+            if (isset($_SESSION['login_errors']) && !empty($_SESSION['login_errors'])) {
+                echo '<div class="alert alert-danger">';
+                foreach ($_SESSION['login_errors'] as $error) {
+                    echo '<div>' . htmlspecialchars($error) . '</div>';
+                }
+                echo '</div>';
+                unset($_SESSION['login_errors']);
+            }
+            
+            // Also keep support for single error (if used elsewhere)
             if (isset($_SESSION['login_error'])) {
                 echo '<div class="alert alert-danger">' . htmlspecialchars($_SESSION['login_error']) . '</div>';
                 unset($_SESSION['login_error']);
@@ -14,7 +25,8 @@
             <form action="./scripts/sc_login.php" method="post" class="needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Insira o seu email" name="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Insira o seu email" name="email" 
+                           value="<?php echo isset($_SESSION['login_email']) ? htmlspecialchars($_SESSION['login_email']) : ''; ?>" required>
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
@@ -42,6 +54,13 @@
         </div>
     </div>
 </div>
+
+<?php
+// Clear the login_email from session after displaying
+if (isset($_SESSION['login_email'])) {
+    unset($_SESSION['login_email']);
+}
+?>
 
 <!-- Add Font Awesome for icons if not already included -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
