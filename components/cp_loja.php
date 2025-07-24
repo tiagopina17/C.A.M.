@@ -49,22 +49,21 @@ try {
     $loja = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$loja) {
-        header('Location: lojas.php');
         exit();
     }
 
     // Get store services with categories
     $stmt = $pdo->prepare("
-        SELECT s.nome, c.Nome as categoria_nome
-        FROM servicos s
-        INNER JOIN categorias c ON s.ref_id_Categorias = c.id_Categorias
-        ORDER BY c.Nome, s.nome
+        SELECT p.nome, c.Nome as categoria_nome
+        FROM produtos p
+        INNER JOIN categorias c ON p.ref_id_Categorias = c.id_Categorias
+        ORDER BY c.Nome, p.nome
     ");
     $stmt->execute();
-    $servicos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $produtos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Get unique categories for the store
-    $categorias = array_unique(array_column($servicos, 'categoria_nome'));
+    $categorias = array_unique(array_column($produtos, 'categoria_nome'));
 
     // Function to get service icon based on service name and category
     function getServiceIcon($serviceName, $categoria) {
@@ -102,9 +101,33 @@ try {
 
 } catch (PDOException $e) {
     error_log("Database error: " . $e->getMessage());
-    header('Location: lojas.php');
     exit();
 }
+function loadEnv($path) {
+            if (!file_exists($path)) {
+                return;
+            }
+            
+            $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                if (strpos(trim($line), '#') === 0) {
+                    continue;
+                }
+                
+                list($name, $value) = explode('=', $line, 2);
+                $name = trim($name);
+                $value = trim($value);
+                
+                if (!array_key_exists($name, $_SERVER) && !array_key_exists($name, $_ENV)) {
+                    putenv(sprintf('%s=%s', $name, $value));
+                    $_ENV[$name] = $value;
+                    $_SERVER[$name] = $value;
+                }
+            }
+        }
+
+    loadEnv(__DIR__ . '/../.env');
+    $mapsApiKey = getenv('API_KEY') ?: '';
 ?>
 
 <!DOCTYPE html>
@@ -167,7 +190,7 @@ try {
         }
 
         .map-container {
-            height: 300px;
+            height: 400px;
             background: #e9ecef;
             border-radius: 10px;
             display: flex;
@@ -227,9 +250,7 @@ try {
                                     <div class="col-md-9">
                                         <div class="d-flex align-items-center mb-2">
                                             <h2 class="mb-0 me-3"><?php echo htmlspecialchars($loja['nome_loja']); ?></h2>
-                                            <span class="store-status status-active">
-                                                <i class="fas fa-circle me-1"></i>Ativa
-                                            </span>
+                                            
                                         </div>
                                         <div class="rating-stars mb-2">
                                             <i class="fas fa-star"></i>
@@ -254,31 +275,24 @@ try {
                                 </div>
                             </div>
 
-                            <!-- Store Location -->
-                            <div class="card store-card">
-                                 <div class="card-header mb-3">
-                                    <h5 class=" mb-0">
-                                        <i class="fas fa-info-circle me-2 "></i>Localização
-                                    </h5>
-                                </div>
-                                <div class="row mb-3 ps-4">
-                                    <div class="col-md-6">
-                                        <div class="info-label">Latitude</div>
-                                        <div class="info-value"><?php echo $loja['lat']; ?></div>
+                                <!-- Store Location -->
+                                <div class="card store-card">
+                                    <div class="card-header ">
+                                        <h5 class=" mb-0">
+                                            <i class="fas fa-info-circle me-2 "></i>Localização
+                                        </h5>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="info-label">Longitude</div>
-                                        <div class="info-value"><?php echo $loja['lon']; ?></div>
-                                    </div>
-                                </div>
-                                <div class="map-container">
-                                    <div class="text-center">
-                                        <i class="fas fa-map fa-3x mb-3"></i>
-                                        <p>Mapa da localização da loja</p>
-                                        <small class="text-muted">Place ID: <span><?php echo htmlspecialchars($loja['place_id']); ?></span></small>
+                                    
+                                    <div class="map-container">
+                                        <iframe
+                                            width="100%" height="100%"
+                                            frameborder="0" style="border:0"
+                                            referrerpolicy="no-referrer-when-downgrade"
+                                            src="https://www.google.com/maps/embed/v1/place?key=<?php echo htmlspecialchars($mapsApiKey); ?>&q=<?php echo urlencode($loja['lat'] . ',' . $loja['lon']); ?>"
+                                            allowfullscreen>
+                                        </iframe>
                                     </div>
                                 </div>
-                            </div>
 
                             <!-- Available Services -->
                             <div class="card store-card mt-5">
@@ -293,20 +307,20 @@ try {
                                         <i class="fas fa-concierge-bell text-success me-2"></i>
                                         Serviços Disponíveis
                                     </h5>
-                                    <span class="badge bg-success"><?php echo count($servicos); ?> serviços</span>
+                                    <span class="badge bg-success"><?php echo count($produtos); ?> serviços</span>
                                 </div>
-                                <div class="row ps-4 pe-4 pb-4">
-                                    <?php if (!empty($servicos)): ?>
-                                        <?php foreach ($servicos as $servico): ?>
+                                <div class="row ps-4 pe-4 ">
+                                    <?php if (!empty($produtos)): ?>
+                                        <?php foreach ($produtos as $produto): ?>
                                             <div class="col-md-6">
                                                 <div class="service-card shadow">
                                                     <div class="d-flex align-items-center">
                                                         <div class="service-image me-3">
-                                                            <i class="<?php echo getServiceIcon($servico['nome'], $servico['categoria_nome']); ?>"></i>
+                                                            <i class="<?php echo getServiceIcon($produto['nome'], $produto['categoria_nome']); ?>"></i>
                                                         </div>
                                                         <div>
-                                                            <h6 class="mb-1"><?php echo htmlspecialchars($servico['nome']); ?></h6>
-                                                            <small class="text-muted">Categoria: <?php echo htmlspecialchars($servico['categoria_nome']); ?></small>
+                                                            <h6 class="mb-1"><?php echo htmlspecialchars($produto['nome']); ?></h6>
+                                                            <small class="text-muted">Categoria: <?php echo htmlspecialchars($produto['categoria_nome']); ?></small>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -324,16 +338,18 @@ try {
                             </div>
 
                             <!-- Reviews Section -->
-                            <div class="card store-card mt-5 mb-5">
-                                  <div class="card-header mb-3">
+                            <div class="card store-card mt-5 mb-5 ">
+                                  <div class="card-header mb-3 ">
                                     <h5 class=" mb-0">
                                         <i class="fas fa-info-circle me-2 "></i>Avaliações dos clientes
                                     </h5>
                                 </div>
                            
-                                <div class="alert alert-info">
-                                    <i class="fas fa-info-circle me-2"></i>
-                                    Ainda não existem avaliações para esta loja. Seja o primeiro a avaliar!
+                                <div class="ps-4 pe-4 ">
+                                    <div class="alert alert-info ">
+                                        <i class="fas fa-info-circle me-2 "></i>
+                                        <span class="ps-4">Ainda não existem avaliações para esta loja. Seja o primeiro a avaliar!</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -348,7 +364,7 @@ try {
                                 </h5>
                                 <div class="row justify-content-end mb-3">
                                     <div class="col-6">
-                                        <h3 class="mb-0"><?php echo count($servicos); ?></h3>
+                                        <h3 class="mb-0"><?php echo count($produtos); ?></h3>
                                         <small>Serviços</small>
                                     </div>
                                     <div class="col-6">
@@ -366,41 +382,6 @@ try {
                                         <h3 class="mb-0">23</h3>
                                         <small>Avaliações</small>
                                     </div>
-                                </div>
-                            </div>
-
-                            <!-- Contact Actions -->
-                            <div class="card shadow pt-4 ps-4 pe-4 pb-4">
-                                <h5 class="sam mb-3">Ações Rápidas</h5>
-
-                                <div class="d-grid gap-2">
-                                    <button class="btn btn-verde" onclick="avaliarLoja()">
-                                        <i class="fas fa-star me-2"></i>Avaliar Loja
-                                    </button>
-                                    <button class="btn btn-outline-azul" onclick="verNoMapa(<?php echo $loja['lat']; ?>, <?php echo $loja['lon']; ?>)">
-                                        <i class="fas fa-map-marker-alt me-2"></i>Ver no Mapa
-                                    </button>
-                                    <button class="btn btn-outline-secondary" onclick="partilharLoja()">
-                                        <i class="fas fa-share-alt me-2"></i>Partilhar
-                                    </button>
-                                </div>
-                            </div>
-
-                            <!-- Store Categories -->
-                            <div class="card store-card">
-                                  <div class="card-header mb-3">
-                                    <h5 class=" mb-0">
-                                        <i class="fas fa-info-circle me-2 "></i>Categorias
-                                    </h5>
-                                </div>
-                                <div class="d-flex flex-wrap gap-2 pe-4 ps-4 pb-4">
-                                    <?php if (!empty($categorias)): ?>
-                                        <?php foreach ($categorias as $categoria): ?>
-                                            <span class="badge bg-primary"><?php echo htmlspecialchars($categoria); ?></span>
-                                        <?php endforeach; ?>
-                                    <?php else: ?>
-                                        <span class="text-muted">Sem categorias definidas</span>
-                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
