@@ -516,7 +516,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                     <h5 class="sam mb-3">Ações Rápidas</h5>
                     <div class="d-grid gap-2">
                         <?php if ($_SESSION['user_type'] != 'funcionario'): ?>
-                        <a href="registo_lojas.php" class="btn btn-outline-verde">
+                        <a href="registo_lojas.php" class="btn btn-outline-verde mt-3">
                             <i class="fas fa-store me-2"></i>Registar uma loja
                         </a>
                         <!-- Button to trigger modal -->

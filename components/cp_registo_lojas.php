@@ -187,10 +187,7 @@
                         </button>
                     </div>
                 </div>
-                
-                <div class="text-center mt-4">
-                    <a href="./registo.php" class="ver-mais-link">Não representa uma loja? Registe-se aqui</a>
-                </div>
+            
             </div>
         </div>
     </div>

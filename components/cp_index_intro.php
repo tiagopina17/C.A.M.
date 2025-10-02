@@ -36,7 +36,8 @@ try {
 $messages = '';
 if (isset($_SESSION['logout_message'])) {
     $messages .= '<div class="alert alert-success alert-dismissible fade show" role="alert">';
-    $messages .= '<i class="fas fa-check-circle me-2"></i>' . htmlspecialchars($_SESSION['logout_message']);
+    //AVISO: as mensagens de primeiro login como funcionario são passadas como mensagens de logout pois usam a mesma lógica
+    $messages .= '<i class="fas fa-check-circle me-2"></i>' . $_SESSION['logout_message'];
     $messages .= '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
     unset($_SESSION['logout_message']);
 }

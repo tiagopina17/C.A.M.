@@ -5,29 +5,41 @@
             <p class="text-center text-muted mb-4">Preenche o formulário abaixo para te registares na plataforma.</p>
 
             <?php
+            // Get form data if exists
+            $form_nome = '';
+            $form_email = '';
+            if (isset($_SESSION['form_data'])) {
+                $form_nome = htmlspecialchars($_SESSION['form_data']['nome']);
+                $form_email = htmlspecialchars($_SESSION['form_data']['email']);
+            }
+
             if (isset($_SESSION['registration_errors'])) {
+                echo '<div class="alert alert-danger"><strong>Erros encontrados:</strong><ul class="mb-0 mt-2">';
                 foreach ($_SESSION['registration_errors'] as $error) {
-                    echo '<div class="alert alert-danger">' . htmlspecialchars($error) . '</div>';
+                    echo '<li>' . htmlspecialchars($error) . '</li>';
                 }
+                echo '</ul></div>';
                 unset($_SESSION['registration_errors']);
             }
             if (isset($_SESSION['success_message'])) {
                 echo '<div class="alert alert-success">' . htmlspecialchars($_SESSION['success_message']) . '</div>';
                 unset($_SESSION['success_message']);
+                // Clear form data on success
+                unset($_SESSION['form_data']);
             }
             ?>
 
             <form action="./scripts/sc_registo.php" method="post" class="needs-validation" novalidate>
                 <div class="mb-3">
                     <label for="nome" class="form-label">Nome:</label>
-                    <input type="text" class="form-control" id="nome" placeholder="Insira o seu nome" name="nome" required>
+                    <input type="text" class="form-control" id="nome" placeholder="Insira o seu nome" name="nome" value="<?php echo $form_nome; ?>" required>
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="Insira o seu email" name="email" required>
+                    <input type="email" class="form-control" id="email" placeholder="Insira o seu email" name="email" value="<?php echo $form_email; ?>" required>
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
@@ -40,6 +52,7 @@
                             <i class="fas fa-eye" id="eyeIcon"></i>
                         </button>
                     </div>
+                
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
@@ -134,5 +147,14 @@ document.addEventListener('DOMContentLoaded', function() {
 .input-group:focus-within .btn {
     border-color: #ced4da !important;
     box-shadow: none !important;
+}
+
+/* Style for error list */
+.alert ul {
+    padding-left: 20px;
+}
+
+.alert ul li {
+    margin-bottom: 5px;
 }
 </style>

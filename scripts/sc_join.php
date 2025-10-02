@@ -1,7 +1,7 @@
 <?php
 
 // Include the database configuration file
-require_once './connections/connection.php'; // Adjust path as needed
+require_once '../connections/connection.php'; // Adjust path as needed
 
 // Start session
 session_start();
@@ -28,7 +28,7 @@ try {
     }
     $code = strtoupper(trim($_GET['code']));
 
-    $stmt = $pdo->prepare("SELECT ref_id_Loja FROM Lojas WHERE codigo = ?");
+    $stmt = $pdo->prepare("SELECT ref_id_Loja FROM funcionarios_codigo WHERE codigo = ?");
     $stmt->execute([$code]);
     $loja = $stmt->fetch(PDO::FETCH_ASSOC);
     

@@ -149,13 +149,12 @@ try {
 
                                         // Set logout message immediately (don't destroy/recreate session)
                                         if (!empty($user_nome)) {
-                                            $_SESSION['logout_message'] = "Loja registada com sucesso, " . htmlspecialchars($user_nome) . "! Faça login na sua nova conta de funcionário para continuar!";
-                                        } else {
+                                            $_SESSION['logout_message'] = "Loja registada com sucesso, " . htmlspecialchars($user_nome) . "! <a href='login_funcionario.php'>Faça login na sua nova conta de funcionário para continuar!</a>";                                        } else {
                                             $_SESSION['logout_message'] = "Logout efetuado com sucesso!";
                                         }
 
                                         // Redirect to home page
-                                        header("Location: /pessoal/index.php");
+                                        header("Location: /../index.php");
                                         exit();
                                     } else {
                                         throw new Exception('Erro ao remover utilizador da tabela original');
