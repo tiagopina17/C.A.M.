@@ -106,7 +106,7 @@
     </style>
 </head>
 <body>
-    <h1>Google Places Autocomplete - Place ID</h1>
+    <h1>Google Places Autocomplete - Place ID - <span style="color: red;">INACTIVE</span></h1>
     
     <div class="search-container">
         <input 
@@ -244,6 +244,6 @@
     </script>
 
     <!-- Replace YOUR_API_KEY with your actual Google Maps API key -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=nope&libraries=places&callback=initAutocomplete" async defer></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places&callback=initAutocomplete" async defer></script>
 </body>
 </html>

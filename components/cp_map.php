@@ -2,34 +2,7 @@
 <html>
 <head>
     <title>Google Maps Demo</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        h3 {
-            color: #333;
-            margin-bottom: 20px;
-        }
-        
-        #map {
-            height: 400px;
-            width: 100%;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .info {
-            background-color: #e3f2fd;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-left: 4px solid #2196f3;
-        }
-    </style>
+  
 </head>
 <body>
     <h3>My Google Maps Demo</h3>

@@ -71,17 +71,6 @@ try {
                 $errors[] = "Password deve conter pelo menos um caracter especial (!@#$%^&*()_+-=[]{}etc).";
             }
             
-            // Check for common passwords
-            $common_passwords = [
-                'password', 'password123', '12345678', 'qwerty123', 
-                'abc123', 'monkey', '1234567890', 'letmein',
-                'trustno1', 'dragon', 'baseball', 'iloveyou',
-                'master', 'sunshine', 'ashley', 'bailey'
-            ];
-            
-            if (in_array(strtolower($password), $common_passwords)) {
-                $errors[] = "Password é muito comum. Escolha uma password mais segura.";
-            }
             
             // Check if password contains the user's name or email
             if (!empty($nome) && stripos($password, $nome) !== false) {

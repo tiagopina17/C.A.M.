@@ -136,76 +136,6 @@ function loadEnv($path) {
     <meta charset="UTF-8">
     <title>Detalhes da Loja - SAM</title>
     <link href="css/styles.css" rel="stylesheet">
-    <style>
-        .store-header {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-        }
-
-        .store-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .service-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .service-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-        }
-
-        .map-container {
-            height: 400px;
-            background: #e9ecef;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #6c757d;
-        }
-
-        .rating-stars {
-            color: #ffc107;
-        }
-
-        .page-header {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
-        }
-    </style>
 </head>
 <body>
     <div class="">
@@ -309,7 +239,7 @@ function loadEnv($path) {
                                     <?php if (!empty($produtos)): ?>
                                         <?php foreach ($produtos as $produto): ?>
                                             <div class="col-md-6">
-                                                <div class="service-card shadow">
+                                                <div class="store-card shadow">
                                                     <div class="d-flex align-items-center">
                                                         <div class="service-image me-3">
                                                             <i class="<?php echo getServiceIcon($produto['nome'], $produto['categoria_nome']); ?>"></i>

@@ -17,6 +17,6 @@ if (!empty($user_nome)) {
 
 
 // Redirect to home page
-header("Location: /pessoal/index.php");
+header("Location: /index.php");
 exit();
 ?>
