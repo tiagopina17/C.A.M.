@@ -50,12 +50,12 @@
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-outline-azul">Entrar</button>
+                    <button type="submit" class="btn btn-outline-verde">Entrar</button>
                 </div>
             </form>
             
             <div class="text-center mt-3">
-                <a href="./login.php" class="fw-semibold fs-6 ver-mais-link">Não é funcionário ou dono de uma loja? Clique aqui para entrar</a>
+                <a href="./login.php" class="fw-semibold fs-6 ver-mais-link">Não é funcionário ou proprietário de uma loja? Clique aqui para entrar</a>
             </div>
         </div>
     </div>

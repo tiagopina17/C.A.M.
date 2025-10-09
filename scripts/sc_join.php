@@ -83,13 +83,13 @@ try {
 
                             // Set success message
                             if (!empty($user_nome)) {
-                                $_SESSION['success_message'] = "Associação à loja realizada com sucesso, " . htmlspecialchars($user_nome) . "! Faça login na sua nova conta de funcionário para continuar!";
+                                $_SESSION['success_message'] = "Associação à loja realizada com sucesso, " . htmlspecialchars($user_nome) . "! <a href='login_funcionario.php'>Faça login na sua nova conta de funcionário para continuar!</a>";
                             } else {
                                 $_SESSION['success_message'] = "Associação à loja realizada com sucesso! Faça login na sua nova conta de funcionário para continuar!";
                             }
 
                             // Redirect to home page
-                            header("Location: /pessoal/index.php");
+                            header("Location: /index.php");
                             exit();
                         } else {
                             throw new Exception('Erro ao remover código usado da base de dados');

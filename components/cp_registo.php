@@ -1,5 +1,5 @@
-<div class="container mt-5 mb-5 main-content" >
-    <div class="col-md-8 mx-auto">
+<div class="container main-content d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 120px);">
+    <div class="col-md-6 col-lg-9">
         <div class="card shadow p-4">
             <h2 class="text-center sam mb-4">Cria a tua Conta</h2>
             <p class="text-center text-muted mb-4">Preenche o formulário abaixo para te registares na plataforma.</p>
@@ -91,4 +91,3 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-

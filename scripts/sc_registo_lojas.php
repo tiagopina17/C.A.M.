@@ -115,7 +115,7 @@ try {
                         $userData = $userStmt->fetch(PDO::FETCH_ASSOC);
                         
                         if ($userData) {
-                            // Insert current user as store owner (funcionario tipo 1 = dono)
+                            // Insert current user as store owner (funcionario tipo 1 = proprietário)
                             // UPDATED: Removed ref_id_Loja from the INSERT statement
                             $funcStmt = $conn->prepare("INSERT INTO funcionarios (nome, email, password, ref_id_Funcionarios_Tipos, inicio) 
                                                       SELECT :nome, :email, password, 1, NOW() 

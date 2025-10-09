@@ -1,5 +1,5 @@
-<div class="container mt-5 mb-5 main-content">
-    <div class="col-md-8 mx-auto">
+<div class="container main-content d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 120px);">
+    <div class="col-md-6 col-lg-9">
         <div class="card shadow p-4">
             <h2 class="text-center sam mb-4">Iniciar Sessão</h2>
             <p class="text-center text-muted mb-4">Acede à tua conta inserindo os teus dados abaixo.</p>
@@ -39,17 +39,20 @@
                             <i class="fas fa-eye" id="eyeIcon"></i>
                         </button>
                     </div>
+                    <div class="mt-1">
+                        <small class="form-text text-muted" style="font-size: 1.7vh;"><a href="#">Esqueci-me da minha palavra passe</a></small>
+                    </div>
                     <div class="valid-feedback">Tudo certo!</div>
                     <div class="invalid-feedback">Este campo é obrigatório.</div>
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-outline-azul">Entrar</button>
+                    <button type="submit" class="btn btn-outline-verde">Entrar</button>
                 </div>
             </form>
             
             <div class="text-center mt-3">
-                <a href="./login_funcionario.php" class="fw-semibold fs-6 ver-mais-link">É funcionário ou dono de uma loja? Clique aqui para entrar</a>
+                <a href="./login_funcionario.php" class="fw-semibold fs-6 ver-mais-link">É funcionário ou proprietário de uma loja? Clique aqui para entrar</a>
             </div>
         </div>
     </div>

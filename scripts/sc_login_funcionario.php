@@ -74,7 +74,7 @@ try {
                     
                     // Redirect based on employee type
                     switch($user['ref_id_Funcionarios_Tipos']) {
-                        case 1: // dono (owner)
+                        case 1: // proprietário (owner)
                             header("Location: ../");
                             break;
                         case 2: // funcionario (employee)

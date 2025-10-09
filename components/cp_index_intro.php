@@ -2,14 +2,33 @@
 require_once './connections/connection.php';
 $conn = new_db_connection();
 
+// Initialize arrays first
+$categories = array();
+$unique_services = array();
+$stores = array();
+
+// Fetch stores - separate try/catch
+try {
+    $query_lojas = 'SELECT id_Loja, nome_loja FROM lojas ORDER BY nome_loja';
+    $stmt_lojas = $conn->prepare($query_lojas);
+    $stmt_lojas->execute();
+    
+    while ($row = $stmt_lojas->fetch(PDO::FETCH_ASSOC)) {
+        $stores[] = array(
+            'id' => $row['id_Loja'],
+            'nome' => $row['nome_loja']
+        );
+    }
+} catch(PDOException $e) {
+    error_log("Store fetch error: " . $e->getMessage());
+    // Don't reset $stores here - keep any data we have
+}
+
+// Fetch categories and services - separate try/catch
 try {
     $query = 'SELECT categorias.nome AS categoria_nome, servicos.nome AS servico_nome, servicos.capa AS servico_capa FROM categorias INNER JOIN servicos ON id_Categorias = ref_id_Categorias';
     $stmt = $conn->prepare($query);
     $stmt->execute();
-    
-    // Initialize arrays to store categories and services
-    $categories = array();
-    $unique_services = array();
     
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         $categoria_nome = $row['categoria_nome'];
@@ -25,18 +44,15 @@ try {
             $unique_services[] = $servico_nome;
         }
     }
-    
 } catch(PDOException $e) {
-    error_log("Database error: " . $e->getMessage());
-    $categories = array();
-    $unique_services = array();
+    error_log("Categories fetch error: " . $e->getMessage());
+    // Don't reset arrays here
 }
 
 // Handle session messages
 $messages = '';
 if (isset($_SESSION['logout_message'])) {
     $messages .= '<div class="alert alert-success alert-dismissible fade show" role="alert">';
-    //AVISO: as mensagens de primeiro login como funcionario são passadas como mensagens de logout pois usam a mesma lógica
     $messages .= '<i class="fas fa-check-circle me-2"></i>' . $_SESSION['logout_message'];
     $messages .= '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
     unset($_SESSION['logout_message']);
@@ -44,7 +60,7 @@ if (isset($_SESSION['logout_message'])) {
 
 if (isset($_SESSION['success_message'])) {
     $messages .= '<div class="alert alert-success alert-dismissible fade show" role="alert">';
-    $messages .= '<i class="fas fa-check-circle me-2"></i>' . htmlspecialchars($_SESSION['success_message']);
+    $messages .= '<i class="fas fa-check-circle me-2"></i>' . $_SESSION['success_message'];
     $messages .= '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
     unset($_SESSION['success_message']);
 }
@@ -86,20 +102,17 @@ $conn = null;
                         <div class="search-section">
                             <div class="search-container">
                                 <input type="text" 
+                                       id="store-search"
                                        class="form-control search-input" 
-                                       placeholder="Procure por especialistas ou serviços..."
-                                       list="services-list">
-                                <button class="btn search-btn">
+                                       placeholder="Procure por lojas, especialistas ou serviços..."
+                                       autocomplete="off">
+                                <button class="btn search-btn" type="button">
                                     <i class="fas fa-search"></i>
                                 </button>
+                                
+                                <!-- Custom dropdown for search suggestions -->
+                                <div id="search-suggestions" class="search-suggestions"></div>
                             </div>
-                            
-                            <!-- Services Datalist -->
-                            <datalist id="services-list">
-                                <?php foreach ($unique_services as $service): ?>
-                                    <option value="<?php echo htmlspecialchars($service); ?>">
-                                <?php endforeach; ?>
-                            </datalist>
                         </div>
                     </div>
                 </div>
@@ -143,6 +156,10 @@ $conn = null;
                             <div class="stat-number"><?php echo count($categories); ?>+</div>
                             <div class="stat-label">Categorias</div>
                         </div>
+                        <div class="stat-item">
+                            <div class="stat-number"><?php echo count($stores); ?>+</div>
+                            <div class="stat-label">Lojas</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,7 +187,7 @@ $conn = null;
             <?php 
             $category_count = 0;
             foreach ($categories as $category_name => $services): 
-                if ($category_count >= 6) break; // Show only first 6 categories
+                if ($category_count >= 6) break;
             ?>
                 <div class="category-card">
                     <div class="category-icon">
@@ -217,143 +234,10 @@ $conn = null;
 </div>
 
 <style>
-/* Messages */
-.messages-container {
-    margin-bottom: 20px;
-}
 
-.alert {
-    border-radius: 12px;
-    border: none;
-    padding: 15px 20px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
 
-.alert-success {
-    background: linear-gradient(135deg, #d4edda, #c3e6cb);
-    color: #155724;
-}
-
-.alert-danger {
-    background: linear-gradient(135deg, #f8d7da, #f5c6cb);
-    color: #721c24;
-}
-
-/* Hero Section */
-.hero-wrapper {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    padding: 80px 0;
-    margin-bottom: 60px;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 20px;
-    line-height: 1.2;
-}
-
-.hero-subtitle {
-    font-size: 1.3rem;
-    color: #6c757d;
-    margin-bottom: 40px;
-    line-height: 1.6;
-}
-
-/* Search Section */
-.search-section {
-    margin-top: 40px;
-}
-
-.search-container {
-    position: relative;
-    max-width: 500px;
-}
-
-.search-input {
-    padding: 15px 60px 15px 20px;
-    border: 2px solid #e9ecef;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s;
-}
-
-.search-input:focus {
-    border-color: #00798F;
-    box-shadow: 0 4px 20px rgba(0,121,143,0.2);
-}
-
-.search-btn {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(135deg, #00798F, #0493ad);
-    color: white;
-    border: none;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-}
-
-.search-btn:hover {
-    background: linear-gradient(135deg, #0493ad, #00798F);
-    transform: translateY(-50%) scale(1.05);
-}
-
-/* Hero Image */
-.hero-image {
-    text-align: center;
-}
-
-.image-credit {
-    font-size: 0.8rem;
-    color: #6c757d;
-    margin-top: 10px;
-}
-
-.image-credit a {
-    color: #00798F;
-    text-decoration: none;
-}
-
-/* Features Section */
-.features-section {
-    padding: 80px 0;
-    background: white;
-}
-
-.feature-title {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 20px;
-}
-
-.feature-text {
-    font-size: 1.2rem;
-    color: #6c757d;
-    margin-bottom: 15px;
-    line-height: 1.6;
-}
 
 /* Quick Stats */
-.quick-stats {
-    display: flex;
-    gap: 30px;
-    margin-top: 30px;
-}
-
-.stat-item {
-    text-align: center;
-}
 
 .stat-number {
     font-size: 2.5rem;
@@ -373,17 +257,6 @@ $conn = null;
 }
 
 /* Categories Section */
-.categories-section {
-    padding: 80px 0;
-    background: #f8f9fa;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 600;
-    color: #2c3e50;
-    margin-bottom: 50px;
-}
 
 .categories-grid {
     display: grid;
@@ -392,34 +265,8 @@ $conn = null;
     margin-top: 40px;
 }
 
-.category-card {
-    background: white;
-    padding: 30px 20px;
-    border-radius: 15px;
-    text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    transition: all 0.3s;
-    border: 2px solid transparent;
-}
 
-.category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    border-color: #00798F;
-}
 
-.category-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #00798F, #0493ad);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-    color: white;
-    font-size: 1.5rem;
-}
 
 .category-name {
     font-size: 1.3rem;
@@ -434,88 +281,67 @@ $conn = null;
     margin: 0;
 }
 
-/* Call to Action */
-.cta-section {
-    padding: 80px 0;
-    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-    color: white;
-}
 
-.cta-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
 
-.cta-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 40px;
-    opacity: 0.9;
-}
-
-.cta-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-    
-    .search-input {
-        font-size: 1rem;
-        padding: 12px 50px 12px 15px;
-    }
-    
-    .quick-stats {
-        justify-content: center;
-    }
-    
-    .stat-number {
-        font-size: 2rem;
-    }
-    
-    .categories-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .cta-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .cta-buttons .btn {
-        width: 250px;
-    }
-}
-
-@media (max-width: 576px) {
-    .hero-wrapper {
-        padding: 40px 0;
-    }
-    
-    .features-section,
-    .categories-section,
-    .cta-section {
-        padding: 40px 0;
-    }
-    
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .feature-title,
-    .section-title,
-    .cta-title {
-        font-size: 1.8rem;
-    }
-}
 </style>
+
+<script>
+// Store data for search
+const stores = <?php echo json_encode($stores); ?>;
+
+// Get DOM elements
+const searchInput = document.getElementById('store-search');
+const suggestionsDiv = document.getElementById('search-suggestions');
+
+// Handle input changes
+searchInput.addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
+    
+    // Clear suggestions if input is empty
+    if (query.length === 0) {
+        suggestionsDiv.innerHTML = '';
+        suggestionsDiv.style.display = 'none';
+        return;
+    }
+    
+    // Filter stores based on query - only match names that START with the query
+    const matches = stores.filter(store => {
+        return store.nome.toLowerCase().startsWith(query);
+    });
+    
+    // Display suggestions
+    if (matches.length > 0) {
+        suggestionsDiv.innerHTML = matches.map(store => 
+            `<div class="suggestion-item" data-id="${store.id}">
+                <i class="fas fa-store me-2"></i>${store.nome}
+            </div>`
+        ).join('');
+        suggestionsDiv.style.display = 'block';
+        
+        // Add click handlers to suggestions
+        document.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const storeId = this.getAttribute('data-id');
+                window.location.href = `loja.php?id=${storeId}`;
+            });
+        });
+    } else {
+        suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">Nenhuma loja encontrada</div>';
+        suggestionsDiv.style.display = 'block';
+    }
+});
+
+// Hide suggestions when clicking outside
+document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+        suggestionsDiv.style.display = 'none';
+    }
+});
+
+// Show suggestions when input is focused and has value
+searchInput.addEventListener('focus', function() {
+    if (this.value.trim().length > 0) {
+        this.dispatchEvent(new Event('input'));
+    }
+});
+</script>
