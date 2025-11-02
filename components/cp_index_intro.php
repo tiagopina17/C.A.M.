@@ -1,3 +1,70 @@
+<?php
+require_once './connections/connection.php';
+$conn = new_db_connection();
+
+// Initialize arrays first
+$categories = array();
+$unique_services = array();
+$stores = array();
+
+// Fetch stores - separate try/catch
+try {
+    $query_lojas = 'SELECT id_Loja, nome_loja FROM lojas ORDER BY nome_loja';
+    $stmt_lojas = $conn->prepare($query_lojas);
+    $stmt_lojas->execute();
+    
+    while ($row = $stmt_lojas->fetch(PDO::FETCH_ASSOC)) {
+        $stores[] = array(
+            'id' => $row['id_Loja'],
+            'nome' => $row['nome_loja']
+        );
+    }
+} catch(PDOException $e) {
+    error_log("Store fetch error: " . $e->getMessage());
+    // Don't reset $stores here - keep any data we have
+}
+
+// Fetch categories and services - separate try/catch
+try {
+    $query = 'SELECT categorias.nome AS categoria_nome, servicos.nome AS servico_nome, servicos.capa AS servico_capa FROM categorias INNER JOIN servicos ON id_Categorias = ref_id_Categorias';
+    $stmt = $conn->prepare($query);
+    $stmt->execute();
+
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        $categoria_nome = $row['categoria_nome'];
+        $servico_nome = $row['servico_nome'];
+        
+        if (!isset($categories[$categoria_nome])) {
+            $categories[$categoria_nome] = array();
+        }
+        
+        $categories[$categoria_nome][] = $servico_nome;
+        
+        if (!in_array($servico_nome, $unique_services)) {
+            $unique_services[] = $servico_nome;
+        }
+    }
+} catch(PDOException $e) {
+    error_log("Categories fetch error: " . $e->getMessage());
+    // Don't reset arrays here
+}
+
+// Handle session messages
+$messages = '';
+if (isset($_SESSION['logout_message'])) {
+    $messages .= '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+    $messages .= '<i class="fas fa-check-circle me-2"></i>' . $_SESSION['logout_message'];
+    $messages .= '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+    unset($_SESSION['logout_message']);
+}
+
+if (isset($_SESSION['success_message'])) {
+    $messages .= '<div class="alert alert-success alert-dismissible fade show" role="alert">';
+    $messages .= '<i class="fas fa-check-circle me-2"></i>' . $_SESSION['success_message'];
+    $messages .= '<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>';
+    unset($_SESSION['success_message']);
+}
+?>
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -34,7 +101,6 @@ body{
   -moz-osx-font-smoothing:grayscale;
 }
 
-.container{max-width:1100px}
 
 /* Messages container */
 .messages-container .alert{border-radius:12px;}
@@ -44,15 +110,20 @@ body{
   position:relative;
 }
 
-.hero-grid{
-  display:grid;
-  grid-template-columns: 1fr 480px;
-  gap:48px;
-  align-items:center;
+.hero-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 10vw;
+}
+.hero-grid > * {
+  flex: 1; /* each child takes equal space */
 }
 
+
 .hero-title{
-  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+  font-size: clamp(2.5rem, 4.2vw, 3.4rem);
   font-weight:700;
   line-height:1.02;
   margin:0 0 12px;
@@ -66,7 +137,7 @@ body{
 
 .hero-subtitle{
   color:var(--muted);
-  font-size:1.05rem;
+  font-size:1.3 rem;
   margin-bottom:28px;
   max-width:60ch;
 }
@@ -149,9 +220,15 @@ body{
 .match{background:rgba(22,163,74,0.1); padding:2px 6px; border-radius:6px}
 
 /* Hero image */
+
+
 .hero-visual img{
-  width:100%;
-  max-width:420px;
+
+    max-width: 100%;
+    width: 80% !important;
+  height: auto;
+  display: block;
+
   transition:transform .9s ease;
 }
 .hero-visual img:hover{transform:translateY(-8px) rotate(-1deg)}
@@ -169,8 +246,8 @@ body{
 background: linear-gradient(
   to bottom,
   rgba(16, 204, 97, 0) 0%,      /* transparent only at the top edge */
-  rgba(16, 204, 97, 0.25) 10%,  /* fade in quickly */
-  rgba(16, 204, 97, 0.25) 90%,  /* stay fully visible the whole way */
+  rgba(16, 204, 97, 0.25) 5%,  /* fade in quickly */
+  rgba(16, 204, 97, 0.25) 95%,  /* stay fully visible the whole way */
   rgba(16, 204, 97, 0) 100%     /* fade out only at the bottom edge */
 );
 
@@ -279,8 +356,11 @@ background: linear-gradient(
   text-align:center;
   background-color: rgba(16, 204, 75, 0.65);
   color: white;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-  margin-bottom: 5vh;
+box-shadow: 
+  0 2px 4px rgba(0,0,0,0.1),
+  0 8px 16px rgba(0,0,0,0.15),
+  0 16px 48px rgba(0,0,0,0.25),
+  inset 0 1px 0 rgba(255,255,255,0.1);  margin-bottom: 5vh;
 }
 
 /* Headline */
@@ -307,7 +387,7 @@ background: linear-gradient(
 
 /* Ghost buttons on green */
 .btn-ghost{
-  background: rgba(255,255,255,0.15);
+  background: rgba(0, 0, 0, 0.35);
   color:white;
   border:1px solid rgba(255,255,255,0.5);
   padding:12px 22px;
@@ -389,38 +469,35 @@ background: linear-gradient(
 </head>
 <body>
   <div class="container mt-2">
-    <div class="messages-container"></div>
+    <div class="messages-container">
+      <?php echo $messages; ?>
+    </div>
   </div>
 
   <main class="container mt-4">
     <!-- HERO -->
-    <section class="hero-section">
-      <div class="hero-grid">
-        <div>
-          <h1 class="hero-title">Bem-vindo ao <span class="sam">S.A.M</span></h1>
-          <p class="hero-subtitle">A base de dados de lojas que lhe permite apoiar o comércio local.</p>
+<section class="hero-grid">
+  <div>
+    <h1 class="hero-title">Bem-vindo ao <span class="sam">S.A.M</span></h1>
+    <p class="hero-subtitle">A base de dados de lojas que lhe permite apoiar o comércio local.</p>
 
-          <!-- Search -->
-          <div class="search-container position-relative">
-            <div class="search-card" role="search" aria-label="Pesquisar lojas">
-              <input id="store-search" class="search-input" type="search" placeholder="Procure por lojas" aria-autocomplete="list" aria-controls="search-suggestions" autocomplete="off" />
-              <button id="search-btn" class="search-icon-btn" aria-label="Pesquisar">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-
-            <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Resultados da pesquisa"></div>
-          </div>
-        </div>
-
-        <div class="hero-visual">
-          <img src="images/confused2.png" alt="Ilustração de pessoa confusa com portátil" />
-        </div>
+    <!-- Search -->
+    <div class="search-container position-relative">
+      <div class="search-card" role="search" aria-label="Pesquisar lojas">
+        <input id="store-search" class="search-input" type="search" placeholder="Procure por lojas" aria-autocomplete="list" aria-controls="search-suggestions" autocomplete="off" />
+        <button id="search-btn" class="search-icon-btn" type="button" aria-label="Pesquisar">
+          <i class="fas fa-search"></i>
+        </button>
       </div>
+      <div id="search-suggestions" class="search-suggestions" role="listbox" aria-label="Resultados da pesquisa"></div>
+    </div>
+  </div>
 
-      <!-- small credits -->
-      <p class="image-credit text-end">Image by pch.vector on Freepik</p>
-    </section>
+  <div class="hero-visual">
+    <img src="images/confused2.png" alt="Ilustração de pessoa confusa com portátil" class="m-5" />
+  </div>
+</section>
+
 
     <!-- FEATURES -->
 <section class="features-accordion-section mt-5 mb-5">
@@ -435,7 +512,7 @@ background: linear-gradient(
         </h2>
         <div id="featureOne" class="accordion-collapse collapse show" data-bs-parent="#featuresAccordion">
           <div class="accordion-body">
-            Encontre o especialista ideal para o seu problema — filtrável por localidade, categoria e avaliações (quando disponíveis). Informação clara para ajudar na sua decisão.
+            Encontre uma loja local aonde pode fazer as suas compras — filtrável por localidade, categoria e avaliações (quando disponíveis). Informação clara para ajudar na sua decisão.
           </div>
         </div>
       </div>
@@ -448,7 +525,7 @@ background: linear-gradient(
         </h2>
         <div id="featureTwo" class="accordion-collapse collapse" data-bs-parent="#featuresAccordion">
           <div class="accordion-body">
-            Pessoas que procuram serviços locais de confiança — consumidores, empresas pequenas ou quem precisa de uma reparação rápida perto de si.
+            Pessoas que procuram lojas locais de confiança em que podem apoiar o comércio local.
           </div>
         </div>
       </div>
@@ -470,22 +547,17 @@ background: linear-gradient(
   </div>
 </section>
 
-
-
- 
-
-
-
     <!-- CTA -->
     <section class="cta-section mt-5">
-      <h3 style="margin-bottom:6px">Não espere mais</h3>
-      <p class="text-muted">Comece a sua jornada connosco hoje</p>
+      <h3  >Não espere mais:</h3>
+      <h5 class="mb-5">Começe já a poupar!</h5>
       <div class="cta-buttons mt-3">
         <a href="#" class="btn btn-ghost"> <i class="fas fa-info-circle me-2"></i>Aprenda mais</a>
-        <a href="#" class="btn btn-ghost"> <i class="fas fa-search me-2"></i>Explore os serviços</a>
-       <a href="#" class="btn-main-cta">
-        <i class="fas fa-user-plus me-2"></i>Registe-se
+        <a href="/registo.php" class="btn-main-cta">
+        <i class="fas fa-user-plus me-2"></i>Registe-se ou faça login!
        </a>
+        <a href="#" class="btn btn-ghost"> <i class="fas fa-search me-2"></i>Explore as lojas</a>
+       
       </div>
     </section>
 
@@ -493,138 +565,105 @@ background: linear-gradient(
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // ===== Example data (replace with server data) =====
-    const stores = [
-      {id:1, nome:'Loja Exemplo 1'},
-      {id:2, nome:'Loja Exemplo 2'},
-      {id:3, nome:'Loja Teste'},
-      {id:4, nome:'Especialista Silva'},
-      {id:5, nome:'Reparações João'}
-    ];
+    // Store data for search from PHP database
+    const stores = <?php echo json_encode($stores); ?>;
 
-    // ===== Helpers =====
-    const $ = (s) => document.querySelector(s);
-    const $$ = (s) => Array.from(document.querySelectorAll(s));
+    console.log('🔍 Search initialized with stores:', stores);
+    console.log('📊 Total stores loaded:', stores ? stores.length : 0);
 
-    const searchInput = $('#store-search');
-    const suggestions = $('#search-suggestions');
-    const searchBtn = $('#search-btn');
+    // Get DOM elements
+    const searchInput = document.getElementById('store-search');
+    const suggestionsDiv = document.getElementById('search-suggestions');
 
-    // Debounce helper
-    function debounce(fn, delay=220){
-      let t; return (...args)=>{ clearTimeout(t); t = setTimeout(()=>fn(...args), delay); };
+    console.log('📝 Input element:', searchInput);
+    console.log('📋 Suggestions div:', suggestionsDiv);
+
+    if (!searchInput) {
+        console.error('❌ Search input not found!');
+    }
+    if (!suggestionsDiv) {
+        console.error('❌ Suggestions div not found!');
+    }
+    if (!stores || stores.length === 0) {
+        console.warn('⚠️ No stores data available!');
     }
 
-    // Create suggestion list
-    function renderSuggestions(list, query){
-      if(!list.length){
-        suggestions.innerHTML = `<div class="suggestion-item no-results">Nenhuma loja encontrada</div>`;
-        suggestions.style.display = 'block';
-        return;
-      }
+    // Handle input changes
+    searchInput.addEventListener('input', function() {
+        const query = this.value.trim().toLowerCase();
+        console.log('⌨️ Input event fired. Query:', query);
 
-      const html = list.map((s, idx) => {
-        // highlight match
-        const regex = new RegExp('(' + escapeRegex(query) + ')', 'ig');
-        const name = s.nome.replace(regex, '<span class="match">$1</span>');
-        return `<div class="suggestion-item" role="option" data-id="${s.id}" data-idx="${idx}">
-                  <i class="fas fa-store me-2"></i>
-                  <div style="flex:1">${name}</div>
-                  <div class="text-muted" style="font-size:.85rem">Ver</div>
-                </div>`;
-      }).join('');
+        // Clear suggestions if input is empty
+        if (query.length === 0) {
+            console.log('🧹 Clearing suggestions (empty query)');
+            suggestionsDiv.innerHTML = '';
+            suggestionsDiv.style.display = 'none';
+            return;
+        }
 
-      suggestions.innerHTML = html;
-      suggestions.style.display = 'block';
-
-      // attach click handlers
-      $$('.suggestion-item').forEach(item => {
-        item.addEventListener('click', () => {
-          const id = item.dataset.id; window.location.href = `loja.php?id=${id}`;
+        // Filter stores based on query - only match names that START with the query
+        const matches = stores.filter(store => {
+            const storeName = store.nome.toLowerCase();
+            const isMatch = storeName.startsWith(query);
+            console.log(`  Checking "${store.nome}": ${isMatch}`);
+            return isMatch;
         });
-      });
-    }
 
-    function escapeRegex(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+        console.log('✅ Matches found:', matches.length, matches);
 
-    function searchStores(q){
-      if(!q) return [];
-      q = q.trim().toLowerCase();
-      // simple startsWith + includes fallback
-      const starts = stores.filter(s => s.nome.toLowerCase().startsWith(q));
-      const includes = stores.filter(s => !starts.includes(s) && s.nome.toLowerCase().includes(q));
-      return [...starts, ...includes];
-    }
-
-    // Debounced input handler
-    const handleInput = debounce(function(e){
-      const q = e.target.value;
-      if(!q || q.trim().length === 0){ suggestions.style.display = 'none'; return; }
-      const results = searchStores(q);
-      renderSuggestions(results, q);
-    }, 160);
-
-    searchInput.addEventListener('input', handleInput);
-
-    // keyboard navigation
-    let activeIndex = -1;
-    searchInput.addEventListener('keydown', function(e){
-      const items = $$('.suggestion-item');
-      if(suggestions.style.display !== 'block') return;
-
-      if(e.key === 'ArrowDown'){
-        e.preventDefault(); activeIndex = Math.min(activeIndex + 1, items.length -1);
-        updateActive(items);
-      } else if(e.key === 'ArrowUp'){
-        e.preventDefault(); activeIndex = Math.max(activeIndex -1, 0);
-        updateActive(items);
-      } else if(e.key === 'Enter'){
-        e.preventDefault(); if(activeIndex >=0 && items[activeIndex]) items[activeIndex].click(); else searchBtn.click();
-      } else if(e.key === 'Escape'){
-        suggestions.style.display = 'none';
-      }
+        // Display suggestions
+        if (matches.length > 0) {
+            const html = matches.map(store => 
+                `<div class="suggestion-item" data-id="${store.id}">
+                    <i class="fas fa-store me-2"></i>${store.nome}
+                </div>`
+            ).join('');
+            
+            console.log('📄 Generated HTML:', html);
+            suggestionsDiv.innerHTML = html;
+            suggestionsDiv.style.display = 'block';
+            console.log('👁️ Suggestions div display:', suggestionsDiv.style.display);
+            console.log('📐 Suggestions div dimensions:', {
+                width: suggestionsDiv.offsetWidth,
+                height: suggestionsDiv.offsetHeight,
+                top: suggestionsDiv.offsetTop
+            });
+            
+            // Add click handlers to suggestions
+            const items = document.querySelectorAll('.suggestion-item');
+            console.log('🖱️ Adding click handlers to', items.length, 'items');
+            items.forEach(item => {
+                item.addEventListener('click', function() {
+                    const storeId = this.getAttribute('data-id');
+                    console.log('🎯 Clicked store ID:', storeId);
+                    window.location.href = `loja.php?id=${storeId}`;
+                });
+            });
+        } else {
+            console.log('❌ No matches - showing "no results" message');
+            suggestionsDiv.innerHTML = '<div class="suggestion-item no-results">Nenhuma loja encontrada</div>';
+            suggestionsDiv.style.display = 'block';
+        }
     });
 
-    function updateActive(items){
-      items.forEach(it => it.classList.remove('active'));
-      if(activeIndex >= 0 && items[activeIndex]){
-        items[activeIndex].classList.add('active');
-        items[activeIndex].scrollIntoView({block:'nearest'});
-      }
-    }
-
-    // Close when clicking outside
-    document.addEventListener('click', (ev)=>{
-      if(!ev.composedPath().includes(searchInput) && !ev.composedPath().includes(suggestions) && !ev.composedPath().includes(searchBtn)){
-        suggestions.style.display = 'none';
-      }
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!searchInput.contains(e.target) && !suggestionsDiv.contains(e.target)) {
+            console.log('🚪 Clicked outside - hiding suggestions');
+            suggestionsDiv.style.display = 'none';
+        }
     });
 
-    // Simple UX: clicking search button will navigate to first match or to a search results page
-    searchBtn.addEventListener('click', ()=>{
-      const q = searchInput.value.trim();
-      if(!q) return;
-      const res = searchStores(q);
-      if(res.length) window.location.href = `loja.php?id=${res[0].id}`;
-      else {
-        // fallback: go to search results page with query param
-        window.location.href = `search.php?q=${encodeURIComponent(q)}`;
-      }
+    // Show suggestions when input is focused and has value
+    searchInput.addEventListener('focus', function() {
+        console.log('🎯 Input focused. Current value:', this.value);
+        if (this.value.trim().length > 0) {
+            console.log('🔄 Re-triggering input event');
+            this.dispatchEvent(new Event('input'));
+        }
     });
 
-    // Accessibility: announce live (very small polyfill)
-    const liveRegion = document.createElement('div');
-    liveRegion.setAttribute('aria-live','polite');
-    liveRegion.style.position='absolute'; liveRegion.style.left='-9999px';
-    document.body.appendChild(liveRegion);
-
-    // When suggestions open, announce count
-    const obs = new MutationObserver(()=>{
-      const items = $$('.suggestion-item').filter(i => !i.classList.contains('no-results'));
-      if(suggestions.style.display === 'block') liveRegion.textContent = items.length ? `${items.length} resultados` : 'Nenhum resultado encontrado';
-    });
-    obs.observe(suggestions, {childList:true, subtree:true});
-
+    console.log('✅ Search script fully loaded and ready');
   </script>
 </body>
 </html>

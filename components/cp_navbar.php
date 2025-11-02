@@ -11,7 +11,7 @@
         <div class="container">
         </div>
         <div class="">
-            <nav class="navbar  navbar-expand-lg border-bottom border-body w-100 pt-2 ps-3 pb-2">
+            <nav class="navbar  navbar-expand-lg border-bottom border-body w-100 pt-3 ps-3 pb-3">
                 <div class="container-fluid">
                     <a class="navbar-brand fs-2" style="font-family: 'Orbitron', sans-serif; font-weight: 700; background: linear-gradient(to right, #2EE0FF , #5EED5E); background-clip: text; -webkit-text-fill-color: transparent;" href="index.php">S.A.M</a>
                     <button class="navbar-toggler text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -21,6 +21,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item fs-5 fw-semibold ps-3"><a href="index.php" class="nav-link textonav">Início</a></li>
+                            <li class="nav-item fs-5 fw-semibold ps-3"><a href="index.php" class="nav-link textonav">Serviços</a></li>
                             <li class="nav-item fs-5 fw-semibold ps-3"><a href="ajuda.php" class="nav-link textonav">Ajuda</a></li>
                             <li class="nav-item fs-5 fw-semibold ps-3"><a href="#" class="nav-link textonav">Sobre nós</a></li>
                         </ul>

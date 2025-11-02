@@ -1,4 +1,4 @@
-<footer class=" footer text-center text-white-50">
+<footer class=" footer text-center text-white-50 pt-3 pb-3">
     <div class="container px-4 px-lg-5">
         <div class="d-flex justify-content-center mb-2 pt-3">
             <a href="#" class="text-white mx-2">
