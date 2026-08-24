@@ -3,6 +3,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#3B3B3B">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="description" content="">
     <meta name="author" content="">
     <title>S.A.M.</title>
@@ -11,7 +13,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- Custom styles -->
-    <link rel="stylesheet" href="../css/meusestilos.css">
     <link rel="stylesheet" href="css/meusestilos.css">
 
     <!-- Favicon -->
@@ -36,8 +37,7 @@
 
 </head>
 <body>
-<!-- Bootstrap JS (placed at the end of the body for better performance) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-</body>
-</html>
+<!-- Bootstrap JS now loads once, at the end, in cp_footer.php -->
+<!-- (do NOT add a body/html close here — cp_navbar.php, cp_index_intro.php,
+     and cp_footer.php are included right after this file and need to land
+     inside this same <body> element) -->
