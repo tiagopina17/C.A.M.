@@ -595,10 +595,10 @@ if (isset($_SESSION['success_message'])) {
       <h5 class="mb-5">Começe já a poupar!</h5>
       <div class="cta-buttons mt-3">
         <a href="#" class="btn btn-ghost"> <i class="fas fa-info-circle me-2"></i>Aprenda mais</a>
-        <a href="/registo.php" class="btn-main-cta">
-        <i class="fas fa-user-plus me-2"></i>Registe-se ou faça login!
-       </a>
-        <a href="#" class="btn btn-ghost"> <i class="fas fa-search me-2"></i>Explore as lojas</a>
+        <a href="registo.php" class="btn-main-cta">
+          <i class="fas fa-user-plus me-2"></i>Registe-se ou faça login!
+        </a>
+        <a href="loja.php" class="btn btn-ghost"> <i class="fas fa-search me-2"></i>Explore as lojas</a>
        
       </div>
     </section>

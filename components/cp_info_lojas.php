@@ -228,10 +228,15 @@ function timeAgo($date) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão de Lojas</title>
-
-   
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="meusestilos.css" rel="stylesheet">
 </head>
-<body class="bg-light">
+<body>
+    <div class="dashboard-page-wrapper">
     <div class="container mt-5 mb-5">
         <!-- Page Header -->
         <div class="page-header rounded">
@@ -416,6 +421,7 @@ function timeAgo($date) {
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Add Store Modal -->

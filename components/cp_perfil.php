@@ -239,9 +239,16 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil do Utilizador</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="meusestilos.css" rel="stylesheet">
 </head>
-<body class="bg-light ">
-    <div class="container mt-5 mb-5 ">
+<body>
+    <div class="dashboard-page-wrapper">
+    <div class="container mt-5 mb-5">
         <div class="row">
             <!-- Profile Header -->
             <div class="col-12">
@@ -558,6 +565,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                                 </div>
                             </div>
                         </div>
+                    </div>
                         <script>
                         function joinLojaRedirect() {
                                 const code = document.getElementById('codigoLoja').value.trim();

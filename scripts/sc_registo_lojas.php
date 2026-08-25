@@ -154,7 +154,7 @@ try {
                                         }
 
                                         // Redirect to home page
-                                        header("Location: /../index.php");
+                                        header("Location: ../index.php");
                                         exit();
                                     } else {
                                         throw new Exception('Erro ao remover utilizador da tabela original');

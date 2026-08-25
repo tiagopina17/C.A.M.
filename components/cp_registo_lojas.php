@@ -1,92 +1,14 @@
 <body>
+    <!-- Shared market/carimbo auth theme lives in meusestilos.css
+         (.auth-page-wrapper, .badge-stamp, .sam override, .auth-card,
+         .auth-title, .auth-subtitle, .form-label-stamp, .form-control-mkt,
+         .auth-alert, .btn-mkt-submit). Only this page's wizard/step/
+         predictions/ghost-button styles and size overrides stay here. -->
     <style>
-    :root{
-      /* -- Mercado palette: awning canvas, market green, carimbo ink -- */
-      --paper: #f5f2e6;
-      --paper-2: #ede6d2;
-      --card: #fffdf7;
-      --ink: #182b20;
-      --muted: #5c6b5f;
-      --accent-1: #0f7a42;
-      --accent-2: #0b5c33;
-      --ochre: #c17f1e;
-      --ochre-deep: #93610f;
-      --line: rgba(24,43,32,0.14);
-      --radius: 14px;
-    }
+    .auth-card{ max-width: 620px; }
+    .auth-title{ font-size: clamp(1.6rem, 3vw, 2rem); }
+    .auth-subtitle{ margin-bottom: 24px; }
 
-    .auth-page-wrapper{
-      font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: var(--paper);
-      color: var(--ink);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      min-height: calc(100vh - 120px);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 48px 16px;
-    }
-
-    .badge-stamp{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      border:2px solid var(--ochre);
-      border-radius:999px;
-      padding:6px 16px;
-      font-size:.72rem;
-      color:var(--ochre-deep);
-      transform:rotate(-3deg);
-      margin-bottom:16px;
-      background: repeating-linear-gradient(45deg, transparent 0 4px, rgba(193,127,30,0.08) 4px 8px);
-    }
-    .badge-stamp i{font-size:.8rem}
-
-    .sam{
-      font-weight:800;
-      color: var(--accent-1);
-      white-space:nowrap;
-    }
-
-    .auth-card{
-      background: var(--card);
-      border: 2px solid var(--ink);
-      border-radius: var(--radius);
-      box-shadow: 6px 6px 0 var(--accent-2);
-      padding: 2.6rem 2.4rem;
-      width: 100%;
-      max-width: 620px;
-    }
-
-    .auth-title{
-      font-family:'Bricolage Grotesque', 'Inter', sans-serif;
-      font-size: clamp(1.6rem, 3vw, 2rem);
-      font-weight:700;
-      line-height:1.1;
-      margin:0 0 10px;
-      color: var(--ink);
-      letter-spacing:-.01em;
-      text-align:center;
-    }
-
-    .auth-subtitle{
-      color:var(--muted);
-      font-size:.98rem;
-      line-height:1.55;
-      margin-bottom:24px;
-      text-align:center;
-    }
-
-    .auth-alert{
-      border-radius:12px;
-      border:2px solid;
-      font-family:'Inter', sans-serif;
-      font-size:.92rem;
-      padding:.85rem 1rem;
-    }
-    .auth-alert.alert-danger{ background:#fdf1ec; border-color:#b3411f; color:#7a2c14; }
-    .auth-alert.alert-success{ background:#eef7ee; border-color:var(--accent-2); color:var(--accent-2); }
     #messages-container:empty{ display:none; }
     #messages-container:not(:empty){ margin-bottom: 1.2rem; }
 
@@ -140,33 +62,6 @@
       margin-bottom:22px !important;
     }
 
-    .form-label-stamp{
-      font-family:'Space Mono', monospace;
-      text-transform:uppercase;
-      letter-spacing:.1em;
-      font-size:.74rem;
-      color: var(--muted);
-      display:block;
-      margin-bottom:7px;
-    }
-
-    .form-control-mkt{
-      width:100%;
-      border:2px solid var(--ink);
-      border-radius:10px;
-      padding:12px 14px;
-      font-family:'Inter', sans-serif;
-      font-size:.98rem;
-      background: var(--paper);
-      color: var(--ink);
-      transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
-    }
-    .form-control-mkt:focus{
-      outline:none;
-      border-color: var(--accent-1);
-      background: var(--card);
-      box-shadow: 0 0 0 3px rgba(15,122,66,0.15);
-    }
     .form-control-mkt.is-invalid{ border-color:#b3411f; }
     .form-control-mkt.is-valid{ border-color: var(--accent-1); }
     textarea.form-control-mkt{ resize: vertical; min-height: 90px; }
@@ -211,19 +106,9 @@
     }
     .place-id-display{ color: var(--muted); }
 
-    /* ---------- Buttons ---------- */
-    .btn-mkt-submit{
-      background: var(--accent-1);
-      color:#fff;
-      border:2px solid var(--accent-2);
-      border-radius:999px;
-      padding:13px;
-      font-family:'Bricolage Grotesque', sans-serif;
-      font-weight:700;
-      font-size:1rem;
-      box-shadow: 4px 4px 0 var(--accent-2);
-      transition: transform .12s ease, box-shadow .12s ease, background .12s ease, opacity .12s ease;
-    }
+    /* ---------- Buttons: this page's submit can be disabled mid-wizard,
+       so it needs :not(:disabled)-qualified state rules on top of the
+       shared .btn-mkt-submit base in meusestilos.css. ---------- */
     .btn-mkt-submit:hover:not(:disabled){
       background:#0d6b3a;
       color:#fff;
