@@ -392,7 +392,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="col-md-4">
                 <!-- Store Stats -->
                 <div class="card shadow p-4 mb-4">
-                    <h5 class="sam mb-3">Estatísticas</h5>
+                    <h5 class="heading-mkt mb-3">Estatísticas</h5>
                     <div class="mb-3">
                         <div class="info-label">Total de Funcionários</div>
                         <div class="info-value">
@@ -417,7 +417,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 <!-- Quick Actions -->
                 <div class="card shadow p-4">
-                    <h5 class="sam mb-3">Ações Rápidas</h5>
+                    <h5 class="heading-mkt mb-3">Ações Rápidas</h5>
                     <div class="d-grid gap-2">
                         <a href="info_lojas.php" class="btn btn-outline-verde">
                             <i class="fas fa-arrow-left me-2"></i>Voltar às Lojas

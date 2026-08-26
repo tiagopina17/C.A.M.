@@ -246,7 +246,7 @@ function timeAgo($date) {
                     <p class="mb-0 opacity-75">Gerir as suas lojas e informações relacionadas</p>
                 </div>
                 <div class="col-md-4 text-end">
-                    <button class="btn btn-light btn-lg" data-bs-toggle="modal" data-bs-target="#addStoreModal">
+                    <button class="btn btn-verde btn-lg" data-bs-toggle="modal" data-bs-target="#addStoreModal">
                         <i class="fas fa-plus me-2"></i>Adicionar Loja
                     </button>
                 </div>
@@ -327,7 +327,7 @@ function timeAgo($date) {
                                 <div class="card store-card h-100">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <h5 class="sam mb-0"><?php echo htmlspecialchars($loja['nome_loja']); ?></h5>
+                                            <h5 class="heading-mkt mb-0"><?php echo htmlspecialchars($loja['nome_loja']); ?></h5>
                                             <span class="store-status status-active">Ativa</span>
                                         </div>
                                         
@@ -386,7 +386,7 @@ function timeAgo($date) {
             <div class="col-md-3">
                 <!-- Quick Actions -->
                 <div class="card shadow p-4 mb-4">
-                    <h5 class="sam mb-3">Ações Rápidas</h5>
+                    <h5 class="heading-mkt mb-3">Ações Rápidas</h5>
                     <div class="d-grid gap-2">
                         <button class="btn btn-outline-verde" data-bs-toggle="modal" data-bs-target="#addStoreModal">
                             <i class="fas fa-plus me-2"></i>Nova Loja
@@ -405,7 +405,7 @@ function timeAgo($date) {
 
                 <!-- Information Card -->
                 <div class="card shadow p-4">
-                    <h5 class="sam mb-3">Informações</h5>
+                    <h5 class="heading-mkt mb-3">Informações</h5>
                     <div class="mb-3">
                         <div class="info-label">Funcionário</div>
                         <div class="info-value"><?php echo htmlspecialchars($funcionario['nome']); ?></div>

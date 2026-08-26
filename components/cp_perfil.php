@@ -270,7 +270,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <h2 class="sam mb-2"><?php echo htmlspecialchars($user['nome']); ?></h2>
+                            <h2 class="profile-name mb-2"><?php echo htmlspecialchars($user['nome']); ?></h2>
                             <p class="text-muted mb-2"><?php echo htmlspecialchars($user['email']); ?></p>
                             <p class="text-muted mb-2">
                                 <span class="user-type-badge"><?php echo htmlspecialchars(ucfirst($user['tipo_nome'])); ?></span>
@@ -336,7 +336,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                     <!-- Personal Information Tab -->
                     <div class="tab-pane fade show active" id="info">
                         <div class="card shadow p-4">
-                            <h4 class="sam mb-4">Informações Pessoais</h4>
+                            <h4 class="heading-mkt mb-4">Informações Pessoais</h4>
                             
                             <?php if (isset($_SESSION['profile_errors'])): ?>
                                 <?php foreach ($_SESSION['profile_errors'] as $error): ?>
@@ -402,7 +402,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                     <!-- Security Tab -->
                     <div class="tab-pane fade" id="security">
                         <div class="card shadow p-4">
-                            <h4 class="sam mb-4">Segurança da Conta</h4>
+                            <h4 class="heading-mkt mb-4">Segurança da Conta</h4>
                             
                             <?php if (isset($_SESSION['password_errors'])): ?>
                                 <?php foreach ($_SESSION['password_errors'] as $error): ?>
@@ -439,7 +439,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
 
                             <hr class="my-4">
 
-                            <h5 class="sam mb-3">Informações da Sessão</h5>
+                            <h5 class="heading-mkt mb-3">Informações da Sessão</h5>
                             <div class="card info-card p-3">
                                 <div class="row">
                                     <div class="col-md-6">
@@ -458,7 +458,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                     <!-- Activity Tab -->
                     <div class="tab-pane fade" id="activity">
                         <div class="card shadow p-4">
-                            <h4 class="sam mb-4">Atividade Recente</h4>
+                            <h4 class="heading-mkt mb-4">Atividade Recente</h4>
                             
                             <?php foreach ($recent_activities as $activity): ?>
                             <div class="activity-item">
@@ -491,14 +491,14 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
                 <!-- Statistics/Management Card -->
                 <?php if ($_SESSION['user_type'] == 'funcionario'): ?>
                     <!-- Management Card for Funcionario -->
-                    <div class="card shadow p-4 mb-4" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); border: none;">
+                    <div class="card card-cta-mkt p-4 mb-4">
                         <div class="text-center text-white">
                             <div class="mb-3">
                                 <i class="fas fa-store-alt" style="font-size: 2rem; opacity: 0.9;"></i>
                             </div>
                             <h5 class="mb-3 fw-bold">Gestão de Lojas</h5>
                             <p class="mb-4 opacity-75">Gerir e administrar as suas lojas:</p>
-                            <a href="info_lojas.php" class="btn btn-light btn-lg px-4 py-2 fw-semibold" style="border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                            <a href="info_lojas.php" class="btn btn-light btn-lg px-4 py-2 fw-semibold">
                                 <i class="fas fa-cogs me-2"></i>Gerir Lojas
                             </a>
                         </div>
@@ -520,7 +520,7 @@ $user_display_info = getUserDisplayInfo($user, $user_type);
 
                 <!-- Quick Actions -->
                 <div class="card shadow p-4 mb-4">
-                    <h5 class="sam mb-3">Ações Rápidas</h5>
+                    <h5 class="heading-mkt mb-3">Ações Rápidas</h5>
                     <div class="d-grid gap-2">
                         <?php if ($_SESSION['user_type'] != 'funcionario'): ?>
                         <a href="registo_lojas.php" class="btn btn-outline-verde mt-3">
