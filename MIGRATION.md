@@ -118,3 +118,4 @@ flowchart TD
 | `scripts/sc_join.php` | `StoreInviteController@join` | Attach user to store via invite code |
 | `scripts/sc_login.php` | Laravel Breeze `AuthenticatedSessionController` | Secure session authentication |
 | `scripts/sc_registo.php` | Laravel Breeze `RegisteredUserController` | Account registration |
+
