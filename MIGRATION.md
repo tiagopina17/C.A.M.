@@ -33,8 +33,8 @@ Target: Modernize S.A.M from procedural vanilla PHP to Laravel 11 with Blade, Bo
 
 ```mermaid
 flowchart TD
-    D1["Phase 1: Environment and Project Setup"]:::done --> D2["Phase 2: Database Schema and Eloquent Models"]:::active
-    D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::pending
+    D1["Phase 1: Environment and Project Setup"]:::done --> D2["Phase 2: Database Schema and Eloquent Models"]:::done
+    D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::active
     D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::pending
     D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail)"]:::pending
     D5 --> D6["Phase 6: Store Management and Invite Codes"]:::pending
@@ -50,17 +50,19 @@ flowchart TD
 
 ## Detailed Task Checklist
 
-### Phase 2: Database Schema and Eloquent Models (Up Next)
-- [ ] Configure `.env` for local MySQL (`DB_DATABASE=sam_laravel`).
-- [ ] Create `stores` table migration (`name`, `description`, `place_id`, `lat`, `lon`, `logo_path`).
-- [ ] Create `store_user` pivot migration (`store_id`, `user_id`, `role: owner|employee`).
-- [ ] Create `categories` and `services` migrations.
-- [ ] Create `store_invite_codes` migration (`store_id`, `code`, `expires_at`).
-- [ ] Define Eloquent Models with relationships:
-  - `User`: `stores()`, `ownedStores()`
-  - `Store`: `users()`, `services()`, `inviteCodes()`
+### Phase 2: Database Schema and Eloquent Models (Completed)
+- [x] Configure `.env` for local MySQL (`DB_DATABASE=sam_laravel`).
+- [x] Create `stores` table migration (`name`, `description`, `place_id`, `lat`, `lon`, `logo_path`).
+- [x] Create `store_user` pivot migration (`store_id`, `user_id`, `role: owner|employee`).
+- [x] Create `categories` and `services` migrations (including `service_store` pivot).
+- [x] Create `store_invite_codes` migration (`store_id`, `code`, `expires_at`, `used_by`, `used_at`).
+- [x] Define Eloquent Models with relationships:
+  - `User`: `stores()`, `ownedStores()`, `employedStores()`
+  - `Store`: `users()`, `owners()`, `employees()`, `services()`, `inviteCodes()`
+  - `Category`: `services()`
   - `Service`: `category()`, `stores()`
-  - `StoreInviteCode`: `store()`
+  - `StoreInviteCode`: `store()`, `user()`, `isValid()`
+- [x] Verified with automated feature tests (`StoreModelTest` - 3 tests, 12 assertions passing).
 
 ### Phase 3: Auth and Security (Breeze + CSRF)
 - [ ] Install Laravel Breeze (Blade stack) for battle-tested auth.
