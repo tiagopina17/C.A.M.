@@ -34,8 +34,8 @@ Target: Modernize S.A.M from procedural vanilla PHP to Laravel 11 with Blade, Bo
 ```mermaid
 flowchart TD
     D1["Phase 1: Environment and Project Setup"]:::done --> D2["Phase 2: Database Schema and Eloquent Models"]:::done
-    D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::active
-    D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::pending
+    D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::done
+    D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::active
     D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail)"]:::pending
     D5 --> D6["Phase 6: Store Management and Invite Codes"]:::pending
     D6 --> D7["Phase 7: Admin Backoffice and Data Seeders"]:::pending
@@ -64,11 +64,13 @@ flowchart TD
   - `StoreInviteCode`: `store()`, `user()`, `isValid()`
 - [x] Verified with automated feature tests (`StoreModelTest` - 3 tests, 12 assertions passing).
 
-### Phase 3: Auth and Security (Breeze + CSRF)
-- [ ] Install Laravel Breeze (Blade stack) for battle-tested auth.
-- [ ] Configure authentication routes (login, register, password reset, profile).
-- [ ] Unify customer and employee authentication into the single `User` model with role checks.
-- [ ] Verify CSRF protection across all forms (`@csrf`).
+### Phase 3: Auth and Security (Breeze + CSRF) (Completed)
+- [x] Install Laravel Breeze (Blade stack) for battle-tested auth.
+- [x] Configure authentication routes (login, register, password reset, profile).
+- [x] Unify customer and employee authentication into the single `User` model with role checks.
+- [x] Verify CSRF protection across all forms (`@csrf`).
+- [x] Build front-end assets with Vite (`public/build`).
+- [x] Verified full auth test suite (28 tests, 73 assertions passing).
 
 ### Phase 4: Design and Asset Migration
 - [ ] Copy `_legacy/css/meusestilos.css` to `public/css/meusestilos.css`.
