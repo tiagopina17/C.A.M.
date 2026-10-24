@@ -80,9 +80,15 @@ flowchart TD
 - [x] Verify that Google Fonts and market/carimbo design tokens (`--ink`, `--paper`, `--ochre`) render identically.
 - [x] Created `home.blade.php` testing `<x-market-layout>` with 100% passing tests.
 
-### Phase 5: Public Pages
-- [ ] **Home Page (`/`)**: Port `_legacy/components/cp_index_intro.php` to `home.blade.php`.
-- [ ] **Search Auto-complete**: Wire client-side store search to Eloquent/JSON API.
+### Phase 5: Public Pages (In Progress)
+- [x] **Home Page (`/`)**: Port `_legacy/components/cp_index_intro.php` to `home.blade.php` and `HomeController@index`.
+- [x] **Search Auto-complete**: Wire client-side store search to Eloquent/JSON API (`/api/stores/search` in `HomeController@search`).
+- [x] **Component Modernization & Design Polish**:
+  - Navbar (`resources/views/components/navbar.blade.php`): Deep ink theme (`--ink`), ochre bottom border (`--ochre`), centered navigation links (`Início`, `Serviços`, `Mapa`, `Ajuda`), high-contrast `S.A.M` logo, and pill action buttons.
+  - Footer (`resources/views/components/footer.blade.php`): Modernized 3-column layout matching the market design system.
+  - Merchant CTA Card: Cleaned and unified the "Não espere mais" section into `.merchant-cta-card`.
+  - CSS Cleanup: Removed dead prototype rules, removed global `nav !important` and `.sam !important` locks, and enabled automatic CSS cache-busting.
+- [x] **Automated Tests**: Added `tests/Feature/HomeControllerTest.php` (all 31 test suite assertions passing).
 - [ ] **Explore Page (`/explorar`)**: Group services by category in Blade.
 - [ ] **Interactive Map (`/mapa`)**: Port `_legacy/components/cp_map.php` to Google Maps JS Blade view.
 - [ ] **Store Detail (`/lojas/{id}`)**: Display store header, location map embed, and catalog.

@@ -15,7 +15,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <!-- Custom Market Stylesheet -->
-    <link rel="stylesheet" href="{{ asset('css/meusestilos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/meusestilos.css') }}?v={{ filemtime(public_path('css/meusestilos.css')) }}">
 
     <!-- Font Awesome 6 -->
     <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
@@ -33,7 +33,7 @@
 
     @stack('styles')
 </head>
-<body style="background-color: var(--paper, #f5f2e6); min-height: 100vh; display: flex; flex-direction: column;">
+<body style="background-color: var(--paper, #f5f2e6); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;">
     <x-navbar />
 
     @if (session('status'))
