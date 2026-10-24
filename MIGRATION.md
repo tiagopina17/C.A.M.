@@ -35,8 +35,8 @@ Target: Modernize S.A.M from procedural vanilla PHP to Laravel 11 with Blade, Bo
 flowchart TD
     D1["Phase 1: Environment and Project Setup"]:::done --> D2["Phase 2: Database Schema and Eloquent Models"]:::done
     D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::done
-    D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::active
-    D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail)"]:::pending
+    D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::done
+    D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail)"]:::active
     D5 --> D6["Phase 6: Store Management and Invite Codes"]:::pending
     D6 --> D7["Phase 7: Admin Backoffice and Data Seeders"]:::pending
     D7 --> D8["Phase 8: QA, Verification and Final Cleanup"]:::pending
@@ -72,11 +72,13 @@ flowchart TD
 - [x] Build front-end assets with Vite (`public/build`).
 - [x] Verified full auth test suite (28 tests, 73 assertions passing).
 
-### Phase 4: Design and Asset Migration
-- [ ] Copy `_legacy/css/meusestilos.css` to `public/css/meusestilos.css`.
-- [ ] Set up master Blade layout (`resources/views/layouts/app.blade.php`).
-- [ ] Port `cp_navbar.php` and `cp_footer.php` into reusable Blade components (`<x-navbar>`, `<x-footer>`).
-- [ ] Verify that Google Fonts and market/carimbo design tokens (`--ink`, `--paper`, `--ochre`) render identically.
+### Phase 4: Design and Asset Migration (Completed)
+- [x] Copy `_legacy/css/meusestilos.css` to `public/css/meusestilos.css`.
+- [x] Copy `_legacy/js/scripts.js` to `public/js/scripts.js` and icons to `public/images/` and `public/favicon.ico`.
+- [x] Set up master Blade layout (`resources/views/layouts/market.blade.php`).
+- [x] Port `cp_navbar.php` and `cp_footer.php` into reusable Blade components (`<x-navbar>`, `<x-footer>`).
+- [x] Verify that Google Fonts and market/carimbo design tokens (`--ink`, `--paper`, `--ochre`) render identically.
+- [x] Created `home.blade.php` testing `<x-market-layout>` with 100% passing tests.
 
 ### Phase 5: Public Pages
 - [ ] **Home Page (`/`)**: Port `_legacy/components/cp_index_intro.php` to `home.blade.php`.

@@ -13,8 +13,8 @@ This branch (`refactor/laravel-migration`) modernizes S.A.M from procedural vani
 | **Phase 1** | Safety & Laravel Skeleton | ✅ Completed | PHP 8.3 + Laravel setup in Laragon, Git tracking |
 | **Phase 2** | Normalized Database & Eloquent Models | ✅ Completed | `stores`, `store_user`, `categories`, `services`, `service_store`, `store_invite_codes` |
 | **Phase 3** | Authentication & Security (Breeze + CSRF) | ✅ Completed | Single unified auth for users & employees, brute-force protection, CSRF |
-| **Phase 4** | Design & Asset Migration | ⏳ Up Next | Port `meusestilos.css`, Blade layouts, and reusable components |
-| **Phase 5** | Public Pages | ⏹️ Pending | Home with live store search, Explore, Interactive Map, Store Detail |
+| **Phase 4** | Design & Asset Migration | ✅ Completed | Ported `meusestilos.css`, `<x-market-layout>`, `<x-navbar>`, `<x-footer>` |
+| **Phase 5** | Public Pages | ⏳ Up Next | Home with live store search, Explore, Interactive Map, Store Detail |
 | **Phase 6** | Store Management & Invite Codes | ⏹️ Pending | Store wizard, employee management, 7-char code generator |
 | **Phase 7** | Admin Backoffice & Data Importer | ⏹️ Pending | Admin dashboard + legacy migration script from `sam` to `sam_laravel` |
 | **Phase 8** | QA & Verification | ⏹️ Pending | Automated feature test suite + final cleanup |
