@@ -85,12 +85,33 @@ body {
    BRAND & TYPOGRAPHY
    ======================================== */
 
-.sam {
-    font-family: 'Orbitron', sans-serif; 
-    font-weight: 700; 
-    background: linear-gradient(to right, var(--color-teal), var(--color-green)); 
-    background-clip: text; 
-    -webkit-text-fill-color: transparent;
+.brand-bairro {
+    font-family: 'Bricolage Grotesque', sans-serif !important;
+    font-size: 1.85rem !important;
+    font-weight: 800 !important;
+    letter-spacing: -0.02em !important;
+    color: var(--paper, #f5f2e6) !important;
+    text-decoration: none !important;
+    display: inline-flex;
+    align-items: center;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0.1rem 0 !important;
+}
+
+.brand-bairro .brand-accent {
+    color: var(--color-mustard, #D9A441) !important;
+    margin-left: 0.28rem;
+}
+
+.hero-bairro-ca {
+    color: var(--accent-1, #0f7a42);
+    font-weight: 800;
+}
+
+.hero-bairro-name {
+    color: var(--ochre, #c17f1e);
+    font-weight: 800;
 }
 
 /* ========================================
@@ -104,22 +125,6 @@ body {
     z-index: 1040 !important;
     padding-top: 0.85rem !important;
     padding-bottom: 0.85rem !important;
-}
-
-.market-navbar .navbar-brand.sam {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 2rem !important;
-    font-weight: 800;
-    line-height: 1 !important;
-    background: linear-gradient(135deg, #48cae4 0%, #a7c957 100%);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 0.06em;
-    margin: 0 !important;
-    padding: 0.1rem 0 !important;
-    display: inline-flex;
-    align-items: center;
 }
 
 @media (min-width: 992px) {
@@ -1200,12 +1205,6 @@ body {
    cp_login_funcionario.php, cp_registo_lojas.php
    ======================================== */
 
-.sam {
-    font-weight: 800;
-    color: var(--accent-1);
-    white-space: nowrap;
-}
-
 .auth-page-wrapper {
     font-family: 'Inter', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
     background: var(--paper);
@@ -1755,7 +1754,7 @@ footer {
 }
 .hero-grid > * { flex: 1; }
 
-.sam-hero-title {
+.bairro-hero-title {
   font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
   font-size: clamp(2.6rem, 4.4vw, 3.6rem);
   font-weight: 700;
@@ -1906,7 +1905,7 @@ footer {
 }
 .scallop-flip { transform: rotate(180deg); }
 
-/* Features accordion section */
+/* Features accordion / FAQ section */
 .features-accordion-section {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
@@ -1921,22 +1920,35 @@ footer {
 
 .features-inner {
   width: 100%;
-  max-width: 1040px;
+  max-width: 860px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 16px;
 }
 
-.features-inner .accordion { width: 100%; display: flex; flex-direction: column; gap: 16px; }
+.features-inner .accordion {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
 #featuresAccordion {
-  --bs-accordion-border-radius: 12px;
-  --bs-accordion-inner-border-radius: 12px;
+  --bs-accordion-border-radius: 14px;
+  --bs-accordion-inner-border-radius: 14px;
 }
 
 .features-inner .accordion-item {
-  border: none;
-  background: transparent;
-  border-radius: 12px;
+  border: 2px solid var(--ink);
+  border-radius: 14px !important;
+  background: var(--card, #fffdf7);
+  overflow: hidden;
+  box-shadow: 4px 4px 0 rgba(11, 92, 51, 0.45);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.features-inner .accordion-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0 rgba(11, 92, 51, 0.55);
 }
 
 .features-inner .accordion-button {
@@ -1944,50 +1956,55 @@ footer {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 20px 22px;
+  padding: 20px 24px;
   font-family: 'Bricolage Grotesque', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.18rem;
   font-weight: 700;
-  border-radius: 12px;
-  border: 2px solid var(--ink);
-  background: var(--card);
+  border: none;
+  background: var(--card, #fffdf7);
   color: var(--ink);
-  box-shadow: 4px 4px 0 rgba(11,92,51,0.35);
+  box-shadow: none !important;
+  transition: background-color 0.15s ease, color 0.15s ease;
 }
 
-.features-inner .accordion-button .stub-num {
+.features-inner .accordion-button .faq-num {
   font-family: 'Space Mono', monospace;
   font-weight: 700;
-  font-size: .78rem;
-  color: var(--ochre-deep);
-  border: 1px dashed var(--ochre);
+  font-size: 0.85rem;
+  color: var(--ochre-deep, #93610f);
+  background: rgba(193, 127, 30, 0.12);
+  border: 1px solid rgba(193, 127, 30, 0.3);
   border-radius: 8px;
-  padding: 4px 8px;
+  padding: 3px 10px;
   flex-shrink: 0;
+  transition: all 0.15s ease;
 }
 
-.features-inner .accordion-button::after { opacity: 0.7; }
+.features-inner .accordion-button::after {
+  opacity: 0.65;
+  transition: transform 0.2s ease;
+}
 
 .features-inner .accordion-button:not(.collapsed) {
-  background: var(--ink);
-  color: #fff;
-  border-color: var(--ink);
-  box-shadow: 4px 4px 0 var(--ochre);
+  background: rgba(24, 43, 32, 0.04);
+  color: var(--ink);
 }
-.features-inner .accordion-button:not(.collapsed) .stub-num {
-  color: #f5d9a8;
-  border-color: #f5d9a8;
+
+.features-inner .accordion-button:not(.collapsed) .faq-num {
+  background: var(--ochre, #c17f1e);
+  color: #fff;
+  border-color: var(--ochre, #c17f1e);
 }
 
 .features-inner .accordion-body {
-  background: var(--card);
-  border: 2px dashed var(--line);
-  padding: 18px 22px;
-  color: #324037;
-  border-radius: 12px;
-  margin-top: 10px;
-  font-size: 1.02rem;
-  line-height: 1.6;
+  background: var(--card, #fffdf7);
+  border: none;
+  border-top: 1px dashed var(--line);
+  padding: 16px 24px 22px;
+  color: var(--muted, #5c6b5f);
+  margin-top: 0;
+  font-size: 1.05rem;
+  line-height: 1.65;
 }
 
 /* CTA section */
@@ -2102,7 +2119,7 @@ footer {
     pointer-events: none;
 }
 
-.sam-cta-title {
+.bairro-cta-title {
     font-family: 'Bricolage Grotesque', 'Inter', sans-serif;
     font-size: clamp(1.6rem, 2.8vw, 2.2rem);
     font-weight: 700;
@@ -2110,7 +2127,7 @@ footer {
     line-height: 1.15;
 }
 
-.sam-cta-text {
+.bairro-cta-text {
     font-size: 1.05rem;
     color: var(--muted);
     line-height: 1.6;

@@ -1,12 +1,12 @@
-# S.A.M — Sistema de Apoio ao comércio local (Mercado) [Laravel Refactor]
+# Cá do Bairro — Comércio Tradicional e de Proximidade [Laravel Refactor]
 
-> A modern Portuguese-language web platform that helps users discover, search, and support **local shops**. Store owners can register their business, manage employees via invite codes, and customers can browse store profiles on an interactive map.
+> A modern Portuguese-language web platform that helps users discover, search, and support **local shops and traditional markets**. Store owners can register their business, manage employees via invite codes, and customers can browse store profiles on an interactive map.
 
 ---
 
 ## Migration Status
 
-This branch (`refactor/laravel-migration`) modernizes S.A.M from procedural vanilla PHP into a robust, normalized **Laravel** application. The original legacy code is fully backed up in `_legacy/` and `_legacy/sam_backup.sql`.
+This branch (`refactor/laravel-migration`) modernizes Cá do Bairro from procedural vanilla PHP into a robust, normalized **Laravel** application. The original legacy code is fully backed up in `_legacy/` and `_legacy/sam_backup.sql`.
 
 | Phase | Milestone | Status | Notes |
 |---|---|---|---|
@@ -281,7 +281,7 @@ Instead of dividing people into disconnected tables, access is determined dynami
 Stored in `.env` at the project root (never committed to version control):
 
 ```env
-APP_NAME=SAM
+APP_NAME="Cá do Bairro"
 APP_ENV=local
 APP_KEY=base64:...
 APP_DEBUG=true
@@ -472,7 +472,7 @@ Instead of dividing people into disconnected tables, access is determined dynami
 Stored in `.env` at the project root (never committed to version control):
 
 ```env
-APP_NAME=SAM
+APP_NAME="Cá do Bairro"
 APP_ENV=local
 APP_KEY=base64:...
 APP_DEBUG=true

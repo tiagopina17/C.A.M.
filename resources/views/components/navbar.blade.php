@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark market-navbar shadow-sm">
     <div class="container position-relative">
-        <a class="navbar-brand sam" href="{{ url('/') }}">S.A.M</a>
+        <a class="navbar-brand brand-bairro" href="{{ url('/') }}">Cá do <span class="brand-accent">Bairro</span></a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -12,7 +12,7 @@
                     <a href="{{ url('/') }}" class="nav-link {{ request()->is('/') ? 'active' : '' }}">Início</a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ url('/explorar') }}" class="nav-link {{ request()->is('explorar*') ? 'active' : '' }}">Serviços</a>
+                    <a href="{{ url('/explorar') }}" class="nav-link {{ request()->is('explorar*') ? 'active' : '' }}">Lojas</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ url('/mapa') }}" class="nav-link {{ request()->is('mapa*') ? 'active' : '' }}">Mapa</a>

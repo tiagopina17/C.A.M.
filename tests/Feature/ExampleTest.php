@@ -17,9 +17,9 @@ class ExampleTest extends TestCase
         $response = $this->get('/');
 
         $response->assertStatus(200);
-        $response->assertSee('S.A.M');
+        $response->assertSee('Cá do Bairro');
         $response->assertSee('Início');
-        $response->assertSee('Serviços');
+        $response->assertSee('Lojas');
         $response->assertSee('Login');
     }
 }

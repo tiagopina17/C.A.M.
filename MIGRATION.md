@@ -1,6 +1,6 @@
-# S.A.M - Laravel Migration Progress and Roadmap
+# Cá do Bairro - Laravel Migration Progress and Roadmap
 
-Target: Modernize S.A.M from procedural vanilla PHP to Laravel 11 with Blade, Bootstrap 5, built-in CSRF, and a normalized relational database.
+Target: Modernize Cá do Bairro from procedural vanilla PHP to Laravel 11 with Blade, Bootstrap 5, built-in CSRF, and a normalized relational database.
 
 ---
 
@@ -84,7 +84,7 @@ flowchart TD
 - [x] **Home Page (`/`)**: Port `_legacy/components/cp_index_intro.php` to `home.blade.php` and `HomeController@index`.
 - [x] **Search Auto-complete**: Wire client-side store search to Eloquent/JSON API (`/api/stores/search` in `HomeController@search`).
 - [x] **Component Modernization & Design Polish**:
-  - Navbar (`resources/views/components/navbar.blade.php`): Deep ink theme (`--ink`), ochre bottom border (`--ochre`), centered navigation links (`Início`, `Serviços`, `Mapa`, `Ajuda`), high-contrast `S.A.M` logo, and pill action buttons.
+  - Navbar (`resources/views/components/navbar.blade.php`): Deep ink theme (`--ink`), ochre bottom border (`--ochre`), centered navigation links (`Início`, `Lojas`, `Mapa`, `Ajuda`), brand logo (`Cá do Bairro`), and pill action buttons.
   - Footer (`resources/views/components/footer.blade.php`): Modernized 3-column layout matching the market design system.
   - Merchant CTA Card: Cleaned and unified the "Não espere mais" section into `.merchant-cta-card`.
   - CSS Cleanup: Removed dead prototype rules, removed global `nav !important` and `.sam !important` locks, and enabled automatic CSS cache-busting.

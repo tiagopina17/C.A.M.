@@ -1,4 +1,4 @@
-<x-market-layout title="S.A.M. — Apoio ao Comércio Local">
+<x-market-layout title="Cá do Bairro — Apoio ao Comércio Local">
     <div class="hero-page-wrapper">
         <main class="container mt-4">
             <!-- HERO -->
@@ -7,8 +7,11 @@
                     <span class="badge-stamp">
                         <i class="fas fa-store"></i>Selo · comércio local
                     </span>
-                    <h1 class="sam-hero-title">Bem-vindo ao <span class="sam">S.A.M</span></h1>
-                    <p class="hero-subtitle">A base de dados de lojas que lhe permite apoiar o comércio local.</p>
+                    <h1 class="bairro-hero-title">
+                        Tudo o que precisa,<br class="d-none d-md-block">
+                        <span class="hero-bairro-ca">Cá do</span> <span class="hero-bairro-name">Bairro.</span>
+                    </h1>
+                    <p class="hero-subtitle">Descubra mercearias, mercados e lojas tradicionais à sua porta.</p>
 
                     <!-- Search Box -->
                     <div class="search-container position-relative">
@@ -25,8 +28,8 @@
                 <!-- Ticket Frame Illustration -->
                 <div class="hero-visual">
                     <div class="ticket-frame">
-                        <div class="ticket-stamp">100%<br>local</div>
-                        <svg class="hero-abstract" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração S.A.M">
+                        <div class="ticket-stamp">100%<br>bairro</div>
+                        <svg class="hero-abstract" viewBox="0 0 500 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração Cá do Bairro">
                             <!-- Background shapes -->
                             <circle cx="150" cy="150" r="140" fill="var(--paper-2)" />
                             <circle cx="360" cy="270" r="100" fill="var(--accent-1)" opacity="0.10" />
@@ -65,20 +68,28 @@
                 </div>
             </section>
 
-            <!-- FEATURES ACCORDION SECTION -->
+            <!-- FAQ ACCORDION SECTION (MARKET AWNING) -->
             <div class="scallop mt-5"></div>
             <section class="features-accordion-section">
                 <div class="features-inner">
+                    <div class="text-center mb-4">
+                        <span class="badge-chip">
+                            <i class="fa-solid fa-circle-question"></i>Perguntas Frequentes
+                        </span>
+                        <h2 class="bairro-hero-title fs-2 mt-2 mb-0 text-white">Dúvidas sobre o Cá do Bairro?</h2>
+                    </div>
+
                     <div class="accordion" id="featuresAccordion">
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#featureOne" aria-expanded="true" aria-controls="featureOne">
-                                    <span class="stub-num">Ficha 01</span> O que é?
+                                    <span class="faq-num">01</span>
+                                    <span>O que é o Cá do Bairro?</span>
                                 </button>
                             </h2>
                             <div id="featureOne" class="accordion-collapse collapse show" data-bs-parent="#featuresAccordion">
                                 <div class="accordion-body">
-                                    Encontre uma loja local aonde pode fazer as suas compras — filtrável por localidade, categoria e serviços. Informação clara para apoiar o comércio tradicional perto de si.
+                                    É uma montra digital que reúne as mercearias, mercados e lojas tradicionais da sua localidade. O objetivo é ajudar os vizinhos a encontrar comércio de proximidade e fortalecer a economia local.
                                 </div>
                             </div>
                         </div>
@@ -86,12 +97,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingTwo">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#featureTwo" aria-expanded="false" aria-controls="featureTwo">
-                                    <span class="stub-num">Ficha 02</span> A quem se dirige?
+                                    <span class="faq-num">02</span>
+                                    <span>A quem se destina?</span>
                                 </button>
                             </h2>
                             <div id="featureTwo" class="accordion-collapse collapse" data-bs-parent="#featuresAccordion">
                                 <div class="accordion-body">
-                                    Pessoas que procuram lojas locais de confiança e pretendem dinamizar e apoiar o comércio de bairro.
+                                    A todas as pessoas que pretendem comprar localmente a quem conhecem, e a comerciantes e merceeiros que queiram dar visibilidade à sua loja sem complicações técnicas.
                                 </div>
                             </div>
                         </div>
@@ -99,12 +111,13 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="headingThree">
                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#featureThree" aria-expanded="false" aria-controls="featureThree">
-                                    <span class="stub-num">Ficha 03</span> Como funciona?
+                                    <span class="faq-num">03</span>
+                                    <span>Como funciona?</span>
                                 </button>
                             </h2>
                             <div id="featureThree" class="accordion-collapse collapse" data-bs-parent="#featuresAccordion">
                                 <div class="accordion-body">
-                                    Pesquise pelo nome da loja, explore categorias no mapa interativo ou consulte o catálogo de produtos e serviços disponíveis.
+                                    Pode pesquisar pelo nome da loja, filtrar por localidade e categorias na secção Lojas, ou consultar o mapa interativo para ver exatamente o que existe perto de si.
                                 </div>
                             </div>
                         </div>
@@ -122,9 +135,9 @@
                                 <i class="fas fa-store"></i>Comerciantes & Lojas
                             </span>
                         </div>
-                        <h2 class="sam-cta-title mb-3">Tem um comércio ou serviço local?</h2>
-                        <p class="sam-cta-text mb-4">
-                            Junte-se à rede S.A.M. Crie a montra digital da sua loja, destaque os seus produtos e serviços, e receba novos clientes da sua comunidade de forma simples e gratuita.
+                        <h2 class="bairro-cta-title mb-3">Tem uma loja ou mercearia no bairro?</h2>
+                        <p class="bairro-cta-text mb-4">
+                            Junte-se à rede Cá do Bairro. Crie a montra digital da sua loja, destaque os seus produtos, e receba novos clientes da sua comunidade de forma simples e gratuita.
                         </p>
                         <div class="row g-2 text-dark small fw-medium">
                             <div class="col-sm-6 d-flex align-items-center gap-2">
@@ -133,7 +146,7 @@
                             </div>
                             <div class="col-sm-6 d-flex align-items-center gap-2">
                                 <i class="fa-solid fa-circle-check text-success"></i>
-                                <span>Catálogo de produtos e serviços</span>
+                                <span>Catálogo de produtos da loja</span>
                             </div>
                             <div class="col-sm-6 d-flex align-items-center gap-2">
                                 <i class="fa-solid fa-circle-check text-success"></i>

@@ -20,10 +20,10 @@ class HomeControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewIs('home');
         $response->assertViewHas('stores');
-        $response->assertSee('Bem-vindo ao');
-        $response->assertSee('S.A.M');
+        $response->assertSee('Tudo o que precisa');
+        $response->assertSee('Cá do Bairro');
         $response->assertSee('Mercado Central');
-        $response->assertSee('Ficha 01');
+        $response->assertSee('Perguntas Frequentes');
     }
 
     public function test_store_search_api_returns_matching_stores(): void
