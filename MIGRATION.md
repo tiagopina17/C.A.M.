@@ -94,6 +94,11 @@ flowchart TD
 - [ ] **Store Detail (`/lojas/{id}`)**: Display store header, location map embed, and catalog.
 - [ ] **FAQ and Info (`/ajuda`, `/contacto`)**: Port static content to lightweight controller/views.
 
+### Phase 5.6: Auth Views Migration (Login & Register)
+- [ ] **Login Screen (`/login`)**: Port `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card`, and password toggle.
+- [ ] **Registration Screen (`/register`)**: Port `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels and client/server validation badges.
+- [ ] **Password Reset Screens (`/forgot-password`, `/reset-password`)**: Match the market/carimbo aesthetic.
+
 ### Phase 6: Store Management and Invite Codes
 - [ ] **Store Registration (`/lojas/registar`)**: 2-step wizard using Google Places API without user deletion.
 - [ ] **Store Dashboard (`/gestao/lojas`)**: List managed stores for authenticated employees.
