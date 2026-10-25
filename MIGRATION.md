@@ -89,7 +89,7 @@ flowchart TD
   - Merchant CTA Card: Cleaned and unified the "Não espere mais" section into `.merchant-cta-card`.
   - CSS Cleanup: Removed dead prototype rules, removed global `nav !important` and `.sam !important` locks, and enabled automatic CSS cache-busting.
 - [x] **Automated Tests**: Added `tests/Feature/HomeControllerTest.php` (all 31 test suite assertions passing).
-- [ ] **Explore Page (`/explorar`)**: Group services by category in Blade.
+- [x] **Explore / Lojas Page (`/explorar`)**: Ported `_legacy/components/cp_explorar.php` to `ExploreController@index` and `resources/views/explore.blade.php`. Supports category filter chips, search query by store name/description, responsive store cards, empty states, and pagination.
 - [ ] **Interactive Map (`/mapa`)**: Port `_legacy/components/cp_map.php` to Google Maps JS Blade view.
 - [ ] **Store Detail (`/lojas/{id}`)**: Display store header, location map embed, and catalog.
 - [ ] **FAQ and Info (`/ajuda`, `/contacto`)**: Port static content to lightweight controller/views.
