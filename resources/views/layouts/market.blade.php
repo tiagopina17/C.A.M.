@@ -33,6 +33,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     @stack('styles')
+    @stack('head')
 </head>
 <body style="background-color: var(--paper, #f5f2e6); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden;">
     <x-navbar />

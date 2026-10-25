@@ -117,7 +117,7 @@
                                         <i class="fas fa-location-dot text-success me-1"></i>
                                         <span>No bairro</span>
                                     </div>
-                                    <a href="{{ url('/lojas/' . $store->id) }}" class="btn-store-visit">
+                                    <a href="{{ route('stores.show', $store) }}" class="btn-store-visit">
                                         Ver Loja <i class="fas fa-arrow-right ms-1"></i>
                                     </a>
                                 </div>

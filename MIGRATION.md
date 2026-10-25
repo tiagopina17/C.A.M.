@@ -91,7 +91,7 @@ flowchart TD
 - [x] **Automated Tests**: Added `tests/Feature/HomeControllerTest.php` (all 31 test suite assertions passing).
 - [x] **Explore / Lojas Page (`/explorar`)**: Ported `_legacy/components/cp_explorar.php` to `ExploreController@index` and `resources/views/explore.blade.php`. Supports category filter chips, search query by store name/description, responsive store cards, empty states, and pagination.
 - [x] **Interactive Map (`/mapa`)**: Ported `_legacy/components/cp_map.php` into `MapController@index` and `resources/views/map.blade.php`. Uses Google Maps JS API with `AdvancedMarkerElement`, marker clustering, custom market pin badges, rich InfoWindows, and automatic bounds fitting.
-- [ ] **Store Detail (`/lojas/{id}`)**: Display store header, location map embed, and catalog.
+- [x] **Store Detail (`/lojas/{id}`)**: Ported `_legacy/components/cp_loja.php` to `StoreController@show` and `resources/views/stores/show.blade.php`. Features store hero card, product/service catalog grouped by category, interactive location mini-map with Google Maps JS API, and native link sharing.
 - [ ] **FAQ and Info (`/ajuda`, `/contacto`)**: Port static content to lightweight controller/views.
 
 ### Phase 5.6: Auth Views Migration (Login & Register)
