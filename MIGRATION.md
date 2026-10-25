@@ -136,3 +136,15 @@ flowchart TD
 | `scripts/sc_login.php` | Laravel Breeze `AuthenticatedSessionController` | Secure session authentication |
 | `scripts/sc_registo.php` | Laravel Breeze `RegisteredUserController` | Account registration |
 
+---
+
+## Developer Notes & Key Conventions
+
+For full design specifications and development guidelines, consult [README.md](file:///c:/laragon/www/pessoal/README.md#developer-notes--implementation-rules). Key reminders:
+1. **Avatar Initials**: Strip `[MOCK]` tags and Portuguese stopwords (`de`, `da`, `do`, `dos`, `das`, `e`, `&`) so store names yield authentic 2-letter initials (e.g. `Padaria do Bairro` &rarr; `PB`, not `[P`).
+2. **Google Maps JS API**: Declare explicit inline heights on map containers (`style="height: 260px; min-height: 260px;"`) to prevent collapse, and use `AdvancedMarkerElement` with custom market pins (`<i class="fa-solid fa-store"></i>`).
+3. **No Fake Verification**: There is no store verification status in this app; never generate placeholder verification badges.
+4. **Backlog Tracking**: Street addresses (`morada`) and opening hours (`horario_atendimento`) are tracked in `README.md#planned-features--backlog` for Phase 6.
+5. **Git Safety**: Always summarize proposed changes and request explicit user approval before committing or pushing.
+
+
