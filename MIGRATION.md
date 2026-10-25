@@ -90,7 +90,7 @@ flowchart TD
   - CSS Cleanup: Removed dead prototype rules, removed global `nav !important` and `.sam !important` locks, and enabled automatic CSS cache-busting.
 - [x] **Automated Tests**: Added `tests/Feature/HomeControllerTest.php` (all 31 test suite assertions passing).
 - [x] **Explore / Lojas Page (`/explorar`)**: Ported `_legacy/components/cp_explorar.php` to `ExploreController@index` and `resources/views/explore.blade.php`. Supports category filter chips, search query by store name/description, responsive store cards, empty states, and pagination.
-- [ ] **Interactive Map (`/mapa`)**: Port `_legacy/components/cp_map.php` to Google Maps JS Blade view.
+- [x] **Interactive Map (`/mapa`)**: Ported `_legacy/components/cp_map.php` into `MapController@index` and `resources/views/map.blade.php`. Uses Google Maps JS API with `AdvancedMarkerElement`, marker clustering, custom market pin badges, rich InfoWindows, and automatic bounds fitting.
 - [ ] **Store Detail (`/lojas/{id}`)**: Display store header, location map embed, and catalog.
 - [ ] **FAQ and Info (`/ajuda`, `/contacto`)**: Port static content to lightweight controller/views.
 
