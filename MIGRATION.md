@@ -96,7 +96,7 @@ flowchart TD
 - [x] **FAQ and Info (`/ajuda`, `/contacto`)**: Ported static content to `InfoController`, `resources/views/help.blade.php`, and `resources/views/contact.blade.php` featuring responsive market accordion, direct contact channels, validated contact form, and 100% passing feature tests.
 
 ### Phase 5.6: Auth Views Migration (Login & Register)
-- [ ] **Login Screen (`/login`)**: Port `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card`, and password toggle.
+- [x] **Login Screen (`/login`)**: Ported `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card` with pure white contrast, brand typography, password toggle, unified login banner, and verified via automated tests.
 - [ ] **Registration Screen (`/register`)**: Port `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels and client/server validation badges.
 - [ ] **Password Reset Screens (`/forgot-password`, `/reset-password`)**: Match the market/carimbo aesthetic.
 

@@ -1328,13 +1328,13 @@ body {
 /* Default width; pages with a wider/narrower card (e.g. the two-step
    lojas wizard, or the tighter login card) override max-width locally. */
 .auth-card {
-    background: var(--card);
+    background: #ffffff !important;
     border: 2px solid var(--ink);
-    border-radius: var(--radius);
+    border-radius: 16px;
     box-shadow: 6px 6px 0 var(--accent-2);
     padding: 2.6rem 2.4rem;
     width: 100%;
-    max-width: 560px;
+    max-width: 500px;
 }
 
 /* Default size tuned for shorter titles; pages with longer headings

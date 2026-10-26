@@ -15,6 +15,12 @@ class AuthenticationTest extends TestCase
         $response = $this->get('/login');
 
         $response->assertStatus(200);
+        $response->assertSee('Iniciar');
+        $response->assertSee('Sessão');
+        $response->assertSee('Endereço de Email');
+        $response->assertSee('Palavra-passe');
+        $response->assertSee('togglePassword');
+        $response->assertSee('Entrar na Plataforma');
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void
@@ -34,12 +40,15 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->post('/login', [
+        $response = $this->post('/login', [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
 
         $this->assertGuest();
+        $response->assertSessionHasErrors([
+            'email' => 'As credenciais introduzidas não correspondem aos nossos registos.',
+        ]);
     }
 
     public function test_users_can_logout(): void
