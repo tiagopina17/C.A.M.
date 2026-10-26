@@ -97,7 +97,7 @@ flowchart TD
 
 ### Phase 5.6: Auth Views Migration (Login & Register)
 - [x] **Login Screen (`/login`)**: Ported `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card` with pure white contrast, brand typography, password toggle, unified login banner, and verified via automated tests.
-- [ ] **Registration Screen (`/register`)**: Port `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels and client/server validation badges.
+- [x] **Registration Screen (`/register`)**: Ported `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels, pure white high-contrast card, double password visibility toggles, localized Portuguese validation dictionary, and verified via automated tests.
 - [ ] **Password Reset Screens (`/forgot-password`, `/reset-password`)**: Match the market/carimbo aesthetic.
 
 ### Phase 6: Store Management and Invite Codes
