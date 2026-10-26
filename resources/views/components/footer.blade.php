@@ -28,6 +28,7 @@
                     <li><a href="{{ url('/explorar') }}" class="text-white-50 text-decoration-none footer-link">Explorar Lojas</a></li>
                     <li><a href="{{ url('/mapa') }}" class="text-white-50 text-decoration-none footer-link">Mapa Interativo</a></li>
                     <li><a href="{{ url('/ajuda') }}" class="text-white-50 text-decoration-none footer-link">Perguntas Frequentes</a></li>
+                    <li><a href="{{ url('/contacto') }}" class="text-white-50 text-decoration-none footer-link">Fale Connosco</a></li>
                 </ul>
             </div>
 

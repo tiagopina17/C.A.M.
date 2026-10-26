@@ -36,8 +36,9 @@ flowchart TD
     D1["Phase 1: Environment and Project Setup"]:::done --> D2["Phase 2: Database Schema and Eloquent Models"]:::done
     D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::done
     D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::done
-    D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail)"]:::active
-    D5 --> D6["Phase 6: Store Management and Invite Codes"]:::pending
+    D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail, Help, Contact)"]:::done
+    D5 --> D56["Phase 5.6: Auth Views (Login, Register, Password Reset)"]:::active
+    D56 --> D6["Phase 6: Store Management and Invite Codes"]:::pending
     D6 --> D7["Phase 7: Admin Backoffice and Data Seeders"]:::pending
     D7 --> D8["Phase 8: QA, Verification and Final Cleanup"]:::pending
 
@@ -92,7 +93,7 @@ flowchart TD
 - [x] **Explore / Lojas Page (`/explorar`)**: Ported `_legacy/components/cp_explorar.php` to `ExploreController@index` and `resources/views/explore.blade.php`. Supports category filter chips, search query by store name/description, responsive store cards, empty states, and pagination.
 - [x] **Interactive Map (`/mapa`)**: Ported `_legacy/components/cp_map.php` into `MapController@index` and `resources/views/map.blade.php`. Uses Google Maps JS API with `AdvancedMarkerElement`, marker clustering, custom market pin badges, rich InfoWindows, and automatic bounds fitting.
 - [x] **Store Detail (`/lojas/{id}`)**: Ported `_legacy/components/cp_loja.php` to `StoreController@show` and `resources/views/stores/show.blade.php`. Features store hero card, product/service catalog grouped by category, interactive location mini-map with Google Maps JS API, and native link sharing.
-- [ ] **FAQ and Info (`/ajuda`, `/contacto`)**: Port static content to lightweight controller/views.
+- [x] **FAQ and Info (`/ajuda`, `/contacto`)**: Ported static content to `InfoController`, `resources/views/help.blade.php`, and `resources/views/contact.blade.php` featuring responsive market accordion, direct contact channels, validated contact form, and 100% passing feature tests.
 
 ### Phase 5.6: Auth Views Migration (Login & Register)
 - [ ] **Login Screen (`/login`)**: Port `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card`, and password toggle.

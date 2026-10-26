@@ -14,7 +14,8 @@ This branch (`refactor/laravel-migration`) modernizes Cá do Bairro from procedu
 | **Phase 2** | Normalized Database & Eloquent Models | ✅ Completed | `stores`, `store_user`, `categories`, `services`, `service_store`, `store_invite_codes` |
 | **Phase 3** | Authentication & Security (Breeze + CSRF) | ✅ Completed | Single unified auth for users & employees, brute-force protection, CSRF |
 | **Phase 4** | Design & Asset Migration | ✅ Completed | Ported `meusestilos.css`, `<x-market-layout>`, `<x-navbar>`, `<x-footer>` |
-| **Phase 5** | Public Pages | ⏳ Up Next | Home with live store search, Explore, Interactive Map, Store Detail |
+| **Phase 5** | Public Pages | ✅ Completed | Home with live search, Explore, Interactive Map, Store Detail, FAQ & Contact |
+| **Phase 5.6** | Auth Views Migration | ⏳ Up Next | Port legacy login, register, and password reset into market design system |
 | **Phase 6** | Store Management & Invite Codes | ⏹️ Pending | Store wizard, employee management, 7-char code generator |
 | **Phase 7** | Admin Backoffice & Data Importer | ⏹️ Pending | Admin dashboard + legacy migration script from `sam` to `sam_laravel` |
 | **Phase 8** | QA & Verification | ⏹️ Pending | Automated feature test suite + final cleanup |

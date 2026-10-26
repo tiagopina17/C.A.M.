@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InfoController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
@@ -12,6 +13,10 @@ Route::get('/explorar', [ExploreController::class, 'index'])->name('explore');
 Route::get('/mapa', [MapController::class, 'index'])->name('map');
 Route::get('/lojas/{store}', [StoreController::class, 'show'])->name('stores.show');
 Route::get('/api/stores/search', [HomeController::class, 'search'])->name('stores.search');
+
+Route::get('/ajuda', [InfoController::class, 'help'])->name('help');
+Route::get('/contacto', [InfoController::class, 'contact'])->name('contact');
+Route::post('/contacto', [InfoController::class, 'submitContact'])->name('contact.submit');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
