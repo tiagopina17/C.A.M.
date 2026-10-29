@@ -96,4 +96,39 @@ class ProfileTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    public function test_profile_displays_role_and_initials(): void
+    {
+        $user = User::factory()->create([
+            'name' => 'Tiago Pina',
+            'email' => 'tiago@example.com',
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/profile');
+
+        $response->assertOk();
+        $response->assertSee('TP');
+        $response->assertSee('Cliente');
+        $response->assertSee('Tiago Pina');
+        $response->assertSee('tiago@example.com');
+    }
+
+    public function test_profile_displays_affiliated_stores_and_merchant_role(): void
+    {
+        $user = User::factory()->create(['name' => 'Maria Silva']);
+        $store = \App\Models\Store::factory()->create(['name' => 'Padaria do Bairro']);
+        $store->users()->attach($user->id, ['role' => 'owner']);
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/profile');
+
+        $response->assertOk();
+        $response->assertSee('Comerciante');
+        $response->assertSee('Padaria do Bairro');
+        $response->assertSee('Proprietário');
+        $response->assertSee('1 Loja Associada');
+    }
 }

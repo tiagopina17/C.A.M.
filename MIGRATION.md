@@ -99,8 +99,9 @@ flowchart TD
 - [x] **Login Screen (`/login`)**: Ported `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card` with pure white contrast, brand typography, password toggle, unified login banner, and verified via automated tests.
 - [x] **Registration Screen (`/register`)**: Ported `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels, pure white high-contrast card, double password visibility toggles, localized Portuguese validation dictionary, and verified via automated tests.
 
-### Phase 6: Store Management and Invite Codes
+### Phase 6: Store Management and User Profile
 - [x] **Store Registration (`/lojas/registar`)**: 2-step wizard using Google Places API without user deletion, attaching user as owner in `store_user`, and verified via automated tests.
+- [x] **Profile Page Migration (`/profile`)**: Ported `_legacy/components/cp_perfil.php` to `resources/views/profile/edit.blade.php` using `<x-market-layout>`, avatar initials, user information management, password change with visibility toggles, store affiliations overview (owned and employed stores), and verified via automated tests.
 - [ ] **Store Dashboard (`/gestao/lojas`)**: List managed stores for authenticated employees.
 - [ ] **Single Store Management (`/gestao/lojas/{id}`)**: Update store info and manage employee table.
 - [ ] **Invite Code Generation**: AJAX/POST route generating 7-character expiring codes.
@@ -128,6 +129,7 @@ flowchart TD
 | `components/cp_footer.php` | `resources/views/components/footer.blade.php` | Page footer and script includes |
 | `components/cp_index_intro.php` | `resources/views/home.blade.php` | Landing page, hero, live search |
 | `components/cp_loja.php` | `resources/views/stores/show.blade.php` | Public store profile |
+| `components/cp_perfil.php` | `resources/views/profile/edit.blade.php` | User profile, credentials, and store affiliations |
 | `components/cp_registo_lojas.php` | `resources/views/stores/create.blade.php` | Store registration wizard |
 | `components/cp_info_lojas.php` | `resources/views/management/stores/index.blade.php` | Employee store list |
 | `components/cp_gerir_loja.php` | `resources/views/management/stores/edit.blade.php` | Store editor and employee management |
