@@ -1253,18 +1253,17 @@ body {
 }
 
 .predictions-container {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    right: 0;
+    position: relative;
+    margin-top: 10px;
+    width: 100%;
     background: #ffffff;
     border: 2px solid var(--ink);
     border-radius: 12px;
     max-height: 220px;
     overflow-y: auto;
-    z-index: 1050;
+    z-index: 10;
     display: none;
-    box-shadow: 0 10px 25px rgba(24, 43, 32, 0.14);
+    box-shadow: 0 4px 14px rgba(24, 43, 32, 0.08);
 }
 
 .prediction-item {

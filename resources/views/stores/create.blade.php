@@ -1,7 +1,7 @@
 <x-market-layout title="Registar Loja — Cá do Bairro">
     <div class="auth-page-wrapper">
-        <div class="auth-card position-relative overflow-hidden shadow" style="max-width: 620px;">
-            <div style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: repeating-linear-gradient(90deg, var(--accent-1) 0 18px, var(--ochre) 18px 36px);"></div>
+        <div class="auth-card position-relative shadow" style="max-width: 620px;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; height: 6px; background: repeating-linear-gradient(90deg, var(--accent-1) 0 18px, var(--ochre) 18px 36px); border-top-left-radius: 18px; border-top-right-radius: 18px;"></div>
 
             <div class="text-center pt-2">
                 <span class="badge-stamp">
@@ -87,7 +87,7 @@
                                    id="location-search"
                                    placeholder="Escreva a morada ou nome da loja..."
                                    autocomplete="off">
-                            <div id="predictions-container" class="predictions-container shadow"></div>
+                            <div id="predictions-container" class="predictions-container"></div>
                         </div>
 
                         <div id="selected-place-info" class="selected-place-info">
