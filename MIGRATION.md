@@ -37,8 +37,8 @@ flowchart TD
     D2 --> D3["Phase 3: Auth and Security (Breeze + CSRF)"]:::done
     D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::done
     D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail, Help, Contact)"]:::done
-    D5 --> D56["Phase 5.6: Auth Views (Login, Register, Password Reset)"]:::active
-    D56 --> D6["Phase 6: Store Management and Invite Codes"]:::pending
+    D5 --> D56["Phase 5.6: Auth Views (Login & Register)"]:::done
+    D56 --> D6["Phase 6: Store Management and Invite Codes"]:::active
     D6 --> D7["Phase 7: Admin Backoffice and Data Seeders"]:::pending
     D7 --> D8["Phase 8: QA, Verification and Final Cleanup"]:::pending
 
@@ -95,13 +95,12 @@ flowchart TD
 - [x] **Store Detail (`/lojas/{id}`)**: Ported `_legacy/components/cp_loja.php` to `StoreController@show` and `resources/views/stores/show.blade.php`. Features store hero card, product/service catalog grouped by category, interactive location mini-map with Google Maps JS API, and native link sharing.
 - [x] **FAQ and Info (`/ajuda`, `/contacto`)**: Ported static content to `InfoController`, `resources/views/help.blade.php`, and `resources/views/contact.blade.php` featuring responsive market accordion, direct contact channels, validated contact form, and 100% passing feature tests.
 
-### Phase 5.6: Auth Views Migration (Login & Register)
+### Phase 5.6: Auth Views Migration (Login & Register) (Completed)
 - [x] **Login Screen (`/login`)**: Ported `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card` with pure white contrast, brand typography, password toggle, unified login banner, and verified via automated tests.
 - [x] **Registration Screen (`/register`)**: Ported `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels, pure white high-contrast card, double password visibility toggles, localized Portuguese validation dictionary, and verified via automated tests.
-- [ ] **Password Reset Screens (`/forgot-password`, `/reset-password`)**: Match the market/carimbo aesthetic.
 
 ### Phase 6: Store Management and Invite Codes
-- [ ] **Store Registration (`/lojas/registar`)**: 2-step wizard using Google Places API without user deletion.
+- [x] **Store Registration (`/lojas/registar`)**: 2-step wizard using Google Places API without user deletion, attaching user as owner in `store_user`, and verified via automated tests.
 - [ ] **Store Dashboard (`/gestao/lojas`)**: List managed stores for authenticated employees.
 - [ ] **Single Store Management (`/gestao/lojas/{id}`)**: Update store info and manage employee table.
 - [ ] **Invite Code Generation**: AJAX/POST route generating 7-character expiring codes.

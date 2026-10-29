@@ -4,24 +4,6 @@
 
 ---
 
-## Migration Status
-
-This branch (`refactor/laravel-migration`) modernizes Cá do Bairro from procedural vanilla PHP into a robust, normalized **Laravel** application. The original legacy code is fully backed up in `_legacy/` and `_legacy/sam_backup.sql`.
-
-| Phase | Milestone | Status | Notes |
-|---|---|---|---|
-| **Phase 1** | Safety & Laravel Skeleton | ✅ Completed | PHP 8.3 + Laravel setup in Laragon, Git tracking |
-| **Phase 2** | Normalized Database & Eloquent Models | ✅ Completed | `stores`, `store_user`, `categories`, `services`, `service_store`, `store_invite_codes` |
-| **Phase 3** | Authentication & Security (Breeze + CSRF) | ✅ Completed | Single unified auth for users & employees, brute-force protection, CSRF |
-| **Phase 4** | Design & Asset Migration | ✅ Completed | Ported `meusestilos.css`, `<x-market-layout>`, `<x-navbar>`, `<x-footer>` |
-| **Phase 5** | Public Pages | ✅ Completed | Home with live search, Explore, Interactive Map, Store Detail, FAQ & Contact |
-| **Phase 5.6** | Auth Views Migration | ⏳ Up Next | Port legacy login, register, and password reset into market design system |
-| **Phase 6** | Store Management & Invite Codes | ⏹️ Pending | Store wizard, employee management, 7-char code generator |
-| **Phase 7** | Admin Backoffice & Data Importer | ⏹️ Pending | Admin dashboard + legacy migration script from `sam` to `sam_laravel` |
-| **Phase 8** | QA & Verification | ⏹️ Pending | Automated feature test suite + final cleanup |
-
----
-
 ## Table of Contents
 
 - [Tech Stack](#tech-stack)
@@ -427,5 +409,17 @@ The following features and improvements were identified during migration and are
 * **Schedule Storage**: Introduce a structured opening hours schema (e.g. days of the week, open/close intervals for morning and afternoon shifts, and holiday statuses).
 * **Store Dashboard Management**: Enable store managers to edit and update their weekly schedule directly from `/gestao/lojas/{id}`.
 * **Dynamic Store Profile Display**: Replace the placeholder *"Horário habitual de bairro"* on `/lojas/{id}` with live open/closed indicators and detailed schedule dropdowns.
+
+### 3. Transactional Email System & Password Reset (Post-Main Merge)
+> [!NOTE]
+> The modern password reset screens, centralized strong password defaults, and language dictionaries are preserved in Git Stash:
+> `password-reset-views-and-backlog`.
+> Because email sending and password resets were non-functional placeholders in the legacy app, they were stashed to keep the migration branch focused on 1:1 legacy parity and will be restored after merging into `main`.
+
+* **Restore Stashed Views**: Run `git stash pop` after merging `refactor/laravel-migration` into `main` to restore `resources/views/auth/forgot-password.blade.php`, `resources/views/auth/reset-password.blade.php`, and their associated feature tests.
+* **Transactional Mail Driver Configuration**: Configure a real SMTP or API-based mail provider (e.g., Mailgun, Resend, or Postmark) in `.env` to replace the local log driver.
+* **Password Reset Delivery**: Enable dispatching of branded HTML reset emails with temporary tokens.
+* **Active Contact Form Delivery**: Wire `/contacto` submissions (`InfoController@submitContact`) to a transactional Mailable (`ContactMessageReceived`) that delivers inquiries directly to `suporte@cadobairro.pt`.
+
 
 
