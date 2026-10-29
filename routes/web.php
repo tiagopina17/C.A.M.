@@ -17,8 +17,14 @@ Route::get('/mapa', [MapController::class, 'index'])->name('map');
 Route::middleware('auth')->group(function () {
     Route::get('/lojas/registar', [StoreRegistrationController::class, 'create'])->name('stores.create');
     Route::post('/lojas/registar', [StoreRegistrationController::class, 'store'])->name('stores.store');
+    Route::get('/lojas/juntar', [StoreManagementController::class, 'showJoinForm'])->name('stores.join');
+    Route::post('/lojas/juntar', [StoreManagementController::class, 'join'])->name('stores.join.submit');
 
     Route::get('/gestao/lojas', [StoreManagementController::class, 'index'])->name('management.stores.index');
+    Route::get('/gestao/lojas/{store}', [StoreManagementController::class, 'edit'])->name('management.stores.edit');
+    Route::put('/gestao/lojas/{store}', [StoreManagementController::class, 'update'])->name('management.stores.update');
+    Route::delete('/gestao/lojas/{store}/colaboradores/{user}', [StoreManagementController::class, 'removeEmployee'])->name('management.stores.remove_employee');
+    Route::post('/gestao/lojas/{store}/convites', [StoreManagementController::class, 'generateInviteCode'])->name('management.stores.generate_code');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

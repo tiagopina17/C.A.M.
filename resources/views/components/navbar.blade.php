@@ -36,9 +36,8 @@
                             </li>
                             <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}"><i class="fa-regular fa-user me-2 text-muted"></i>Perfil</a></li>
                             <li><a class="dropdown-item py-2" href="{{ route('stores.create') }}"><i class="fa-solid fa-circle-plus me-2 text-muted"></i>Registar Loja</a></li>
-                            @if(Auth::user()->ownedStores()->exists() || Auth::user()->employedStores()->exists())
-                                <li><a class="dropdown-item py-2" href="{{ url('/gestao/lojas') }}"><i class="fa-solid fa-store me-2 text-muted"></i>Gerir Lojas</a></li>
-                            @endif
+                            <li><a class="dropdown-item py-2" href="{{ route('stores.join') }}"><i class="fa-solid fa-door-open me-2 text-muted"></i>Juntar a uma Loja</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ route('management.stores.index') }}"><i class="fa-solid fa-store me-2 text-muted"></i>Painel de Lojas</a></li>
                             <li><hr class="dropdown-divider my-1"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}" class="m-0">

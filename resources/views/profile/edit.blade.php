@@ -218,9 +218,14 @@
                                     <h3 class="heading-mkt mb-1">Lojas Associadas</h3>
                                     <p class="text-muted small mb-0">Estabelecimentos onde é proprietário ou funcionário.</p>
                                 </div>
-                                <a href="{{ route('stores.create') }}" class="btn-mkt-ghost btn-sm text-decoration-none">
-                                    <i class="fa-solid fa-plus me-1"></i>Nova Loja
-                                </a>
+                                <div class="d-flex gap-2">
+                                    <a href="{{ route('stores.join') }}" class="btn-mkt-ghost btn-sm text-decoration-none">
+                                        <i class="fa-solid fa-door-open me-1"></i>Juntar com Código
+                                    </a>
+                                    <a href="{{ route('stores.create') }}" class="btn-mkt-submit btn-sm text-decoration-none border-0">
+                                        <i class="fa-solid fa-plus me-1"></i>Nova Loja
+                                    </a>
+                                </div>
                             </div>
 
                             @if ($user->stores->isEmpty())
@@ -230,11 +235,16 @@
                                     </div>
                                     <h5 class="fw-bold text-dark mb-2">Ainda não tens nenhuma loja associada</h5>
                                     <p class="text-muted mb-4" style="max-width: 440px; margin: 0 auto;">
-                                        Regista o teu negócio no Cá do Bairro ou solicita um código de convite ao proprietário do estabelecimento.
+                                        Regista o teu negócio no Cá do Bairro ou introduz um código de convite fornecido pelo proprietário de um estabelecimento.
                                     </p>
-                                    <a href="{{ route('stores.create') }}" class="btn-mkt-submit text-decoration-none border-0 px-4">
-                                        <i class="fa-solid fa-store me-2"></i>Registar a Minha Loja
-                                    </a>
+                                    <div class="d-flex flex-wrap justify-content-center gap-2">
+                                        <a href="{{ route('stores.join') }}" class="btn-mkt-ghost text-decoration-none px-4">
+                                            <i class="fa-solid fa-door-open me-2"></i>Tenho um Código de Convite
+                                        </a>
+                                        <a href="{{ route('stores.create') }}" class="btn-mkt-submit text-decoration-none border-0 px-4">
+                                            <i class="fa-solid fa-store me-2"></i>Registar a Minha Loja
+                                        </a>
+                                    </div>
                                 </div>
                             @else
                                 <div class="d-flex flex-column gap-3">
@@ -336,6 +346,10 @@
                     <div class="d-flex flex-column gap-2">
                         <a href="{{ route('stores.create') }}" class="btn-mkt-ghost text-decoration-none text-center">
                             <i class="fa-solid fa-circle-plus me-2"></i>Registar Nova Loja
+                        </a>
+
+                        <a href="{{ route('stores.join') }}" class="btn-mkt-ghost text-decoration-none text-center">
+                            <i class="fa-solid fa-door-open me-2"></i>Juntar a uma Loja
                         </a>
 
                         @if ($user->ownedStores()->exists() || $user->employedStores()->exists())

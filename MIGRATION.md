@@ -38,8 +38,8 @@ flowchart TD
     D3 --> D4["Phase 4: Design and Asset Migration (meusestilos.css)"]:::done
     D4 --> D5["Phase 5: Public Pages (Home, Explore, Map, Store Detail, Help, Contact)"]:::done
     D5 --> D56["Phase 5.6: Auth Views (Login & Register)"]:::done
-    D56 --> D6["Phase 6: Store Management and Invite Codes"]:::active
-    D6 --> D7["Phase 7: Admin Backoffice and Data Seeders"]:::pending
+    D56 --> D6["Phase 6: Store Management, User Profile and Invite Codes"]:::done
+    D6 --> D7["Phase 7: Admin Backoffice and Data Seeders"]:::active
     D7 --> D8["Phase 8: QA, Verification and Final Cleanup"]:::pending
 
     classDef done fill:#28a745,stroke:#1e7e34,color:white;
@@ -95,7 +95,7 @@ flowchart TD
 - [x] **Store Detail (`/lojas/{id}`)**: Ported `_legacy/components/cp_loja.php` to `StoreController@show` and `resources/views/stores/show.blade.php`. Features store hero card, product/service catalog grouped by category, interactive location mini-map with Google Maps JS API, and native link sharing.
 - [x] **FAQ and Info (`/ajuda`, `/contacto`)**: Ported static content to `InfoController`, `resources/views/help.blade.php`, and `resources/views/contact.blade.php` featuring responsive market accordion, direct contact channels, validated contact form, and 100% passing feature tests.
 
-### Phase 5.6: Auth Views Migration (Login & Register) (Completed)
+  ### Phase 5.6: Auth Views Migration (Login & Register) (Completed)
 - [x] **Login Screen (`/login`)**: Ported `_legacy/components/cp_login.php` into `resources/views/auth/login.blade.php` using `<x-market-layout>`, `.auth-card` with pure white contrast, brand typography, password toggle, unified login banner, and verified via automated tests.
 - [x] **Registration Screen (`/register`)**: Ported `_legacy/components/cp_registo.php` into `resources/views/auth/register.blade.php` with Portuguese labels, pure white high-contrast card, double password visibility toggles, localized Portuguese validation dictionary, and verified via automated tests.
 
@@ -103,9 +103,9 @@ flowchart TD
 - [x] **Store Registration (`/lojas/registar`)**: 2-step wizard using Google Places API without user deletion, attaching user as owner in `store_user`, and verified via automated tests.
 - [x] **Profile Page Migration (`/profile`)**: Ported `_legacy/components/cp_perfil.php` to `resources/views/profile/edit.blade.php` using `<x-market-layout>`, avatar initials, user information management, password change with visibility toggles, store affiliations overview (owned and employed stores), and verified via automated tests.
 - [x] **Store Dashboard (`/gestao/lojas`)**: Ported `_legacy/components/cp_info_lojas.php` to `StoreManagementController@index` and `resources/views/management/stores/index.blade.php` with merchant KPI stats, responsive store cards, role badges (Owner vs Employee), and verified via automated tests.
-- [ ] **Single Store Management (`/gestao/lojas/{id}`)**: Update store info and manage employee table.
-- [ ] **Invite Code Generation**: AJAX/POST route generating 7-character expiring codes.
-- [ ] **Join Store Modal**: Secure POST route validating invite code and attaching user to `store_user` pivot table.
+- [x] **Single Store Management (`/gestao/lojas/{id}`)**: Ported `_legacy/components/cp_gerir_loja.php` to `StoreManagementController@edit/update` and `resources/views/management/stores/edit.blade.php`, allowing owners to edit store details, manage the employee roster, and remove staff safely.
+- [x] **Invite Code Generation**: AJAX/POST route (`POST /gestao/lojas/{store}/convites`) generating unique 7-character alphanumeric codes with 7-day expiration, active codes modal, and one-click clipboard copying.
+- [x] **Join Store Modal**: Secure POST route (`POST /lojas/juntar`) validating 7-character invite codes and attaching users as employees to the `store_user` pivot table without account overwrite.
 
 ### Phase 7: Admin Backoffice and Data Migration
 - [ ] Port `_legacy/administracao/` into `app/Http/Controllers/Admin/`.

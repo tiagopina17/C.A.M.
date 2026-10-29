@@ -20,7 +20,11 @@
                         </p>
                     </div>
 
-                    <div class="col-lg-4 text-lg-end">
+                    <div class="col-lg-4 text-lg-end d-flex flex-wrap justify-content-lg-end gap-2">
+                        <button type="button" class="btn-mkt-ghost text-decoration-none d-inline-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#joinStoreModal">
+                            <i class="fa-solid fa-door-open"></i>
+                            <span>Juntar-se com Código</span>
+                        </button>
                         <a href="{{ route('stores.create') }}" class="btn-mkt-submit border-0 text-decoration-none d-inline-flex align-items-center gap-2">
                             <i class="fa-solid fa-circle-plus"></i>
                             <span>Registar Nova Loja</span>
@@ -118,7 +122,10 @@
                         <p class="text-muted mb-4 mx-auto" style="max-width: 440px;">
                             Registe o seu primeiro estabelecimento no bairro para começar a divulgar os seus produtos e serviços aos clientes locais.
                         </p>
-                        <div>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <a href="{{ route('stores.join') }}" class="btn-mkt-ghost text-decoration-none px-4 py-2">
+                                <i class="fa-solid fa-door-open me-2"></i>Tenho um Código de Convite
+                            </a>
                             <a href="{{ route('stores.create') }}" class="btn-mkt-submit border-0 text-decoration-none px-4 py-2">
                                 <i class="fa-solid fa-circle-plus me-2"></i>Registar a Minha Primeira Loja
                             </a>
@@ -233,6 +240,9 @@
                         <a href="{{ route('stores.create') }}" class="btn-mkt-submit text-decoration-none text-center border-0 py-2">
                             <i class="fa-solid fa-circle-plus me-2"></i>Registar Nova Loja
                         </a>
+                        <a href="{{ route('stores.join') }}" class="btn-mkt-ghost text-decoration-none text-center">
+                            <i class="fa-solid fa-door-open me-2"></i>Juntar a uma Loja
+                        </a>
                         <a href="{{ route('explore') }}" class="btn-mkt-ghost text-decoration-none text-center">
                             <i class="fa-solid fa-compass me-2"></i>Explorar Outras Lojas
                         </a>
@@ -247,5 +257,41 @@
             </div>
         </div>
 
+    </div>
+    <!-- Join Store Modal -->
+    <div class="modal fade" id="joinStoreModal" tabindex="-1" aria-labelledby="joinStoreModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-2" style="border-color: var(--ink); border-radius: 16px;">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="joinStoreModalLabel">
+                        <i class="fa-solid fa-door-open me-2 text-mustard"></i>Juntar-se a uma Loja
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <form method="POST" action="{{ route('stores.join.submit') }}">
+                    @csrf
+                    <div class="modal-body py-4">
+                        <p class="text-muted small mb-3">
+                            Introduza o código de convite de 7 carateres fornecido pelo proprietário da loja para se juntar à equipa como colaborador.
+                        </p>
+                        <div class="mb-3">
+                            <label for="invite_code_input" class="form-label-stamp">Código de Convite <span class="text-danger">*</span></label>
+                            <input type="text"
+                                   class="market-input text-center text-uppercase fw-bold font-monospace fs-4"
+                                   id="invite_code_input"
+                                   name="code"
+                                   maxlength="7"
+                                   placeholder="EX: A1B2C3D"
+                                   required
+                                   autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top-0 pt-0 d-flex justify-content-end gap-2">
+                        <button type="button" class="btn-mkt-ghost" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn-mkt-submit border-0 px-4">Juntar-se à Loja</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </x-market-layout>

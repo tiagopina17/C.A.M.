@@ -18,7 +18,11 @@ class StoreFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->company(),
+            'description' => fake()->paragraph(),
+            'place_id' => 'place_' . fake()->uuid(),
+            'lat' => fake()->latitude(38.0, 42.0),
+            'lon' => fake()->longitude(-9.5, -6.5),
         ];
     }
 }
