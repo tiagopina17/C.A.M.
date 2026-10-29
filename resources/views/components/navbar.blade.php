@@ -35,6 +35,7 @@
                                 <strong class="d-block text-truncate" style="max-width: 200px;">{{ Auth::user()->email }}</strong>
                             </li>
                             <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}"><i class="fa-regular fa-user me-2 text-muted"></i>Perfil</a></li>
+                            <li><a class="dropdown-item py-2" href="{{ route('stores.create') }}"><i class="fa-solid fa-circle-plus me-2 text-muted"></i>Registar Loja</a></li>
                             @if(Auth::user()->ownedStores()->exists() || Auth::user()->employedStores()->exists())
                                 <li><a class="dropdown-item py-2" href="{{ url('/gestao/lojas') }}"><i class="fa-solid fa-store me-2 text-muted"></i>Gerir Lojas</a></li>
                             @endif
