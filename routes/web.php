@@ -6,6 +6,7 @@ use App\Http\Controllers\InfoController;
 use App\Http\Controllers\MapController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreManagementController;
 use App\Http\Controllers\StoreRegistrationController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,8 @@ Route::get('/mapa', [MapController::class, 'index'])->name('map');
 Route::middleware('auth')->group(function () {
     Route::get('/lojas/registar', [StoreRegistrationController::class, 'create'])->name('stores.create');
     Route::post('/lojas/registar', [StoreRegistrationController::class, 'store'])->name('stores.store');
+
+    Route::get('/gestao/lojas', [StoreManagementController::class, 'index'])->name('management.stores.index');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

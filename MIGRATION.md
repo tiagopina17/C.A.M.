@@ -102,7 +102,7 @@ flowchart TD
 ### Phase 6: Store Management and User Profile
 - [x] **Store Registration (`/lojas/registar`)**: 2-step wizard using Google Places API without user deletion, attaching user as owner in `store_user`, and verified via automated tests.
 - [x] **Profile Page Migration (`/profile`)**: Ported `_legacy/components/cp_perfil.php` to `resources/views/profile/edit.blade.php` using `<x-market-layout>`, avatar initials, user information management, password change with visibility toggles, store affiliations overview (owned and employed stores), and verified via automated tests.
-- [ ] **Store Dashboard (`/gestao/lojas`)**: List managed stores for authenticated employees.
+- [x] **Store Dashboard (`/gestao/lojas`)**: Ported `_legacy/components/cp_info_lojas.php` to `StoreManagementController@index` and `resources/views/management/stores/index.blade.php` with merchant KPI stats, responsive store cards, role badges (Owner vs Employee), and verified via automated tests.
 - [ ] **Single Store Management (`/gestao/lojas/{id}`)**: Update store info and manage employee table.
 - [ ] **Invite Code Generation**: AJAX/POST route generating 7-character expiring codes.
 - [ ] **Join Store Modal**: Secure POST route validating invite code and attaching user to `store_user` pivot table.
