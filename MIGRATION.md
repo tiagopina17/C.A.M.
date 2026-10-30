@@ -118,7 +118,7 @@ flowchart TD
 - [x] **Custom Error Handlers & Pages**: Implemented brand-consistent error views for `403` (Forbidden), `404` (Not Found), and `500` (Server Error) in `resources/views/errors/` with Market Design System cards, responsive badges, and direct navigation links.
 - [x] **Automated Error Page Verification**: Added `tests/Feature/ErrorPagesTest.php` verifying HTTP 404 and HTTP 403 rendering and UI controls (all 83 test suite tests passing with 299 assertions).
 - [x] **Legacy SQL Archival**: Safely copied `_legacy/sam_backup.sql` to `database/legacy_sam_backup.sql` to guarantee historical data preservation.
-- [ ] Remove `_legacy/` folder once all features are successfully ported and approved.
+- [x] **Archive & Remove `_legacy/` folder**: Entire legacy codebase preserved on branch `archive/legacy` and tag `v0.9-legacy`, and local `_legacy/` directory removed.
 - [ ] Merge `refactor/laravel-migration` into `main`.
 
 ---
