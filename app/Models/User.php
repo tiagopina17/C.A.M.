@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'is_admin'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -28,6 +28,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_admin' => 'boolean',
         ];
     }
 
@@ -80,10 +81,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Determine if the user is an administrator.
+     */
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
+    /**
      * Get user type / badge label in Portuguese.
      */
     public function getRoleLabelAttribute(): string
     {
+        if ($this->isAdmin()) {
+            return 'Administrador';
+        }
+
         if ($this->ownedStores()->exists() || $this->employedStores()->exists()) {
             return 'Comerciante';
         }

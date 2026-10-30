@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\ExploreController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoController;
@@ -31,16 +32,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+});
+
 Route::get('/lojas/{store}', [StoreController::class, 'show'])->name('stores.show');
 Route::get('/api/stores/search', [HomeController::class, 'search'])->name('stores.search');
 
 Route::get('/ajuda', [InfoController::class, 'help'])->name('help');
 Route::get('/contacto', [InfoController::class, 'contact'])->name('contact');
 Route::post('/contacto', [InfoController::class, 'submitContact'])->name('contact.submit');
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 
 require __DIR__.'/auth.php';

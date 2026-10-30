@@ -107,10 +107,12 @@ flowchart TD
 - [x] **Invite Code Generation**: AJAX/POST route (`POST /gestao/lojas/{store}/convites`) generating unique 7-character alphanumeric codes with 7-day expiration, active codes modal, and one-click clipboard copying.
 - [x] **Join Store Modal**: Secure POST route (`POST /lojas/juntar`) validating 7-character invite codes and attaching users as employees to the `store_user` pivot table without account overwrite.
 
-### Phase 7: Admin Backoffice and Data Migration
-- [ ] Port `_legacy/administracao/` into `app/Http/Controllers/Admin/`.
-- [ ] Restrict admin access via `role:admin` middleware.
-- [ ] Create legacy data importer script to copy old records from `sam` into `sam_laravel`.
+### Phase 7: Admin Backoffice (Completed)
+- [x] **Admin Middleware (`admin`)**: Created `EnsureUserIsAdmin` middleware registered in `bootstrap/app.php`, validating `$user->isAdmin()` (`is_admin` boolean column on `users` table) and aborting with HTTP 403 Forbidden for unauthorized users.
+- [x] **Admin Dashboard Controller (`AdminDashboardController@index`)**: Aggregates platform KPIs (total users, registered stores, active categories, total services), recent user registrations, category service distributions, and latest stores.
+- [x] **Admin Dashboard View (`resources/views/admin/dashboard.blade.php`)**: Fully ported `_legacy/administracao/` (`index.php`, `cp_index_admin.php`, `cp_navbar_admin.php`) using `<x-market-layout>`, Market Design System KPI cards, responsive data tables with badges and empty states, category progress bars, and admin navbar shortcut link.
+- [x] **Automated Tests**: Added `tests/Feature/AdminDashboardTest.php` covering guest redirects, non-admin forbidden status, store-owner-only forbidden status, admin metrics visibility, and dynamic navbar administration links (all 5 tests passing; full test suite at 81 tests).
+- [x] **Legacy Data Importer**: Intentionally omitted per explicit project requirement.
 
 ### Phase 8: QA and Final Cleanup
 - [ ] Verify all routes, error handlers, and validation rules.
@@ -125,7 +127,7 @@ flowchart TD
 |---|---|---|
 | `connections/connection.php` | `config/database.php` and `.env` | Database connection via PDO/Eloquent |
 | `components/cp_head.php` | `resources/views/layouts/app.blade.php` | HTML `<head>`, styles, fonts |
-| `components/cp_navbar.php` | `resources/views/components/navbar.blade.php` | Navigation bar with auth checks |
+| `components/cp_navbar.php` | `resources/views/components/navbar.blade.php` | Navigation bar with auth checks and admin entry |
 | `components/cp_footer.php` | `resources/views/components/footer.blade.php` | Page footer and script includes |
 | `components/cp_index_intro.php` | `resources/views/home.blade.php` | Landing page, hero, live search |
 | `components/cp_loja.php` | `resources/views/stores/show.blade.php` | Public store profile |
@@ -133,6 +135,9 @@ flowchart TD
 | `components/cp_registo_lojas.php` | `resources/views/stores/create.blade.php` | Store registration wizard |
 | `components/cp_info_lojas.php` | `resources/views/management/stores/index.blade.php` | Employee store list |
 | `components/cp_gerir_loja.php` | `resources/views/management/stores/edit.blade.php` | Store editor and employee management |
+| `administracao/index.php` | `AdminDashboardController@index` | Entry point for administrative backoffice |
+| `administracao/cp_index_admin.php` | `resources/views/admin/dashboard.blade.php` | Admin metrics, platform statistics, and tables |
+| `administracao/cp_navbar_admin.php` | `resources/views/components/navbar.blade.php` | Unified navbar with role-based admin entry |
 | `scripts/sc_registo_lojas.php` | `StoreRegistrationController@store` | Backend store creation logic |
 | `scripts/sc_join.php` | `StoreInviteController@join` | Attach user to store via invite code |
 | `scripts/sc_login.php` | Laravel Breeze `AuthenticatedSessionController` | Secure session authentication |
