@@ -114,9 +114,11 @@ flowchart TD
 - [x] **Automated Tests**: Added `tests/Feature/AdminDashboardTest.php` covering guest redirects, non-admin forbidden status, store-owner-only forbidden status, admin metrics visibility, and dynamic navbar administration links (all 5 tests passing; full test suite at 81 tests).
 - [x] **Legacy Data Importer**: Intentionally omitted per explicit project requirement.
 
-### Phase 8: QA and Final Cleanup
-- [ ] Verify all routes, error handlers, and validation rules.
-- [ ] Remove `_legacy/` folder once all features are successfully ported.
+### Phase 8: QA and Final Cleanup (In Progress)
+- [x] **Custom Error Handlers & Pages**: Implemented brand-consistent error views for `403` (Forbidden), `404` (Not Found), and `500` (Server Error) in `resources/views/errors/` with Market Design System cards, responsive badges, and direct navigation links.
+- [x] **Automated Error Page Verification**: Added `tests/Feature/ErrorPagesTest.php` verifying HTTP 404 and HTTP 403 rendering and UI controls (all 83 test suite tests passing with 299 assertions).
+- [x] **Legacy SQL Archival**: Safely copied `_legacy/sam_backup.sql` to `database/legacy_sam_backup.sql` to guarantee historical data preservation.
+- [ ] Remove `_legacy/` folder once all features are successfully ported and approved.
 - [ ] Merge `refactor/laravel-migration` into `main`.
 
 ---

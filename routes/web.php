@@ -43,4 +43,9 @@ Route::get('/ajuda', [InfoController::class, 'help'])->name('help');
 Route::get('/contacto', [InfoController::class, 'contact'])->name('contact');
 Route::post('/contacto', [InfoController::class, 'submitContact'])->name('contact.submit');
 
+// Temporary preview route for custom 500 error page
+Route::get('/teste-500', function () {
+    return response()->view('errors.500', status: 500);
+});
+
 require __DIR__.'/auth.php';
