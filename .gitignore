@@ -1,1 +1,9 @@
 .env
+/vendor/
+/node_modules/
+/.vscode/
+/public/
+/bootstrap/
+/storage/
+/.phpunit.result.cache
+*.log
